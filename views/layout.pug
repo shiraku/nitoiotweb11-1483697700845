@@ -1,0 +1,33 @@
+- var PAGE = path
+
+html
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        title #{title}
+        // :: jqeurymobile css ::
+        link(rel='stylesheet', href='/styles/themes/nitto.min.css')
+        link(rel='stylesheet', href='/styles/themes/jquery.mobile.icons.min.css')
+        link(rel='stylesheet', href='/styles/libs/jquery.mobile.structure-1.4.5.min.css')
+        // :: カスタム用css ::
+        link(rel='stylesheet', href='/styles/common.css')
+        // :: jqeurymobile js ::
+        script(src='//code.jquery.com/jquery-1.11.1.min.js')
+        script(src='/scripts/jquery.mobile-1.4.5.min.js')
+        
+        block script
+        
+    body(onclicke=PAGE)
+        div(data-role='page', data-theme='c')
+            // :: ヘッダ情報 ::
+            .ui-header(data-role='header', data-position='inline')
+                h1.ui-title
+                    a(href='/')
+                        img(src='/images/logo.jpg')
+            unless PAGE == '/'
+                div(data-role='header', data-position='inline')
+                    h1 #{title}
+
+            // :: メニュー情報 ::
+            div(data-role='content', data-theme='b')
+                block content
