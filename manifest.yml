@@ -1,0 +1,12 @@
+applications:
+- path: .
+  memory: 512M
+  instances: 1
+  domain: mybluemix.net
+  name: nitoiotweb11
+  host: nitoiotweb11
+  disk_quota: 1024M
+  services:
+  - nitoiotweb11-cloudantNoSQLDB
+  env:
+    redacted_message: '[PRIVATE DATA HIDDEN]'
