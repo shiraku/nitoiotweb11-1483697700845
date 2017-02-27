@@ -1,0 +1,20 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<header class="hero-unit" id="banner">
+</header>
+
+<!--UC000ログイン画面-->
+<div ng-controller="MenuCtrl">
+
+<p>Menu</p>
+{{username}}
+<button class="btn btn-primary" ng-click="logOut()">ログアウト</button>
+<button class="btn btn-primary" ng-click="device()">UC002デバイス一覧画面</button>
+<button class="btn btn-primary" ng-click="deviceControl()">UC009デバイスグループ画面</button>
+<button class="btn btn-primary" ng-click="downloadCSV()">UC0018ダウンロードCSV項目設定画面</button>
+
+</div>
+<!---->
+
+<footer class="footer">
+</footer>

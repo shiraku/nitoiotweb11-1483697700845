@@ -1,0 +1,92 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<header class="hero-unit" id="banner">
+</header>
+
+<!--UC000ログイン画面-->
+<!-- <div ng-controller="DeviceListCtrl">
+
+<p>Menu</p>
+{{username}}
+<button class="btn btn-primary" ng-click="logOut()">ログアウト</button>
+<button class="btn btn-primary" ng-click="device()">UC002デバイス一覧画面</button>
+<button class="btn btn-primary" ng-click="deviceControl()">UC009デバイスグループ画面</button>
+<button class="btn btn-primary" ng-click="downloadCSV()">UC0018ダウンロードCSV項目設定画面</button>
+<button class="btn btn-primary" ng-click="getAll()">リスト取得</button>
+
+</div> -->
+
+
+
+<div ng-controller="DeviceListCtrl" ng-cloak="" class="navBardemoBasicUsage">
+
+
+
+
+
+  <div ng-cloak>
+    <md-content class="md-padding">
+      <md-tabs md-dynamic-height md-border-bottom>
+        <md-tab label="one">
+          <md-content class="md-padding">
+            <h1 class="md-display-2">Tab One</h1>
+            <p>Hello</p>
+          </md-content>
+        </md-tab>
+        <md-tab label="two">
+          <md-content class="md-padding">
+            <h1 class="md-display-2">Tab Two</h1>
+            <p>Hello, hello.</p>
+          </md-content>
+        </md-tab>
+        <md-tab label="three">
+          <md-content class="md-padding">
+            <h1 class="md-display-2">Tab Three</h1>
+            <p>3 + 4 = {{3+4}}</p>
+          </md-content>
+        </md-tab>
+      </md-tabs>
+    </md-content>
+  </div>
+
+
+
+
+  <!-- <md-content class="md-padding">
+    <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+      <md-nav-item md-nav-click="goto('page1')" name="page1">
+        Page One
+      </md-nav-item>
+      <md-nav-item md-nav-click="goto('page2')" name="page2">
+        Page Two
+      </md-nav-item>
+      <md-nav-item md-nav-click="goto('page3')" name="page3">
+        Page Three
+      </md-nav-item>
+      <!-- these require actual routing with ui-router or ng-route, so they
+      won't work in the demo
+      <md-nav-item md-nav-href="#page4" name="page5">Page Four</md-nav-item>
+      <md-nav-item md-nav-sref="app.page5" name="page4">Page Five</md-nav-item>
+      You can also add options for the <code>ui-sref-opts</code> attribute.
+      <md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">
+        Page Six
+      </md-nav-item>
+
+
+    </md-nav-bar>
+    <div class="ext-content">
+      External content for `<span>{{currentNavItem}}</span>`.
+    </div>
+
+    <md-checkbox ng-model="disableInkBar">Disable Ink Bar</md-checkbox>
+
+  </md-content> -->
+</div>
+
+
+
+
+
+
+<footer class="footer">
+</footer>

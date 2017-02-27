@@ -1,0 +1,26 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<header class="hero-unit" id="banner">
+</header>
+
+<!--UC000ログイン画面-->
+<!-- <div class="container" ng-controller="LoginActionCtrl"> -->
+<div ng-controller="LoginCtrl">
+
+<p>Login</p>
+<p>UserID:</p>
+<input type="text" ng-model="user.userId">
+<p>Password:</p>
+<input type="text" ng-model="user.password">
+
+<button class="btn btn-primary" ng-click="login()">Login</button>
+<button class="btn btn-primary" ng-click="login2()">Login</button>
+<p>{{userId}}</p>
+
+{{password}}
+
+</div>
+<!---->
+
+<footer class="footer">
+</footer>
