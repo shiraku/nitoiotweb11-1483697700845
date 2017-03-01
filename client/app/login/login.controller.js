@@ -6,7 +6,7 @@
 var staticWebsite;
 
     angular.module('nitoiotweb11App')
-    .controller('LoginCtrl',['$rootScope','$scope','$http','$location', function ($rootScope,$scope, $http, $location) {
+    .controller('LoginCtrl',['$rootScope','$routeParams','$scope','$http','$location', function ($rootScope,$routeParams,$scope, $http, $location) {
 
       //$scopehttp/timeout etc... Angularjsのmodule
       //TODO ルートスコープ読み込みする。引数でもらって来る。
@@ -16,14 +16,16 @@ var staticWebsite;
       //TODO　ルートスコープに値を入れて取得する
       //ルーティング続き
 
+//    	alert("$routeParams"+$routeParams.userId)
+
       /**
       ***　処理概要：IDとPWを入力してログインする。
       **/
       $scope.login = function() {
-        // $.rootScope.username = $scope.user.userId;
-        // $.rootScope.password = $scope.user.password;
+        var userId = $scope.user.userId;
+        var password = $scope.user.password;
         // if (username == "admin" && password == "admin") {
-          $location.path("/menu" );
+          $location.path("/user_"+userId );
         // } else {
         //   alert('invalid username and password');
         // }

@@ -1,51 +1,88 @@
 
 'use strict';
 /**
-***　UC000ログイン画面
+***?UC000??????
 **/
 
 var staticWebsite;
 
     angular.module('nitoiotweb11App')
-    .controller('DeviceListCtrl',['$rootScope','$scope','$http','$location', function ($rootScope,$scope, $http, $location) {
-
-      //初期表示の処理
-      // $scope.username = $.rootScope.user.username
+    .controller('DeviceListCtrl',['$rootScope','$routeParams','$scope','$http','$location', function ($rootScope,$routeParams,$scope, $http, $location) {
 
 
-      // (function() {
-      //   'use strict';
-      //
-      //   angular.module('MyApp',['ngMaterial', 'ngMessages', 'material.svgAssetsCache'])
-      //       .controller('AppCtrl', AppCtrl);
-      //
-      //   function AppCtrl($scope) {
-          $scope.currentNavItem = 'page1';
-      //   }
-      // })();
 
+
+      /**
+      API デバイスリスト取得
+      **/
+      $scope.deviceList = [
+        {
+              'deviceId':'dev001',
+              'deviceName': 'デバイス１',
+              'responsiblePerson': '',
+              'telNo': '000-0000-0000',
+              'statusFlg':'0',
+              'status':'異常あり'
+       },
+         {
+              'deviceId':'dev002',
+              'deviceName': 'デバイス２',
+              'responsiblePerson': '',
+              'telNo': '111-1111-1111',
+              'statusFlg':'1',
+              'status':'????',
+              'type':'earthquake',
+              'seismicIntensity':'5.4',
+              'slope':'',
+              'commercialBlackout':'',
+              'equipmentAbnormality':'',
+              'comment':'',
+              'updateTime':''
+        },
+          {
+              'deviceId':'dev003',
+              'deviceName': 'デバイス３',
+              'responsiblePerson': '????',
+              'telNo': '222-2222-2222',
+              'statusFlg':'1',
+              'status':'????',
+              'type':'thunder',
+              'power':'大',
+              'leakage':'',
+              'commercialBlackout':'',
+              'equipmentAbnormality':'',
+              'comment':'',
+              'updateTime':''
+         }
+       ];
+
+
+
+       $scope.deviceDetail = function(){
+         $location.path("/user_"+$routeParams.USER_ID+"/device_"+this.item.deviceId);
+       }
 
 
       $scope.logOut = function() {
           $location.path("/login" );
       };
 
-      //UC002デバイス一覧画面
+      //UC002????????
       $scope.device = function() {
           $location.path("/device" );
       };
 
-      //UC009デバイスグループ画面
+      //UC009??????????
       $scope.deviceControl = function() {
           $location.path("/deviceManagement" );
       };
 
-      //UC0018ダウンロードCSV項目設定画面
+      //UC0018??????CSV??????
       $scope.downloadCSV = function() {
           $location.path("/downloadCSV" );
       };
 
-      // POSTでのajaxコールで、サーバーのapp.jsのapp.post /getAll呼び出し
+      // POST??ajax??????????app.js?app.post /getAll????
         // $scope.getAll = function() {
         //     // $.ajax({
         //     // type: 'POST',

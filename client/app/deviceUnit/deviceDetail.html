@@ -6,24 +6,103 @@
 
 
 
-<div ng-controller="DeviceListCtrl" ng-cloak="" class="navBardemoBasicUsage">
-
-
-  <div class="md-toolbar-tools">
-      <input ng-model="query" class="ng-pristine ng-valid md-input ng-not-empty ng-touched" id="input_268" aria-invalid="false" style="">
-      <!--TODO add SearchIcon-->
-  </div>
+<div ng-controller="DeviceDetailCtrl" ng-cloak="" class="navBardemoBasicUsage">
 
 
 
-  <div ng-cloak>
     <md-content class="md-padding">
-      <md-tabs md-dynamic-height md-border-bottom>
-        <md-tab label="サマリー情報">
-          <md-content class="md-padding">
+
+
+
+
+
+<!--基本情報-->
+        <div class="md-toolbar-tools">
+          <h3 class="ng-binding ng-isolate-scope">
+            <a class="docs-anchor ng-scope" ng-href="#basic-usage" name="basic-usage" href="#basic-usage">基本情報</a>
+          </h3>
+        </div>
+
+          <md-card>
+            <md-card-title>
+              <md-card-title-text>
+                <span class="md-subhead">{{deviceDetailList.deviceName}}</span>
+              </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                  <p class="md-body-1">職場責任者：{{deviceDetailList.responsiblePerson}}</p>
+                  <p class="md-body-1">連絡先：{{deviceDetailList.telNo}}</p>
+                  <p class="md-body-1">住所：{{deviceDetailList.address}}</p>
+                  <p class="md-body-1">メモ：{{deviceDetailList.memo}}</p>
+            </md-card-content>
+          </md-card>
+
+
+<!--地震-->
+<div class="md-toolbar-tools">
+  <h3 class="ng-binding ng-isolate-scope">
+    <a class="docs-anchor ng-scope" ng-href="#basic-usage" name="basic-usage" href="#basic-usage">地震</a>
+  </h3>
+</div>
+
+<md-card>
+  <!--現在のステータス-->
+  <md-card-content>
+  </md-card-content>
+  <!--地震履歴-->
+  <p class="md-body-1">地震履歴</p>
+  <md-card-content>
+    <ul>
+      <li ng-repeat="item in earthquakeHistoryList[0].data">
+        <p class="md-body-1">{{item.date}}</p>
+        <p class="md-body-1">{{item.datas[0].value}}</p>
+      </li>
+    </ul>
+  </md-card-content>
+</md-card>
+
+
+
+<!--雷-->
+<div class="md-toolbar-tools">
+  <h3 class="ng-binding ng-isolate-scope">
+    <a class="docs-anchor ng-scope" ng-href="#basic-usage" name="basic-usage" href="#basic-usage">雷</a>
+  </h3>
+</div>
+
+  <md-card>
+    <!--現在のステータス-->
+    <md-card-content>
+    </md-card-content>
+    <!--地震履歴-->
+    <p class="md-body-1">雷履歴</p>
+    <md-card-content>
+      <ul>
+        <li ng-repeat="item in thunderHistoryList[0].data">
+          <p class="md-body-1">{{item.date}}</p>
+          <p class="md-body-1">{{item.datas[0].value}}</p>
+        </li>
+      </ul>
+    </md-card-content>
+  </md-card>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <ul>
-  <li ng-repeat="item in deviceList | filter:query">
+  <li ng-repeat="item in deviceList">
 
 
 
@@ -33,7 +112,7 @@
   <md-card-title>
     <!--タイトル（デバイス名）-->
     <md-card-title-text>
-      <span class="md-subhead">{{item.deviceName}}</span>
+      <span class="md-subhead">{{item.deviceName}}devicedetail</span>
     </md-card-title-text>
     <!--リンク-->
     <md-button ng-click="deviceDetail()">
@@ -115,21 +194,7 @@
 </li>
 </ul>
 
-          </md-content>
-        </md-tab>
-        <md-tab label="グラフ">
-          <md-content class="md-padding">
-            <h1 class="md-display-2">グラフ</h1>
-            <p>Hello, hello.</p>
-          </md-content>
-        </md-tab>
-        <md-tab label="マップ">
-          <md-content class="md-padding">
-            <h1 class="md-display-2">マップ</h1>
-            <p>3 + 4 = {{3+4}}</p>
-          </md-content>
-        </md-tab>
-      </md-tabs>
+
     </md-content>
   </div>
 </div>
