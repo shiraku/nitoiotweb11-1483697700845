@@ -26,86 +26,147 @@ module.exports = function(app) {
     .get(function(req, res) {
       res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
     });
-  //UC001	メニュー画面
-  app.route('/menu')
-    .get(function(req, res) {
-      res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-    });
-  //UC002	デバイス一覧画面
-  app.route('/device')
-    .get(function(req, res) {
-      res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-    });
-          //UC003	一覧グラフ画面
-          app.route('/device/deviceGraph')
-            .get(function(req, res) {
-              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-            });
-          //UC004	一覧マップ画面
-          app.route('/device/deviceMap')
-            .get(function(req, res) {
-              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-            });
-          //UC005	デバイス詳細画面
-          app.route('/device/deviceDetail')
-            .get(function(req, res) {
-              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-            });
-                  //UC006	デバイスマップ
-                  app.route('/device/deviceDetail/deviceDetailMap')
-                    .get(function(req, res) {
-                      res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-                    });
-                  //UC007	デバイスグラフ
-                  app.route('/device/deviceDetail/deviceDetailGraph')
-                    .get(function(req, res) {
-                      res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-                    });
-  //UC009	デバイスグループ画面
-  app.route('/deviceManagement')
-    .get(function(req, res) {
-      res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-    });
-          //UC010	グループ名編集画面
-          app.route('/deviceManagement/deviceNameEdit')
-            .get(function(req, res) {
-              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-            });
-          //UC011	デバイス情報編集画面
-          app.route('/deviceManagement/deviceInfoEdit')
-            .get(function(req, res) {
-              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-            });
-          //UC012	緯度経度入力補完マップ（モーダル）
-          app.route('/deviceManagement/latLonInputMap')
-            .get(function(req, res) {
-              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-            });
-          //UC015	メール送信者追加画面
-          app.route('/deviceManagement/mailSenderAdd')
-            .get(function(req, res) {
-              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-            });
-          //UC016	メール送信者編集画面
-          app.route('/deviceManagement/mailSenderEdit')
-            .get(function(req, res) {
-              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-            });
-          //UC017	メール送信者削除（モーダル）
-          app.route('/deviceManagement/mailSenderDelete')
-            .get(function(req, res) {
-              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-            });
-          //UC018	アラート設定画面
-          app.route('/deviceManagement/alertSetting')
-            .get(function(req, res) {
-              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-            });
-  //UC019	ダウンロードCSV項目設定画面
-  app.route('/downloadCSV')
-    .get(function(req, res) {
-      res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-    });
+//  //UC001	メニュー画面
+//  app.route('/menu')
+//    .get(function(req, res) {
+//      res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//    });
+//  //UC002	デバイス一覧画面
+//  app.route('/device')
+//    .get(function(req, res) {
+//      res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//    });
+//          //UC003	一覧グラフ画面
+//          app.route('/device/deviceGraph')
+//            .get(function(req, res) {
+//              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//            });
+//          //UC004	一覧マップ画面
+//          app.route('/device/deviceMap')
+//            .get(function(req, res) {
+//              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//            });
+//          //UC005	デバイス詳細画面
+//          app.route('/device/deviceDetail')
+//            .get(function(req, res) {
+//              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//            });
+//                  //UC006	デバイスマップ
+//                  app.route('/device/deviceDetail/deviceDetailMap')
+//                    .get(function(req, res) {
+//                      res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//                    });
+//                  //UC007	デバイスグラフ
+//                  app.route('/device/deviceDetail/deviceDetailGraph')
+//                    .get(function(req, res) {
+//                      res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//                    });
+//  //UC009	デバイスグループ画面
+//  app.route('/deviceManagement')
+//    .get(function(req, res) {
+//      res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//    });
+//          //UC010	グループ名編集画面
+//          app.route('/deviceManagement/deviceNameEdit')
+//            .get(function(req, res) {
+//              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//            });
+//          //UC011	デバイス情報編集画面
+//          app.route('/deviceManagement/deviceInfoEdit')
+//            .get(function(req, res) {
+//              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//            });
+//          //UC012	緯度経度入力補完マップ（モーダル）
+//          app.route('/deviceManagement/latLonInputMap')
+//            .get(function(req, res) {
+//              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//            });
+//          //UC015	メール送信者追加画面
+//          app.route('/deviceManagement/mailSenderAdd')
+//            .get(function(req, res) {
+//              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//            });
+//          //UC016	メール送信者編集画面
+//          app.route('/deviceManagement/mailSenderEdit')
+//            .get(function(req, res) {
+//              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//            });
+//          //UC017	メール送信者削除（モーダル）
+//          app.route('/deviceManagement/mailSenderDelete')
+//            .get(function(req, res) {
+//              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//            });
+//          //UC018	アラート設定画面
+//          app.route('/deviceManagement/alertSetting')
+//            .get(function(req, res) {
+//              res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//            });
+//  //UC019	ダウンロードCSV項目設定画面
+//  app.route('/downloadCSV')
+//    .get(function(req, res) {
+//      res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//    });
+  
+  //デバイス一覧画面	/user_USER_ID/
+  app.route('/user_:userId')
+  .get(function(req, res) {
+    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+  });
+	
+//UC001	デバイス一覧画面				/user_:USER_ID
+  app.route('/user_:USER_ID')
+  .get(function(req, res) {
+    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+  });
+//  UC002	デバイス詳細					/user_:USER_ID/device_:DEVICE_ID
+  app.route('/user_:USER_ID/device_:DEVICE_ID')
+  .get(function(req, res) {
+    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+  });
+//  UC003	デバイス詳細　データ				/user_:USER_ID/device_:DEVICE_ID/:YYYYMMDDHHMM
+  app.route('/user_:USER_ID/device_:DEVICE_ID/:YYYYMMDDHHMM')
+  .get(function(req, res) {
+    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+  });
+//  UC005	デバイスグループ画面				/user_:USER_ID/group_:GROUP_ID
+  app.route('/user_:USER_ID/group_:GROUP_ID')
+  .get(function(req, res) {
+    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+  });
+//  UC006	デバイス情報編集画面				/user_:USER_ID/device_:DEVICE_ID/edit
+  app.route('/user_:USER_ID/device_:DEVICE_ID/edit')
+  .get(function(req, res) {
+    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+  });
+//  UC007	アラート設定画面(デバイスごと）	/user_:USER_ID/device_:DEVICE_ID/alert
+  app.route('/user_:USER_ID/device_:DEVICE_ID/alert')
+  .get(function(req, res) {
+    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+  });
+//  UC007	アラート設定画面（グループ）		/user_:USER_ID/group_:GROUP_ID/alert
+  app.route('/user_:USER_ID/group_:GROUP_ID/alert')
+  .get(function(req, res) {
+    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+  });
+//  UC008	ダウンロードCSV項目設定画面		/user_:USER_ID/data/download
+  app.route('/user_:USER_ID/data/download')
+  .get(function(req, res) {
+    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+  });
+  				
+  		
+  		
+  		
+  		
+  	
+  	
+  	
+  	
+  	
+  	
+  
+  
+  
 
 
 };
