@@ -113,7 +113,7 @@ angular.module('nitoiotweb11App')
 })
 //  UC005	デバイスグループ画面				/user_:USER_ID/group_:GROUP_ID
 .when('/user_:USER_ID/group_:GROUP_ID', {
-  templateUrl: 'app/deviceManagement/deviceGroup.html',
+  templateUrl: 'app/deviceGroup/deviceGroup.html',
   controller: 'DeviceGroupCtrl'
 })
 //  UC006	デバイス情報編集画面				/user_:USER_ID/device_:DEVICE_ID/edit
