@@ -48,11 +48,6 @@
   background-color: #FFF2E0; }
 
 
-
-  md-card-title{
-    border-bottom: solid 1px;
-  }
-
   ul{
     list-style:none;
     -webkit-padding-start: 0;
@@ -64,4 +59,41 @@
     color: rgba(0,0,0,0.87);
     letter-spacing: 0;
     line-height: 24px;
+  }
+
+/**カスタム*********************************/
+
+  /**ツールバー**/
+  .md-toolbar-tools{
+    background-color: #4D6BD0;
+    color: white;
+  }
+
+  /**カード**/
+  md-card md-card-title{
+    border-bottom: 1px solid #E3E3E3;
+    padding: 16px 16px 16px;
+  }
+
+  /**カードタイトル　テキスト**/
+  md-card md-card-title md-card-title-text .md-subhead{
+    padding-top: 0px;
+    font-family: HiraKakuInterface-W7;
+    font-size: 17px;
+    color: rgba(0,0,0,0.87);
+    letter-spacing: 0;
+    line-height: 24px;
+  }
+  md-card md-card-title md-card-title-text:only-child .md-subhead{
+      padding-top: 0px;
+      font-family: HiraKakuInterface-W7;
+      font-size: 17px;
+      color: rgba(0,0,0,0.87);
+      letter-spacing: 0;
+      line-height: 24px;
+  }
+
+  /**カード**/
+  md-card md-card-content{
+    border-bottom: 1px solid #E3E3E3;
   }
