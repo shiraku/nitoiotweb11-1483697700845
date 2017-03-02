@@ -3,81 +3,31 @@
   <div class="container">
 
     <div class="navbar-header">
-      <!-- <button ng-click="toggleLeft()" class="md-raised" style='border: none; background-color: transparent; line-height:50px'>
-        <i class="material-icons">menu</i>
-      </button> -->
+      <div layout="colom">
       <md-button class="md-icon-button md-primary" ng-click="toggleLeft()" aria-label="Settings">
-        <md-icon md-svg-icon="img/icons/menu.svg"></md-icon>
+        <!-- <md-icon md-svg-icon="img/icons/menu.svg"></md-icon> -->
+        <i class="material-icons">menu</i>
       </md-button>
-
+      <div class="navbar-brand">{{navtitle}}</div>
     </div>
-    <div class="navbar-brand">デバイス一覧</div>
-      </div>
+    </div>
 
+  </div>
 
-    <!--------------------------------->
+    <!---メニュー--->
 
-          <section layout="row" flex="" style="overflow: auto;">
-
-       <md-sidenav class="md-sidenav-left" md-component-id="left" md-disable-backdrop="" md-whiteframe="4">
-
-         <md-toolbar　ng-click="toggleLeft()"  class="md-theme-indigo">
-           <h1 class="md-toolbar-tools">デバイス一覧</h1>
-         </md-toolbar>
-         <md-toolbar ng-click="toggleLeft()" 　class="md-theme-indigo">
-           <h1 class="md-toolbar-tools">デバイスグループ</h1>
-         </md-toolbar>
-         <md-toolbar ng-click="toggleLeft()" 　class="md-theme-indigo">
-           <h1 class="md-toolbar-tools">ダウンロードCSV</h1>
-         </md-toolbar>
-
-       </md-sidenav>
-
-
+    <section layout="row" flex="" style="overflow: auto;">
+         <md-sidenav class="md-sidenav-left" md-component-id="left" md-disable-backdrop="" md-whiteframe="4">
+             <md-toolbar　ng-click="toggleLeft()"  class="md-theme-indigo">
+               <h1 class="md-toolbar-tools">デバイス一覧</h1>
+             </md-toolbar>
+             <md-toolbar ng-click="toggleLeft()" 　class="md-theme-indigo">
+               <h1 class="md-toolbar-tools">デバイスグループ</h1>
+             </md-toolbar>
+             <md-toolbar ng-click="toggleLeft()" 　class="md-theme-indigo">
+               <h1 class="md-toolbar-tools">ダウンロードCSV</h1>
+             </md-toolbar>
+         </md-sidenav>
      </section>
 
-    <!--------------------------------->
-
 </div>
-
-
-
-          <!-- <a href="/" class="navbar-brand">nitoiotweb11</a> -->
-
-      <!-- <md-button ng-click="toggleLeft()" class="md-raised">
-        <!-- Toggle Sidenav -->
-        <!-- <i class="material-icons">menu</i>
-      </md-button> -->
-
-
-      <!-- <button class="md-icon-button md-button md-ink-ripple" type="button" ng-transclude="" aria-label="Settings" ng-disabled="true" disabled="disabled">
-          <md-icon md-svg-icon="img/icons/menu.svg" class="ng-scope" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 18 18" fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
-                  <!-- <path d="M0 0h18v18h-18z" fill="none"></path>
-              <path d="M2 13.5h14v-1.5h-14v1.5zm0-4h14v-1.5h-14v1.5zm0-5.5v1.5h14v-1.5h-14z"></path> -->
-            <!-- </svg>
-          </md-icon>
-        </button> -->
-
-      <!-- <button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button> -->
-
-
-
-
-
-
-
-
-
-    <!-- <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
-      <ul class="nav navbar-nav">
-        <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
-            <a ng-href="{{item.link}}">{{item.title}}</a>
-        </li>
-      </ul>
-    </div> -->

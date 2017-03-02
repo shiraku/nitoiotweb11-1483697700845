@@ -1,0 +1,129 @@
+<div ng-controller="DeviceDetailDataCtrl" ng-cloak="" class="navBardemoBasicUsage">
+
+  <!--ヘッダー読み込み-->
+  <navitop></navitop>
+
+    <md-content class="md-padding">
+
+
+
+
+
+<!--グラフ-->
+        <div class="md-toolbar-tools">
+          <h3 class="ng-binding ng-isolate-scope">
+            <a class="docs-anchor ng-scope" ng-href="#basic-usage" name="basic-usage" href="#basic-usage">グラフ</a>
+          </h3>
+        </div>
+
+          <md-card>
+            <!--TODO グラフ読み込み-->
+          </md-card>
+
+
+<!--マップ-->
+        <div class="md-toolbar-tools">
+          <h3 class="ng-binding ng-isolate-scope">
+            <a class="docs-anchor ng-scope" ng-href="#basic-usage" name="basic-usage" href="#basic-usage">マップ</a>
+          </h3>
+        </div>
+
+        <md-card>
+        <!--TODO MAP読み込み-->
+        {{mapInfo[0].device_id}}
+        {{mapInfo[0].latitude}}
+        {{mapInfo[0].longitude}}
+        </md-card>
+
+
+
+<!--地震または雷-->
+<div class="md-toolbar-tools">
+  <h3 class="ng-binding ng-isolate-scope">
+    <div ng-if="detailData[0].type == 'earthquake'">
+    <a class="docs-anchor ng-scope" ng-href="#basic-usage"name="basic-usage" href="#basic-usage">地震</a>
+    </div>
+    <div ng-if="detailData[0].type == 'thunder'">
+    <a class="docs-anchor ng-scope" ng-href="#basic-usage"name="basic-usage" href="#basic-usage">雷</a>
+    </div>
+  </h3>
+</div>
+
+<!--デバイスカード-->
+  <md-card>
+  <!--デバイスカード　タイトル（デバイス名）-->
+  <md-card-title>
+    <!--タイトル（デバイス名）-->
+    <md-card-title-text>
+      <span class="md-subhead">感知あり</span>
+    </md-card-title-text>
+  </md-card-title>
+
+ <!--デバイスカード　コンテンツ-->
+  <md-card-content>
+      <!--地震の場合-->
+      <div layout="row" layout-wrap ng-if="detailData[0].type == 'earthquake'">
+        <div flex="25">
+          <div flex class="md-body-1">傾き</div>
+          <div flex class="md-body-1">商用停電</div>
+          <div flex class="md-body-1">機器異常</div>
+        </div>
+        <div flex="25">
+          <div flex class="md-body-1">{{detailData[0].slope}}</div>
+          <div flex class="md-body-1">{{detailData[0].commercialBlackout}}</div>
+          <div flex class="md-body-1">{{detailData[0].equipmentAbnormality}}</div>
+        </div>
+        <div flex class="md-body-1">震度</div>
+        <div flex class="md-display-3">{{detailData[0].seismicIntensity}}</div>
+      </div>
+      <!--雷の場合-->
+      <div layout="row" layout-wrap ng-if="item.type == 'thunder'">
+        <div flex="25">
+          <div flex class="md-body-1">漏電</div>
+          <div flex class="md-body-1">商用停電</div>
+          <div flex class="md-body-1">機器異常</div>
+        </div>
+        <div flex="25">
+          <div flex class="md-body-1">{{detailData[0].leakage}}</div>
+          <div flex class="md-body-1">{{detailData[0].commercialBlackout}}</div>
+          <div flex class="md-body-1">{{detailData[0].equipmentAbnormality}}</div>
+        </div>
+        <div flex class="md-body-1">雷</div>
+        <div flex class="md-display-3">{{detailData[0].power}}</div>
+      </div>
+  　</md-card-content>
+    <md-card-content>
+    <p class="md-body-1">コメント・連絡事項</p>
+    <div layout="row" layout-wrap>
+      <ul>
+        <li ng-repeat="item in detailData[0].commentList">
+        <p class="md-body-2">{{item.comment}}</p>
+        <p class="md-body-2">{{item.commentDate}}</p>
+      </li>
+    </ul>
+    </div>
+  </md-card-content>
+  <md-card-content>
+    <div layout="row" layout-wrap>
+      　<p class="md-body-1">メディア速報</p>
+        <p class="md-body-2">気象庁公報：{{detailData[0].JapanMeteorologicalAgency}}</p>
+        <p class="md-body-2">長周期地震動階級{{detailData[0].LongPeriodSeismicActivityClass}}</p>
+    </div>
+
+  </md-card-content>
+</md-card>
+
+<!--デバイスカード終わり-->
+
+
+    </md-content>
+  </div>
+</div>
+
+
+
+
+
+
+<footer class="footer">
+</footer>

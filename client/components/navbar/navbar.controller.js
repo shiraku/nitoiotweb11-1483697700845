@@ -7,34 +7,11 @@ angular.module('nitoiotweb11App')
 
     $scope.toggleLeft = buildToggler('left');
 
-function buildToggler(componentId) {
-  return function() {
-    $mdSidenav(componentId).toggle();
-  };
-}
+     //ハンバーガメニューの押下でメニューを表示する。
+    function buildToggler(componentId) {
+      return function() {
+        $mdSidenav(componentId).toggle();
+      };
+    }
 
-
-
-
-
-    // $scope.menu = [
-    //   {'title': 'デバイス一覧画面',
-    //    'link': '/'},
-    //    {'title': 'デバイスグループ画面',
-    //     'link': '/'},
-    //     {'title': 'ダウンロードCSV',
-    //      'link': '/'}
-    //  ];
-
-    // $scope.isCollapsed = true;
-
-    // $scope.item.title = $rootScope.item.tile;
-    // $scope.$on("navtitle", function (event, args) {
-    //   cosole.log(args);
-    //   $scope.navtitle = args;
-    // });
-
-    // $scope.isActive = function(route) {
-    //   return route === $location.path();
-    // };
   }]);

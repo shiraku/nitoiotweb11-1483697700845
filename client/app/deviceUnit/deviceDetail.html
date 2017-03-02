@@ -1,14 +1,7 @@
-<div ng-include="'components/navbar/navbar.html'"></div>
-
-<header class="hero-unit" id="banner">
-</header>
-
-
-
-
 <div ng-controller="DeviceDetailCtrl" ng-cloak="" class="navBardemoBasicUsage">
 
-
+  <!--ヘッダー読み込み-->
+  <navitop></navitop>
 
     <md-content class="md-padding">
 
@@ -26,14 +19,14 @@
           <md-card>
             <md-card-title>
               <md-card-title-text>
-                <span class="md-subhead">{{deviceDetailList.deviceName}}</span>
+                <span class="md-subhead">{{deviceDetail[0].deviceName}}</span>
               </md-card-title-text>
             </md-card-title>
             <md-card-content>
-                  <p class="md-body-1">職場責任者：{{deviceDetailList.responsiblePerson}}</p>
-                  <p class="md-body-1">連絡先：{{deviceDetailList.telNo}}</p>
-                  <p class="md-body-1">住所：{{deviceDetailList.address}}</p>
-                  <p class="md-body-1">メモ：{{deviceDetailList.memo}}</p>
+                  <p class="md-body-1">職場責任者：{{deviceDetail[0].responsiblePerson}}</p>
+                  <p class="md-body-1">連絡先：{{deviceDetail[0].telNo}}</p>
+                  <p class="md-body-1">住所：{{deviceDetail[0].address}}</p>
+                  <p class="md-body-1">メモ：{{deviceDetail[0].memo}}</p>
             </md-card-content>
           </md-card>
 
@@ -47,17 +40,81 @@
 
 <md-card>
   <!--現在のステータス-->
-  <md-card-content>
+
+      <!--デバイスカード　タイトル（デバイス名）-->
+      <md-card-title>
+        <!--タイトル（デバイス名）-->
+        <md-card-title-text>
+          <span class="md-subhead" ng-hide="deviceDetail[0].earthquakeCurrentData.length == 0 ">感知あり</span>
+          <span class="md-subhead" ng-hide="deviceDetail[0].earthquakeCurrentData.length != 0 ">感知なし</span>
+        </md-card-title-text>
+        <!--リンク-->
+        <md-button ng-click="deviceDetailData()" ng-hide="deviceDetail[0].earthquakeCurrentData.length == 0 ">
+            <svg width="24px" height="24px" viewBox="315 15 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <defs></defs>
+              <g id="Material/Icons-black/chevron-right" stroke="none" fill="none" transform="translate(315.000000, 15.000000)" fill-rule="evenodd">
+                  <polygon id="Shape" fill="#D8001A" points="8.59997559 7.4 9.99997559 6 15.9999756 12 9.99997559 18 8.59997559 16.6 13.1999756 12"></polygon>
+              </g>
+            </svg>
+        </md-button>
+      </md-card-title>
+
+     <!--デバイスカード　コンテンツ-->
+      <md-card-content ng-hide="deviceDetail[0].earthquakeCurrentData.length == 0 ">
+          <!--地震の場合-->
+          <div layout="row" layout-wrap>
+            <div flex="25">
+              <div flex class="md-body-1">傾き</div>
+              <div flex class="md-body-1">商用停電</div>
+              <div flex class="md-body-1">機器異常</div>
+            </div>
+            <div flex="25">
+              <div flex class="md-body-1">{{deviceDetail[0].earthquakeCurrentData[0].slope}}</div>
+              <div flex class="md-body-1">{{deviceDetail[0].earthquakeCurrentData[0].commercialBlackout}}</div>
+              <div flex class="md-body-1">{{deviceDetail[0].earthquakeCurrentData[0].equipmentAbnormality}}</div>
+            </div>
+            <div flex class="md-body-1">震度</div>
+            <div flex class="md-display-3">{{deviceDetail[0].earthquakeCurrentData[0].seismicIntensity}}</div>
+          </div>
+      　</md-card-content>
+        <md-card-content ng-hide="deviceDetail[0].earthquakeCurrentData.length == 0 ">
+        <p class="md-body-1">コメント・連絡事項</p>
+        <div layout="row" layout-wrap>
+          <ul>
+            <li ng-repeat="item in deviceDetail[0].earthquakeCurrentData[0].commentList">
+            <p class="md-body-2">{{item.comment}}</p>
+            <p class="md-body-2">{{item.commentDate}}</p>
+          </li>
+        </ul>
+        </div>
+      </md-card-content>
+      <md-card-content ng-hide="deviceDetail[0].earthquakeCurrentData.length == 0 ">
+        <div layout="row" layout-wrap>
+          　<p class="md-body-1">メディア速報</p>
+            <p class="md-body-2">気象庁公報：{{deviceDetail[0].earthquakeCurrentData[0].JapanMeteorologicalAgency}}</p>
+            <p class="md-body-2">長周期地震動階級{{deviceDetail[0].earthquakeCurrentData[0].LongPeriodSeismicActivityClass}}</p>
+        </div>
+
   </md-card-content>
   <!--地震履歴-->
   <p class="md-body-1">地震履歴</p>
   <md-card-content>
     <ul>
-      <li ng-repeat="item in earthquakeHistoryList[0].data">
+      <li ng-repeat="item in deviceDetail[0].earthquakeHistoryList[0].data | limitTo: earthquakeHistoryViews: 0">
         <p class="md-body-1">{{item.date}}</p>
         <p class="md-body-1">{{item.datas[0].value}}</p>
+        <!--リンク-->
+        <md-button ng-click="deviceDetailData()">
+            <svg width="24px" height="24px" viewBox="315 15 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <defs></defs>
+              <g id="Material/Icons-black/chevron-right" stroke="none" fill="none" transform="translate(315.000000, 15.000000)" fill-rule="evenodd">
+                  <polygon id="Shape" fill="#D8001A" points="8.59997559 7.4 9.99997559 6 15.9999756 12 9.99997559 18 8.59997559 16.6 13.1999756 12"></polygon>
+              </g>
+            </svg>
+        </md-button>
       </li>
     </ul>
+    <a href="" class="more" ng-click="earthquakeHistoryMoreClick()" ng-hide="earthquakeHistoryViews >= deviceDetail[0].earthquakeHistoryList[0].data.length">さらに表示</a>
   </md-card-content>
 </md-card>
 
@@ -73,128 +130,81 @@
   <md-card>
     <!--現在のステータス-->
     <md-card-content>
+      <!--デバイスカード　タイトル（デバイス名）-->
+      <md-card-title>
+        <!--タイトル（デバイス名）-->
+        <md-card-title-text>
+          <span class="md-subhead" ng-hide="deviceDetail[0].thunderCurrentData.length == 0 ">感知あり</span>
+          <!--リンク-->
+          <md-button ng-click="deviceDetailData()" ng-hide="deviceDetail[0].thunderCurrentData.length == 0 ">
+              <svg width="24px" height="24px" viewBox="315 15 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <defs></defs>
+                <g id="Material/Icons-black/chevron-right" stroke="none" fill="none" transform="translate(315.000000, 15.000000)" fill-rule="evenodd">
+                    <polygon id="Shape" fill="#D8001A" points="8.59997559 7.4 9.99997559 6 15.9999756 12 9.99997559 18 8.59997559 16.6 13.1999756 12"></polygon>
+                </g>
+              </svg>
+          </md-button>
+          <span class="md-subhead" ng-hide="deviceDetail[0].thunderCurrentData.length != 0 ">感知なし</span>
+        </md-card-title-text>
+      </md-card-title>
+
+     <!--デバイスカード　コンテンツ-->
+      <md-card-content ng-hide="deviceDetail[0].thunderCurrentData.length == 0 ">
+          <div layout="row" layout-wrap>
+            <div flex="25">
+              <div flex class="md-body-1">漏電</div>
+              <div flex class="md-body-1">商用停電</div>
+              <div flex class="md-body-1">機器異常</div>
+            </div>
+            <div flex="25">
+              <div flex class="md-body-1">{{deviceDetail[0].thunderCurrentData[0].leakage}}</div>
+              <div flex class="md-body-1">{{deviceDetail[0].thunderCurrentData[0].commercialBlackout}}</div>
+              <div flex class="md-body-1">{{deviceDetail[0].thunderCurrentData[0].equipmentAbnormality}}</div>
+            </div>
+            <div flex class="md-body-1">雷</div>
+            <div flex class="md-display-3">{{deviceDetail[0].thunderCurrentData[0].power}}</div>
+          </div>
+      　</md-card-content>
+        <md-card-content ng-hide="deviceDetail[0].thunderCurrentData.length == 0 ">
+        <p class="md-body-1">コメント・連絡事項</p>
+        <div layout="row" layout-wrap>
+          <ul>
+            <li ng-repeat="item in deviceDetail[0].thunderCurrentData[0].commentList">
+            <p class="md-body-2">{{item.comment}}</p>
+            <p class="md-body-2">{{item.commentDate}}</p>
+          </li>
+        </ul>
+        </div>
+      </md-card-content>
+      <md-card-content ng-hide="deviceDetail[0].thunderCurrentData.length == 0 ">
+        <div layout="row" layout-wrap>
+          　<p class="md-body-1">メディア速報</p>
+            <p class="md-body-2">気象庁公報：{{deviceDetail[0].thunderCurrentData[0].JapanMeteorologicalAgency}}</p>
+            <p class="md-body-2">長周期地震動階級{{deviceDetail[0].thunderCurrentData[0].LongPeriodSeismicActivityClass}}</p>
+        </div>
+
     </md-card-content>
     <!--地震履歴-->
     <p class="md-body-1">雷履歴</p>
     <md-card-content>
       <ul>
-        <li ng-repeat="item in thunderHistoryList[0].data">
+        <li ng-repeat="item in deviceDetail[0].thunderHistoryList[0].data | limitTo: thunderHistoryViews: 0">
           <p class="md-body-1">{{item.date}}</p>
           <p class="md-body-1">{{item.datas[0].value}}</p>
+          <!--リンク-->
+          <md-button ng-click="deviceDetailData()">
+              <svg width="24px" height="24px" viewBox="315 15 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <defs></defs>
+                <g id="Material/Icons-black/chevron-right" stroke="none" fill="none" transform="translate(315.000000, 15.000000)" fill-rule="evenodd">
+                    <polygon id="Shape" fill="#D8001A" points="8.59997559 7.4 9.99997559 6 15.9999756 12 9.99997559 18 8.59997559 16.6 13.1999756 12"></polygon>
+                </g>
+              </svg>
+          </md-button>
         </li>
       </ul>
+      <a href="" class="more" ng-click="thunderHistoryMoreClick()" ng-hide="thunderHistoryViews >= deviceDetail[0].thunderHistoryList[0].data.length">さらに表示</a>
     </md-card-content>
   </md-card>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<ul>
-  <li ng-repeat="item in deviceList">
-
-
-
-<!--デバイスカード-->
-  <md-card>
-  <!--デバイスカード　タイトル（デバイス名）-->
-  <md-card-title>
-    <!--タイトル（デバイス名）-->
-    <md-card-title-text>
-      <span class="md-subhead">{{item.deviceName}}devicedetail</span>
-    </md-card-title-text>
-    <!--リンク-->
-    <md-button ng-click="deviceDetail()">
-        <svg width="24px" height="24px" viewBox="315 15 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-          <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
-          <!-- <desc>Created with Sketch.</desc> -->
-          <defs></defs>
-          <g id="Material/Icons-black/chevron-right" stroke="none" fill="none" transform="translate(315.000000, 15.000000)" fill-rule="evenodd">
-              <polygon id="Shape" fill="#D8001A" points="8.59997559 7.4 9.99997559 6 15.9999756 12 9.99997559 18 8.59997559 16.6 13.1999756 12"></polygon>
-          </g>
-        </svg>
-    </md-button>
-  </md-card-title>
-
- <!--デバイスカード　コンテンツ-->
-  <md-card-content>
-    <!--職場責任者・連絡先-->
-    <div layout="row" layout-wrap>
-  　　 <div flex="50">
-        <p class="md-body-1">職場責任者：{{item.responsiblePerson}}</p>
-      </div>
-      <div flex>
-        <p class="md-body-1">連絡先：{{item.telNo}}</p>
-      </div>
-    </div>
-    <!--ステータス-->
-    <div layout="row" layout-wrap>
-        <p class="md-body-2">{{item.status}}</p>
-    </div>
-    <!--ステータスが異常ありの場合-->
-    <div ng-if="item.statusFlg == 1">
-
-    <!-- <div layout="row" layout-wrap> -->
-      <!--地震の場合-->
-      <div layout="row" layout-wrap ng-if="item.type == 'earthquake'">
-        <div flex="25">
-          <div flex class="md-body-1">傾き</div>
-          <div flex class="md-body-1">商用停電</div>
-          <div flex class="md-body-1">機器異常</div>
-        </div>
-        <div flex="25">
-          <div flex class="md-body-1">{{item.slope}}</div>
-          <div flex class="md-body-1">{{item.commercialBlackout}}</div>
-          <div flex class="md-body-1">{{item.equipmentAbnormality}}</div>
-        </div>
-        <div flex class="md-body-1">震度</div>
-        <div flex class="md-display-3">{{item.seismicIntensity}}</div>
-      </div>
-      <!--雷の場合-->
-      <div layout="row" layout-wrap ng-if="item.type == 'thunder'">
-        <div flex="25">
-          <div flex class="md-body-1">漏電</div>
-          <div flex class="md-body-1">商用停電</div>
-          <div flex class="md-body-1">機器異常</div>
-        </div>
-        <div flex="25">
-          <div flex class="md-body-1">{{item.leakage}}</div>
-          <div flex class="md-body-1">{{item.commercialBlackout}}</div>
-          <div flex class="md-body-1">{{item.equipmentAbnormality}}</div>
-        </div>
-        <div flex class="md-body-1">雷</div>
-        <div flex class="md-display-3">{{item.power}}</div>
-      </div>
-
-    <!-- </div> -->
-    <div layout="row" layout-wrap>
-      　<p class="md-body-1">コメント・連絡事項</p>
-        <p class="md-body-2">{{item.comment}}</p>
-        <p class="md-body-2">{{item.updateTime}}</p>
-    </div>
-
-    </div>
-
-
-  </md-card-content>
-</md-card>
-
-<!--デバイスカード終わり-->
-</li>
-</ul>
-
-
     </md-content>
   </div>
 </div>
