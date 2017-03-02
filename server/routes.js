@@ -17,15 +17,17 @@ module.exports = function(app) {
    .get(errors[404]);
 
   // All other routes should redirect to the index.html
-  app.route('/')
+  app.route('/*')
     .get(function(req, res) {
+      console.log('in');
+      
       res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
     });
-  //UC000	ログイン
-  app.route('/login')
-    .get(function(req, res) {
-      res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-    });
+//  //UC000	ログイン
+//  app.route('/login')
+//    .get(function(req, res) {
+//      res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//    });
 //  //UC001	メニュー画面
 //  app.route('/menu')
 //    .get(function(req, res) {
@@ -106,53 +108,53 @@ module.exports = function(app) {
 //    .get(function(req, res) {
 //      res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
 //    });
-  
-  //デバイス一覧画面	/user_USER_ID/
-  app.route('/user_:userId')
-  .get(function(req, res) {
-    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-  });
-	
-//UC001	デバイス一覧画面				/user_:USER_ID
-  app.route('/user_:USER_ID')
-  .get(function(req, res) {
-    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-  });
-//  UC002	デバイス詳細					/user_:USER_ID/device_:DEVICE_ID
-  app.route('/user_:USER_ID/device_:DEVICE_ID')
-  .get(function(req, res) {
-    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-  });
-//  UC003	デバイス詳細　データ				/user_:USER_ID/device_:DEVICE_ID/:YYYYMMDDHHMM
-  app.route('/user_:USER_ID/device_:DEVICE_ID/:YYYYMMDDHHMM')
-  .get(function(req, res) {
-    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-  });
-//  UC005	デバイスグループ画面				/user_:USER_ID/group_:GROUP_ID
-  app.route('/user_:USER_ID/group_:GROUP_ID')
-  .get(function(req, res) {
-    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-  });
-//  UC006	デバイス情報編集画面				/user_:USER_ID/device_:DEVICE_ID/edit
-  app.route('/user_:USER_ID/device_:DEVICE_ID/edit')
-  .get(function(req, res) {
-    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-  });
-//  UC007	アラート設定画面(デバイスごと）	/user_:USER_ID/device_:DEVICE_ID/alert
-  app.route('/user_:USER_ID/device_:DEVICE_ID/alert')
-  .get(function(req, res) {
-    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-  });
-//  UC007	アラート設定画面（グループ）		/user_:USER_ID/group_:GROUP_ID/alert
-  app.route('/user_:USER_ID/group_:GROUP_ID/alert')
-  .get(function(req, res) {
-    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-  });
-//  UC008	ダウンロードCSV項目設定画面		/user_:USER_ID/data/download
-  app.route('/user_:USER_ID/data/download')
-  .get(function(req, res) {
-    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
-  });
+//  
+//  //デバイス一覧画面	/user_USER_ID/
+//  app.route('/user_:userId')
+//  .get(function(req, res) {
+//    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//  });
+//	
+////UC001	デバイス一覧画面				/user_:USER_ID
+//  app.route('/user_:USER_ID')
+//  .get(function(req, res) {
+//    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//  });
+////  UC002	デバイス詳細					/user_:USER_ID/device_:DEVICE_ID
+//  app.route('/user_:USER_ID/device_:DEVICE_ID')
+//  .get(function(req, res) {
+//    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//  });
+////  UC003	デバイス詳細　データ				/user_:USER_ID/device_:DEVICE_ID/:YYYYMMDDHHMM
+//  app.route('/user_:USER_ID/device_:DEVICE_ID/:YYYYMMDDHHMM')
+//  .get(function(req, res) {
+//    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//  });
+////  UC005	デバイスグループ画面				/user_:USER_ID/group_:GROUP_ID
+//  app.route('/user_:USER_ID/group_:GROUP_ID')
+//  .get(function(req, res) {
+//    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//  });
+////  UC006	デバイス情報編集画面				/user_:USER_ID/device_:DEVICE_ID/edit
+//  app.route('/user_:USER_ID/device_:DEVICE_ID/edit')
+//  .get(function(req, res) {
+//    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//  });
+////  UC007	アラート設定画面(デバイスごと）	/user_:USER_ID/device_:DEVICE_ID/alert
+//  app.route('/user_:USER_ID/device_:DEVICE_ID/alert')
+//  .get(function(req, res) {
+//    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//  });
+////  UC007	アラート設定画面（グループ）		/user_:USER_ID/group_:GROUP_ID/alert
+//  app.route('/user_:USER_ID/group_:GROUP_ID/alert')
+//  .get(function(req, res) {
+//    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//  });
+////  UC008	ダウンロードCSV項目設定画面		/user_:USER_ID/data/download
+//  app.route('/user_:USER_ID/data/download')
+//  .get(function(req, res) {
+//    res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
+//  });
   				
   		
   		
