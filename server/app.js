@@ -36,11 +36,11 @@ require('./routes')(app);
 //     console.log('Processing request...');
 //     res.sendFile('/success.html');
 // });
-app.post('/login', function(req, res) {
-    // console.log(req.body.desc);
-    console.log("hello");
-    res.end();
-});
+//app.post('/login', function(req, res) {
+//    // console.log(req.body.desc);
+//    console.log("hello");
+//    res.end();
+//});
 // Cloudant用アクセス・モジュール「cradle」設定
 // var cradle = require('cradle');
 //
