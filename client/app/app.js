@@ -9,7 +9,8 @@ angular.module('nitoiotweb11App', [
   'ngAnimate',
   'ngAria',
   // 'angular',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'uiGmapgoogle-maps'
 ])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
