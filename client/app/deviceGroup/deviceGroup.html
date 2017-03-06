@@ -43,6 +43,7 @@
       <ul>
         <li ng-repeat="item in deviceGroupData[0].deviceList | filter:query">
 
+          <div layout="colom">
           <p class="md-body-1">{{item.deviceName}}</p>
             <md-button ng-click="deviceDetail()">
                 <svg width="24px" height="24px" viewBox="315 15 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -52,6 +53,7 @@
                   </g>
                 </svg>
             </md-button>
+          </div>
         </li>
       </ul>
     </md-card-content>
