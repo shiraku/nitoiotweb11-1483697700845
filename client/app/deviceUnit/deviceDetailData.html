@@ -29,10 +29,15 @@
         </div>
 
         <md-card>
-        <!--TODO MAP読み込み-->
-        {{mapInfo[0].device_id}}
-        {{mapInfo[0].latitude}}
-        {{mapInfo[0].longitude}}
+          <md-content class="md-padding">
+            <!--MAP-->
+            <div class="mapDetail">
+              <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true">
+                <ui-gmap-markers models="markers" coords="'self'" icon="'icon'"></ui-gmap-markers>
+              </ui-gmap-google-map>
+            </div>
+
+          </md-content>
         </md-card>
 
 
@@ -103,13 +108,12 @@
     </ul>
     </div>
   </md-card-content>
-  <md-card-content>
-    <div layout="row" layout-wrap>
-      　<p class="md-body-1">メディア速報</p>
-        <p class="md-body-2">気象庁公報：{{detailData[0].JapanMeteorologicalAgency}}</p>
-        <p class="md-body-2">長周期地震動階級{{detailData[0].LongPeriodSeismicActivityClass}}</p>
-    </div>
-
+    <md-card-content ng-hide="detailData[0].mediaNewsletter.length == 0 ">
+      <div layout="row" layout-wrap>
+        　<p class="md-body-1">メディア速報</p>
+          <p class="md-body-2">気象庁公報：{{detailData[0].mediaNewsletter[0].japanMeteorologicalAgency}}</p>
+          <p class="md-body-2">長周期地震動階級{{detailData[0].mediaNewsletter[0].longPeriodSeismicActivityClass}}</p>
+      </div>
   </md-card-content>
 </md-card>
 
