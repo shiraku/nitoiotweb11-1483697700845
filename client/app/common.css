@@ -64,15 +64,25 @@
 /**カスタム*********************************/
 
   /**ツールバー**/
-  .md-toolbar-tools{
+  md-content .md-toolbar-tools,.md-toolbar-tools{
     background-color: #4D6BD0;
     color: white;
+  }
+
+  .md-toolbar-tools input{
+    background: none;
+    border: none;
+  }
+
+
+  md-sidenav md-toolbar{
+
   }
 
   /**カード**/
   md-card md-card-title{
     border-bottom: 1px solid #E3E3E3;
-    padding: 16px 16px 16px;
+    padding: 0px 0px 0px;
   }
 
   /**カードタイトル　テキスト**/
@@ -82,7 +92,9 @@
     font-size: 17px;
     color: rgba(0,0,0,0.87);
     letter-spacing: 0;
-    line-height: 24px;
+    line-height: 50px;
+    padding-left: 15px;
+    font-weight: bold;
   }
   md-card md-card-title md-card-title-text:only-child .md-subhead{
       padding-top: 0px;
@@ -90,10 +102,74 @@
       font-size: 17px;
       color: rgba(0,0,0,0.87);
       letter-spacing: 0;
-      line-height: 24px;
+      line-height: 50px;
+      padding-left: 15px;
+      font-weight: bold;
+  }
+
+  .md-body-1{
+    font-family: .HiraKakuInterface-W3;
+    font-size: 14px;
+    color: rgba(0,0,0,0.54);
+    line-height: 24px;
   }
 
   /**カード**/
   md-card md-card-content{
     border-bottom: 1px solid #E3E3E3;
+    padding-top: 16px !important;
+  }
+
+  .container{
+     margin-right: 0;
+     margin-left: 0;
+  }
+
+  .navbar-header{
+    /*background: #F5F5F5;*/
+  }
+  .navbar-brand{
+    font-family: .HiraKakuInterface-W3;
+    font-size: 20px;
+    color: rgba(0,0,0,0.87);
+    padding: 12px 15px;
+    letter-spacing: 0;
+    line-height: 28px;
+  }
+  .navbar{
+    margin-bottom:0;
+    box-shadow: 0 0 4px 0 rgba(0,0,0,0.12), 0 4px 4px 0 rgba(0,0,0,0.24);
+  }
+  md-input-container{
+    padding-top: 22px;
+    padding-left: 30px; /**TODO きちんと表示されるように**/
+    padding-bottom:0;
+    margin: 0;
+  }
+
+  md-input-container input{
+  border-bottom: 1px solid rgb(255, 255, 255);
+  }
+
+  .material-icons{
+    color:#707070
+  }
+
+  /**デバイス一覧空欄**/
+  .md-contentPaddingBottom{
+    padding-bottom: 20px;
+  }
+
+  .md-display-3{
+    font-family: .HiraKakuInterface-W7;
+    font-size: 64px;
+    color: rgba(0,0,0,0.87);
+    line-height: 64px
+  }
+  /**GoogleMAP**/
+  .map .angular-google-map-container {
+  	height: 600px;
+  }
+  .mapDetail .angular-google-map-container {
+  	height: 200px;
   }
