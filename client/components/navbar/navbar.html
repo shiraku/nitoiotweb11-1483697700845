@@ -1,7 +1,6 @@
 <div class="navbar navbar-default navbar-static-top" ng-controller="NavbarCtrl">
 
   <div class="container">
-
     <div class="navbar-header">
       <div layout="colom">
       <md-button class="md-icon-button md-primary" ng-click="toggleLeft()" aria-label="Settings">
@@ -13,21 +12,37 @@
     </div>
 
   </div>
+</div>
 
     <!---メニュー--->
-
-    <section layout="row" flex="" style="overflow: auto;">
+    <section layout="row" flex="">
          <md-sidenav class="md-sidenav-left" md-component-id="left" md-disable-backdrop="" md-whiteframe="4">
-             <md-toolbar　ng-click="toggleLeft()"  class="md-theme-indigo">
+           <md-toolbar ng-click="toggleLeft()"  class="md-theme-indigo">
+             <h1 class="md-toolbar-tools">デバイス一覧</h1>
+           </md-toolbar>
+             <md-toolbar ng-click="deviceList()"  class="md-theme-indigo">
                <h1 class="md-toolbar-tools">デバイス一覧</h1>
              </md-toolbar>
-             <md-toolbar ng-click="toggleLeft()" 　class="md-theme-indigo">
+             <md-toolbar ng-click="deviceGroup()" 　class="md-theme-indigo">
                <h1 class="md-toolbar-tools">デバイスグループ</h1>
              </md-toolbar>
-             <md-toolbar ng-click="toggleLeft()" 　class="md-theme-indigo">
+             <md-toolbar ng-click="downloadCSV()" 　class="md-theme-indigo">
                <h1 class="md-toolbar-tools">ダウンロードCSV</h1>
+             </md-toolbar>
+             <md-toolbar ng-click="deviceDetail()" 　class="md-theme-indigo">
+               <h1 class="md-toolbar-tools">デバイス詳細</h1>
+             </md-toolbar>
+             <md-toolbar ng-click="deviceDetailData()" 　class="md-theme-indigo">
+               <h1 class="md-toolbar-tools">デバイス詳細データ</h1>
+             </md-toolbar>
+             <md-toolbar ng-click="deviceEdit()" 　class="md-theme-indigo">
+               <h1 class="md-toolbar-tools">デバイス編集</h1>
+             </md-toolbar>
+             <md-toolbar ng-click="alertSettingbyDevice()" 　class="md-theme-indigo">
+               <h1 class="md-toolbar-tools">アラート設定byDevice</h1>
+             </md-toolbar>
+             <md-toolbar ng-click="alertSettingbyGroup()" 　class="md-theme-indigo">
+               <h1 class="md-toolbar-tools">アラート設定byGroup</h1>
              </md-toolbar>
          </md-sidenav>
      </section>
-
-</div>
