@@ -8,25 +8,18 @@
       //TODO APIでデータ取得をする
       $scope.deviceDetail = [
         {
-          'deviceName':'デバイス１',
-          'responsiblePerson':'小林　武',
-          'telNo':'000-0000-0000',
-          'address':'愛知県長久手市蟹原2201番地',
-          'memo':'本社横の倉庫',
-          'earthquakeCurrentData':[      {
-                     'deviceId':'dev002',
-                     'deviceName': 'デバイス２',
-                     'responsiblePerson': '',
-                     'telNo': '111-1111-1111',
-                     'statusFlg':'1',
-                     'status':'????',
-                     'type':'earthquake',
-                     'seismicIntensity':'5.4',
-                     'slope':'倒壊',
-                     'leakage':'なし',
-                     'commercialBlackout':'あり',
-                     'equipmentAbnormality':'なし',
-                     'commentList':[
+          "deviceId":"001",//デバイスID(非表示)
+          "deviceName":"デバイス１",//デバイス名
+          'responsiblePerson':'小林　武',//責任者名
+          'telNo':'000-0000-0000',//連絡先
+          'address':'愛知県長久手市蟹原2201番地',//住所
+          'memo':'本社横の倉庫',//メモ
+          'earthquakeCurrentData':[{//地震の最新ステータスデータ
+                     'seismicIntensity':'5.4',//地震
+                     'slope':'倒壊',//傾き
+                     'commercialBlackout':'あり',//商用停電
+                     'equipmentAbnormality':'なし',//機器異常
+                     'commentList':[//コメント・連絡事項
                        {
                          'comment':'建物に破損あり',
                          'commentDate':'2017/01/15 10:15',
@@ -35,24 +28,20 @@
                          'comment':'業務を一時停止',
                          'commentDate':'2017/01/15 10:15',
                        }],
-                     'JapanMeteorologicalAgency':'4',
-                     'LongPeriodSeismicActivityClass':'3'
+                       'mediaNewsletter':[
+                         {
+                           'japanMeteorologicalAgency':'4',//メディア速報　震度
+                           'longPeriodSeismicActivityClass':'3'//メディア速報長周期地震動階級
+                       }
+                     ]
                }],
             'thunderCurrentData':[
                  {
-                      'deviceId':'dev002',
-                      'deviceName': 'デバイス２',
-                      'responsiblePerson': '',
-                      'telNo': '111-1111-1111',
-                      'statusFlg':'1',
-                      'status':'????',
-                      'type':'earthquake',
-                      'seismicIntensity':'5.4',
-                      'slope':'倒壊',
-                      'leakage':'なし',
-                      'commercialBlackout':'あり',
-                      'equipmentAbnormality':'なし',
-                      'commentList':[
+                      'power':'5.4',//雷
+                      'leakage':'なし',//漏電
+                      'commercialBlackout':'あり',//商用停電
+                      'equipmentAbnormality':'なし',//機器異常
+                      'commentList':[//コメント連絡事項
                         {
                           'comment':'建物に破損あり',
                           'commentDate':'2017/01/15 10:15',
@@ -61,13 +50,16 @@
                           'comment':'業務を一時停止',
                           'commentDate':'2017/01/15 10:15',
                         }],
-                      'JapanMeteorologicalAgency':'4',
-                      'LongPeriodSeismicActivityClass':'3'
+                      'mediaNewsletter':[{
+                          'japanMeteorologicalAgency':'4',//メディア速報　震度
+                          'longPeriodSeismicActivityClass':'3'//メディア速報長周期地震動階級
+                      }]
+
                 }
             ],
-            'earthquakeHistoryList':[
+            'earthquakeHistoryList':[//地震の履歴データ
               {
-                "device_id":"00000",
+                //"device_id":"00000",
                 "data":[
                   {
                   "date_id":"20170216110735",
@@ -88,9 +80,9 @@
                   {"date_id":"20170214194843","date":"2017/02/14 19:48:43","datas":[{"name":"震度","value":6.5,"values":"7"}]}
                 ]}
             ],
-            'thunderHistoryList':[
+            'thunderHistoryList':[//雷の履歴データ
               {
-                "device_id":"00000",
+                // "device_id":"00000",
                 "data":[
                   {"date_id":"20161025160205",
                   "date":"2016/10/25 16:02:05",
@@ -137,8 +129,7 @@
                   {"date_id":"20160830030221","date":"2016/08/30 03:02:21","datas":[{"value":3,"name":"雷レベル"}]}]}
 
             ]
-      }
-      ];
+      }];
 
         //ヘッダータイトル
         $scope.navtitle=$scope.deviceDetail[0].deviceName;
