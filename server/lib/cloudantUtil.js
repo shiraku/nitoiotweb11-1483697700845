@@ -87,6 +87,28 @@ exports.getLiveData = function (req, res) {
     })
 };
 
+//Get m_user doc
+exports.M_userEntitity = {
+  q : {
+    "selector": {
+      "_id": {
+        "$eq": 'muer'
+      }
+    }
+  },
+  
+  getUser : function(query){
+    this.q.selector._id.$eq = 'muer' + query;
+    db.get(this.q, function(err, doc) {
+      if(err){
+        return handleError(res, err);
+      }
+      return res.status(200).json(doc);
+    });
+  }
+  
+};
+
 function handleError(res, err) {
     return res.status(500).send(err);
 }

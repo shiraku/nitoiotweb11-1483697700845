@@ -8,10 +8,7 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var express = require('express');
-var cloudantUtil = require('./lib/cloudantUtil');
 var config = require('./config/environment');
-
-cloudantUtil.init();
 
 // Setup server
 var app = express();
@@ -25,7 +22,7 @@ if (host !== 'localhost') app.set('env', 'production');
 
 require('./config/express')(app);
 require('./routes')(app);
-
+ 
 // Original Start server
 //server.listen(config.port, config.ip, function () {
 //  console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
