@@ -8,11 +8,14 @@ angular.module('nitoiotweb11App', [
   'ngRoute',
   'ngAnimate',
   'ngAria',
-  // 'angular',
+  'ngMessages',
   'ui.bootstrap',
   'uiGmapgoogle-maps'
+  // 'material.svgAssetsCache'
+
 ])
   .config(function ($routeProvider, $locationProvider) {
+    //$mdDialog
     $routeProvider
     .when('/menu', {
       redirectTo: '/menu'
