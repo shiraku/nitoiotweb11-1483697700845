@@ -5,11 +5,19 @@
 'use strict';
 var passport = require('passport');
 var localStrategy = require('passport-local').Strategy;
+var cloudantUtil = require('./../../lib/cloudantUtil');
+
+cloudantUtil.init();
 
 module.exports = function(){
   passport.use(new localStrategy(
-    function(username,password, done) {
-      User.findOne({ username: username},fuction(err, user){
+    {
+      usernameField: '_id',
+      passwordField: 'password'
+    },
+    
+    function(username, password, done) {
+      cloudantUtil.M_userEntitity.getUser(username, function(err, user){
         if(err) {return done(err);}
         if(!user){
           return done(null, false, {message: 'ユーザーIDが正しくありません。'});
@@ -21,7 +29,6 @@ module.exports = function(){
       });
     }
   ));
-  
   passport.serializeUser(function(user, done){
     done(null, user.id);
   });
@@ -31,12 +38,12 @@ module.exports = function(){
       done(err, user);
     });
   });
-}
+};
 
 exports.isLogined = function(req, res, next){
   if(req.isAuthenticated()) {
     return next();
   } else {
-    res.redirect('/login?url=' + url');
+    res.redirect('/login?url=' + url);
   }
-}
+};

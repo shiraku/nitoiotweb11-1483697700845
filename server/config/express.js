@@ -12,8 +12,12 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
 var errorHandler = require('errorhandler');
+var expressSession = require('express-session');
 var path = require('path');
 var config = require('./environment');
+var passport = require('passport');
+var flash = require("connect-flash");
+
 
 module.exports = function(app) {
   var env = app.get('env');
@@ -26,6 +30,11 @@ module.exports = function(app) {
   app.use(bodyParser.json());
   app.use(methodOverride());
   app.use(cookieParser());
+  app.use(expressSession({secret: 'nito'}));
+  app.use(flash());
+  app.use(passport.initialize());
+  app.use(passport.session());
+  
   
   if ('production' === env) {
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
