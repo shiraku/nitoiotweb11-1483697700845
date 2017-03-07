@@ -107,18 +107,18 @@ angular.module('nitoiotweb11App')
   controller: 'DeviceDetailCtrl'
 })
 //  UC003	デバイス詳細　データ				/user_:USER_ID/device_:DEVICE_ID/:YYYYMMDDHHMM
-.when('/user_:USER_ID/device_:DEVICE_ID/:YYYYMMDDHHMM', {
+.when('/user_:USER_ID/device_:DEVICE_ID/date:YYYYMMDDHHMM', {
   templateUrl: 'app/deviceUnit/deviceDetailData.html',
   controller: 'DeviceDetailDataCtrl'
 })
 //  UC005	デバイスグループ画面				/user_:USER_ID/group_:GROUP_ID
-.when('/user_:USER_ID/group_:GROUP_ID', {
+.when('/user_:USER_ID/group', {
   templateUrl: 'app/deviceGroup/deviceGroup.html',
   controller: 'DeviceGroupCtrl'
 })
 //  UC006	デバイス情報編集画面				/user_:USER_ID/device_:DEVICE_ID/edit
 .when('/user_:USER_ID/device_:DEVICE_ID/edit', {
-  templateUrl: 'app/deviceManagement/deviceInfoEdit.html',
+  templateUrl: 'app/deviceUnit/deviceInfoEdit.html',
   controller: 'DeviceInfoEditCtrl'
 })
 //  UC007	アラート設定画面(デバイスごと）	/user_:USER_ID/device_:DEVICE_ID/alert
@@ -127,7 +127,7 @@ angular.module('nitoiotweb11App')
   controller: 'AlertSettingForDeviceCtrl'
 })
 //  UC007	アラート設定画面（グループ）		/user_:USER_ID/group_:GROUP_ID/alert
-.when('/user_:USER_ID/group_:GROUP_ID/alert', {
+.when('/user_:USER_ID/group/alert', {
   templateUrl: 'app/deviceManagement/alertSettingForGroup.html',
   controller: 'AlertSettingForGroupCtrl'
 })
