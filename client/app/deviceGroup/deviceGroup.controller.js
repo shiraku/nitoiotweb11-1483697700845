@@ -2,7 +2,7 @@
 'use strict';
 
     angular.module('nitoiotweb11App')
-    .controller('DeviceGroupCtrl',['$rootScope','$routeParams','$scope','$http','$location', function ($rootScope,$routeParams,$scope, $http, $location) {
+    .controller('DeviceGroupCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog) {
 
 
       //デバイスグループデータ
@@ -53,5 +53,46 @@
          $location.path("/user_"+$routeParams.USER_ID+"/device_"+this.item.deviceId);
        }
 
+       //グループ名編集画面遷移
+      $scope.groupNameEdit = function(ev){
 
-    }]);
+        var json = {
+          "title":"グループ名の編集",
+          "placeholder":"グループ名",
+          "ariaLabel":"",
+          "initialValue":"",
+          "ok":"登録",
+          "cancel":"キャンセル",
+        }
+
+        dialogShow(ev,json);
+
+    };
+
+    $scope.groupAlertAdd = function(ev){
+      //別のものにする必要あり。
+    }
+
+
+
+    function dialogShow(ev,param){
+      var confirm = $mdDialog.prompt()
+        .title(param.title)
+        .placeholder(param.placeholder)
+        .ariaLabel(param.ariaLabel)
+        .initialValue(param.initialValue)
+        .targetEvent(ev)
+        .ok(param.ok)
+        .cancel(param.cancel);
+
+        $mdDialog.show(confirm);
+
+
+      // $mdDialog.show(confirm).then(function(result) {
+      //     return result;
+      //   });
+
+    };
+
+
+  }]);
