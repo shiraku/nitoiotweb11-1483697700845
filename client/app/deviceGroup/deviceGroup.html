@@ -73,6 +73,18 @@
                   <li ng-repeat="item in deviceGroupData[0].alertNotificationList">
                     <p class="md-body-1">{{item.name}}</p>
                     <p class="md-body-1">{{item.mailAddress}}</p>
+                    <!--TODO ボタン画像変更-->
+                    <md-button ng-click="mailAddressEdit()">
+                        <svg width="24px" height="24px" viewBox="315 15 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                          <defs></defs>
+                          <g id="Material/Icons-black/chevron-right" stroke="none" fill="none" transform="translate(315.000000, 15.000000)" fill-rule="evenodd">
+                              <polygon id="Shape" fill="#D8001A" points="8.59997559 7.4 9.99997559 6 15.9999756 12 9.99997559 18 8.59997559 16.6 13.1999756 12"></polygon>
+                          </g>
+                        </svg>
+                    </md-button>
+                    <md-button ng-click="mailAddressDelete()">
+                        del
+                    </md-button>
                   </li>
                 </ul>
               </md-card-content>
@@ -82,7 +94,7 @@
                 <div class="md-ripple-container">通知設定</div>
               </md-button>
               <!--追加ボタン-->
-              <md-button class="md-accent md-button md-ink-ripple" type="button" ng-transclude="">
+              <md-button class="md-accent md-button md-ink-ripple" type="button" ng-click="mailAddressAdd()" ng-transclude="">
                 <!-- <span class="ng-scope">追加</span> -->
                 <div class="md-ripple-container">追加</div>
               </md-button>

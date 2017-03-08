@@ -69,30 +69,126 @@
 
     };
 
-    $scope.groupAlertAdd = function(ev){
-      //別のものにする必要あり。
+
+    //アラート通知追加
+    $scope.mailAddressAdd = function (ev){
+
+      $scope.mailAddressAdd.title = 'メールアドレスの追加',
+      $scope.mailAddressAdd.placeholder_name = '名前',
+      $scope.mailAddressAdd.placeholder_mailaddress = 'メールアドレス'
+
+      var item = $scope.mailAddressAdd;
+
+    $mdDialog.show({
+         targetEvent: ev,
+         template:
+         '<md-dialog>'+
+         '  <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">'+
+         '    <h2 class="md-title ng-binding">'+item.title+'</h2>'+
+         '    <div class="md-dialog-content-body ng-scope">'+
+         '     <p class="ng-binding"></p>'+
+         '   </div>'+
+         '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme">'+
+         '     <input ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="dialog.name" placeholder='+item.placeholder_name+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
+         '     <div class="md-errors-spacer"></div>'+
+         '   </md-input-container>'+
+         '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme">'+
+         '     <input ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="dialog.mailAddress" placeholder='+item.placeholder_mailaddress+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
+         '     <div class="md-errors-spacer"></div>'+
+         '   </md-input-container>'+
+         ' </md-dialog-content>'+
+         ' <md-dialog-actions>'+
+         ' <button class="md-primary md-cancel-button md-button ng-scope md-default-theme md-ink-ripple" type="button" ng-click="closeDialog()" style="">キャンセル</button>'+
+         ' <button class="md-primary md-confirm-button md-button md-ink-ripple md-default-theme" type="button" ng-click="regist()">登録</button>'+
+         ' </md-dialog-actions>'+
+         ' </md-dialog>',
+  controller:['$scope', '$route', '$location', function ($scope, $route, $location) {
+
+    //キャンセルボタン押下
+    $scope.closeDialog = function() {
+      $mdDialog.hide();
     }
 
+    //登録ボタン押下
+    $scope.regist = function() {
+      $mdDialog.hide();
+    }
 
+  }]
+});
+};
 
-    function dialogShow(ev,param){
-      var confirm = $mdDialog.prompt()
-        .title(param.title)
-        .placeholder(param.placeholder)
-        .ariaLabel(param.ariaLabel)
-        .initialValue(param.initialValue)
+//アラート通知追加
+$scope.mailAddressEdit = function (ev){
+
+$scope.mailAddressEdit.title = 'メールアドレスの編集';
+$scope.mailAddressEdit.placeholder_name = this.item.name;
+$scope.mailAddressEdit.placeholder_mailaddress = this.item.mailAddress;
+
+var item = $scope.mailAddressEdit;
+
+$mdDialog.show({
+   targetEvent: ev,
+   template:
+   '<md-dialog>'+
+   '  <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">'+
+   '    <h2 class="md-title ng-binding">'+item.title+'</h2>'+
+   '    <div class="md-dialog-content-body ng-scope">'+
+   '     <p class="ng-binding"></p>'+
+   '   </div>'+
+   '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme">'+
+   '     <input ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="dialog.name" value='+item.placeholder_name+' placeholder='+item.placeholder_name+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
+   '     <div class="md-errors-spacer"></div>'+
+   '   </md-input-container>'+
+   '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme">'+
+   '     <input ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="dialog.mailAddress" placeholder='+item.placeholder_mailaddress+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
+   '     <div class="md-errors-spacer"></div>'+
+   '   </md-input-container>'+
+   ' </md-dialog-content>'+
+   ' <md-dialog-actions>'+
+   ' <button class="md-primary md-cancel-button md-button ng-scope md-default-theme md-ink-ripple" type="button" ng-click="closeDialog()" style="">キャンセル</button>'+
+   ' <button class="md-primary md-confirm-button md-button md-ink-ripple md-default-theme" type="button" ng-click="regist()">登録</button>'+
+   ' </md-dialog-actions>'+
+   ' </md-dialog>',
+controller:['$scope', '$route', '$location', function ($scope, $route, $location) {
+
+//キャンセルボタン押下
+$scope.closeDialog = function() {
+$mdDialog.hide();
+}
+
+//登録ボタン押下
+$scope.regist = function() {
+$mdDialog.hide();
+}
+
+}]
+});
+};
+
+//アラート通知追加
+$scope.mailAddressDelete = function (ev){
+
+  // Appending dialog to document.body to cover sidenav in docs app
+  var confirm = $mdDialog.confirm()
+        .title('メールアドレスの削除')
+        .textContent('本当にメールアドレスを削除してもいいですか？')
+        .ariaLabel('Lucky day')
         .targetEvent(ev)
-        .ok(param.ok)
-        .cancel(param.cancel);
+        .ok('削除')
+        .cancel('キャンセル');
 
-        $mdDialog.show(confirm);
+  $mdDialog.show(confirm).then(function() {
+  //削除の場合
+    //TODO 削除のリクエストを投げる
+  }
+  //キャンセルの場合
+  , function() {
+    //特になし。
+  }
+);
+};
 
-
-      // $mdDialog.show(confirm).then(function(result) {
-      //     return result;
-      //   });
-
-    };
 
 
   }]);
