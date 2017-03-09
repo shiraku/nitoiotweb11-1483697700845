@@ -3,10 +3,12 @@
 ***　UC000ログイン画面
 **/
 
-var staticWebsite;
-
     angular.module('nitoiotweb11App')
-    .controller('LoginCtrl',['$rootScope','$routeParams','$scope','$http','$location', function ($rootScope,$routeParams,$scope, $http, $location) {
+    .config(["$locationProvider", function($locationProvider) {
+          // パラメータを取得するためのオプション（但し要HTML5対応ブラウザ）
+          $locationProvider.html5Mode(true); 
+        }])
+    .controller('LoginCtrl',['$rootScope','$routeParams','$scope','$http','$location', '$window', function ($rootScope, $routeParams, $scope, $http, $location, $window) {
 
       //$scopehttp/timeout etc... Angularjsのmodule
       //TODO ルートスコープ読み込みする。引数でもらって来る。
@@ -18,77 +20,44 @@ var staticWebsite;
 
 //    	alert("$routeParams"+$routeParams.userId)
 
+      
+      
+      /**
+      ***　処理概要：パラメータを取得してリダイレクト先を返却する
+      **/
+      $scope.paramName = 'query';
+      $scope.getQuery = function(){
+        return $location.search()[$scope.paramName];
+      }
+      
       /**
       ***　処理概要：IDとPWを入力してログインする。
       **/
-      $scope.login = function() {
-        var userId = $scope.user.userId;
-        var password = $scope.user.password;
-        // if (username == "admin" && password == "admin") {
-          $location.path("/user_"+userId );
-        // } else {
-        //   alert('invalid username and password');
-        // }
-
-        // $http.get('/api/things/')
-        // .then(function successCallback(response) {
-        //   console.log("posted successfully");
-        // }, function errorCallback(response) {
-        //   console.error("error in posting");
-        // });
-
-};
-
-$scope.login2 = function() {
-  // $.rootScope.username = $scope.user.userId;
-  // $.rootScope.password = $scope.user.password;
-  // if (username == "admin" && password == "admin") {
-    // $location.path("/menu" );
-  // } else {
-  //   alert('invalid username and password');
-  // }
-
-  $http.get('/api/things/show')
-  .then(function successCallback(response) {
-    console.log("posted successfully");
-  }, function errorCallback(response) {
-    console.error("error in posting");
-  });
-
-};
-
-
+      $scope.login = function(){
+        if(!$scope.user) {
+          return false;
+        }
+        $http({
+          method: 'POST',
+          url: '/login',
+          data: { userId: $scope.user.userId, password: $scope.user.password, query: $scope.user.query }
+        })
+        .then(
+          function successCallback(response){
+            console.log(response);
+            if(response.data.authStat){
+              $window.location.href = response.data.redirect;
+            } else {
+              $scope.error = response.data.message;
+              $scope.dataLoading = false;
+            }
+            
+          },
+          function errorCallback(response){
+              $scope.error = response.data.message;
+              $scope.dataLoading = false;
+          }
+        ); 
+      }
     }]);
 
-
-staticWebsite = {
-    'heading': 'generate',
-    'tagline': 'Kick-start a materialized Angular app, with  Bluemix runtime and services',
-    'features': [
-        {
-            'key': '0',
-            'name': 'Scaffold Bluemix services',
-            'info': 'Single-sign-on, Cloudant, BigData, are scaffolded to Express framework, via generators. '
-        }, {
-            'key': '1',
-            'name': 'Built with Angular, Node, Express',
-            'info': 'Built with a fullstack: Cloudant, Express, AngularJS, and NodeJS; along Karma unit test.'
-        }, {
-            'key': '2',
-            'name': 'Optimized responsive design',
-            'info': 'Built with mobile-first/responsive web design, Bootstrap; added with Material Design.'
-        }, {
-            'key': '3',
-            'name': 'Modular structure',
-            'info': 'Best practice client and server structures, with scaffolding api; ideal for complex project.'
-        }, {
-            'key': '4',
-            'name': 'Optimized production build',
-            'info': 'Automated build process optimizes, minimizes & cdnifies your scripts/css/icon/images.'
-        }, {
-            'key': '5',
-            'name': 'Deployment ready for Bluemix',
-            'info': 'Create a small-size, production-grade, and deployment-ready build for IBM Bluemix.'
-        }
-    ]
-};

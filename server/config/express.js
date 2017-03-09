@@ -15,8 +15,6 @@ var errorHandler = require('errorhandler');
 var expressSession = require('express-session');
 var path = require('path');
 var config = require('./environment');
-var passport = require('passport');
-var flash = require("connect-flash");
 
 
 module.exports = function(app) {
@@ -31,9 +29,6 @@ module.exports = function(app) {
   app.use(methodOverride());
   app.use(cookieParser());
   app.use(expressSession({secret: 'nito'}));
-  app.use(flash());
-  app.use(passport.initialize());
-  app.use(passport.session());
   
   
   if ('production' === env) {
