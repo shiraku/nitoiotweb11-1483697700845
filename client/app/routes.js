@@ -20,7 +20,7 @@ angular.module('nitoiotweb11App')
       templateUrl: 'app/deviceUnit/deviceDetail.html',
       controller: 'DeviceDetailCtrl'
     })
-    //  UC003	デバイス詳細　データ				/user_:USER_ID/device_:DEVICE_ID/:YYYYMMDDHHMM
+    //  UC003	デバイス詳細　データ				/user_:USER_ID/device_:DEVICE_ID/date:YYYYMMDDHHMM
     .when('/user_:USER_ID/device_:DEVICE_ID/date:YYYYMMDDHHMM', {
       templateUrl: 'app/deviceUnit/deviceDetailData.html',
       controller: 'DeviceDetailDataCtrl'
@@ -37,13 +37,13 @@ angular.module('nitoiotweb11App')
     })
     //  UC007	アラート設定画面(デバイスごと）	/user_:USER_ID/device_:DEVICE_ID/alert
     .when('/user_:USER_ID/device_:DEVICE_ID/alert', {
-      templateUrl: 'app/deviceManagement/alertSettingForDevice.html',
-      controller: 'AlertSettingForDeviceCtrl'
+      templateUrl: 'app/deviceUnit/alertSetting.html',
+      controller: 'AlertSettingCtrl'
     })
-    //  UC007	アラート設定画面（グループ）		/user_:USER_ID/group_:GROUP_ID/alert
+    //  UC007	アラート設定画面（グループ）		/user_:USER_ID/group/alert
     .when('/user_:USER_ID/group/alert', {
-      templateUrl: 'app/deviceManagement/alertSettingForGroup.html',
-      controller: 'AlertSettingForGroupCtrl'
+      templateUrl: 'app/deviceUnit/alertSetting.html',
+      controller: 'AlertSettingCtrl'
     })
     //  UC008	ダウンロードCSV項目設定画面		/user_:USER_ID/data/download
     .when('/user_:USER_ID/data/download', {
