@@ -3,47 +3,66 @@
  */
 
 'use strict';
+var express = require('express');
 var passport = require('passport');
 var localStrategy = require('passport-local').Strategy;
 var cloudantUtil = require('./../../lib/cloudantUtil');
+var app = express();
 
-cloudantUtil.init();
+var Auth = function(){
+  this.init();
+};
 
-module.exports = function(){
+//passportの初初期化
+Auth.prototype.init = function(){
+//  cloudantUtil.init();
+  app.use(passport.initialize());
+  app.use(passport.session());
+  
   passport.use(new localStrategy(
     {
-      usernameField: '_id',
+      usernameField: 'userId',
       passwordField: 'password'
     },
-    
-    function(username, password, done) {
-      cloudantUtil.M_userEntitity.getUser(username, function(err, user){
+    function(userId, password, done) {
+      cloudantUtil.M_userEntitity.getUser(userId, function(err, user){
         if(err) {return done(err);}
-        if(!user){
-          return done(null, false, {message: 'ユーザーIDが正しくありません。'});
+        if(!user) {
+          return done(null, false, {message:'ユーザーIDが正しくありません。' });
         }
-      if(!user.validPassword(password)){
-        return done(null,false, {message: 'パスワードが正しくありません。'});
-      }
-      return done(null, user);
+        if(password !== user.password){
+          return done(null, false, {message:'パスワードが正しくありません。' });
+        }
+        return done(null, user);
       });
     }
   ));
+  
+  //セッションをシリアライズ
   passport.serializeUser(function(user, done){
-    done(null, user.id);
+    done(null, {userId: user._id});
   });
   
-  passport.deserializeUser(function(id, done){
-    User.findById(id, function(err, done){
-      done(err, user);
+  //セッションをディシリアライズ
+  passport.deserializeUser(function(serializeUser, done){
+    cloudantUtil.M_userEntitity.getUser(serializeUser.userId.split('_')[1], function(err, user){
+        done(err, user);
     });
   });
 };
 
-exports.isLogined = function(req, res, next){
-  if(req.isAuthenticated()) {
-    return next();
-  } else {
-    res.redirect('/login?url=' + url);
+//ログイン済みか検証
+Auth.prototype.isLogined = function(req, res){
+  if(req.isAuthenticated()) {　//ログイン済み
+    return true;
+  } else {　//見ログイン
+    return false;
   }
 };
+
+//認証チェック　passportのメソッド
+Auth.prototype.authenticate = function(strategy, options, callback) {
+  return passport.authenticate(strategy, options, callback);
+};
+
+module.exports = Auth;

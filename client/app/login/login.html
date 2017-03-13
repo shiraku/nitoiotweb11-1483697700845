@@ -6,21 +6,16 @@
 <!--UC000ログイン画面-->
 <!-- <div class="container" ng-controller="LoginActionCtrl"> -->
 <div ng-controller="LoginCtrl">
-
+<div ng-show="error" class="alert alert-danger">{{error}}</div>
 <p>Login</p>
+<input type="hidden" ng-value="user.query" ng-init="user.query = getQuery()">
 <p>UserID:</p>
 <input type="text" ng-model="user.userId">
 <p>Password:</p>
 <input type="text" ng-model="user.password">
 
-<button class="btn btn-primary" ng-click="login()">Login</button>
-<button class="btn btn-primary" ng-click="login2()">Login</button>
-<p>{{userId}}</p>
-
-{{password}}
-
+<button class="btn btn-primary" type="buttom" ng-click="login()">Login</button>
 </div>
-<!---->
-
-<footer class="footer">
+<!----
+<footeclass="footer">
 </footer>

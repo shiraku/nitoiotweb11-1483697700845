@@ -6,8 +6,8 @@
 var config = require('../config/environment/development');
 var cradle = require('cradle');
 var fs = require('fs');
-var dbName = config.ROOT_DB,
-    chost = config.CHOST,
+//var dbName = config.ROOT_DB,
+var chost = config.CHOST,
     cport = config.CPORT,
     cuser = config.CUSER,
     cpassword = config.CPASSWORD,
@@ -15,7 +15,7 @@ var dbName = config.ROOT_DB,
 var rootDoc = config.ROOT_DOC;
 var db;
 
-exports.init = function () {
+function connectDoc(dbName) {
     if (process.env.VCAP_SERVICES) {
         var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
         if (vcapServices.cloudantNoSQLDB) {
@@ -89,21 +89,15 @@ exports.getLiveData = function (req, res) {
 
 //Get m_user doc
 exports.M_userEntitity = {
-  q : {
-    "selector": {
-      "_id": {
-        "$eq": 'muer'
-      }
-    }
-  },
-  
-  getUser : function(query){
-    this.q.selector._id.$eq = 'muer' + query;
-    db.get(this.q, function(err, doc) {
+  //ユーザーIDからユーザー情報をGETし返却する
+  getUser : function(query, callback){
+    connectDoc('m_user');
+    db.get('muser_' + query, function(err, doc) {
       if(err){
-        return handleError(res, err);
+        return callback(err,doc);
       }
-      return res.status(200).json(doc);
+      console.log(doc);
+      return callback(err,doc);
     });
   }
   

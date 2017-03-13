@@ -14,5 +14,5 @@ module.exports = {
     //Used for seeding database
     //seedDB: true,
     // ROOT_DOC: "sample_db",
-    ROOT_DB: "sample_db"
+//    ROOT_DB: "sample_db"
 };
