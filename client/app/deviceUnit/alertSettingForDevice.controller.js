@@ -8,7 +8,7 @@
       //デバイスグループデータ
       //TODO APIで取得するように変更
       $scope.deviceGroupData = [
-        {
+              {
               'groupId':'grp_0001',
               'groupName':'日東工業　設備管理',
               'deviceList':[
