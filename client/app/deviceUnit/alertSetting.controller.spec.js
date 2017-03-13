@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: AlertSettingForGroupCtrl', function () {
+describe('Controller: AlertSettingCtrl', function () {
 
     /*  // load the controller's module
      beforeEach(module('nitoiotweb11App'));
