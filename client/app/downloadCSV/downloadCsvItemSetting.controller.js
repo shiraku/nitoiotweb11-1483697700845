@@ -4,54 +4,39 @@
     angular.module('nitoiotweb11App')
     .controller('DownloadCsvItemSettingCtrl',['$rootScope','$routeParams','$scope','$http','$location', function ($rootScope,$routeParams,$scope, $http, $location) {
 
+      //ヘッダータイトル
+      $scope.navtitle="データダウンロード";
 
       //デバイスグループデータ
-      //TODO APIで取得するように変更
-      $scope.deviceGroupData = [
-              {
-              'groupId':'grp_0001',
-              'groupName':'日東工業　設備管理',
-              'deviceList':[
-                { 'deviceId':'001',
-                  'deviceName':'デバイス１',
+      $scope.selectItem = [
+                { 'id':'001',
+                  'label':'地震発生データ',
                 },
-                { 'deviceId':'002',
-                  'deviceName':'デバイス２',
+                { 'id':'002',
+                  'label':'AQデータ',
                 },
-                { 'deviceId':'003',
-                  'deviceName':'デバイス３',
+                { 'id':'001',
+                  'label':'ALデータ',
                 },
-                { 'deviceId':'004',
-                  'deviceName':'デバイス４',
+                { 'id':'002',
+                  'label':'AFデータ',
                 },
-                { 'deviceId':'005',
-                  'deviceName':'デバイス５',
+                { 'id':'002',
+                  'label':'雷発生データ',
+                },
+                { 'id':'001',
+                  'label':'ユーザー一覧(デバイス一覧)',
                 }
-            ],
-              'alertNotificationList':[
-                { 'name':'山田　修',
-                  'mailAddress':'yamada@nito.co.jp'
-                },
-                { 'name':'小林　武',
-                  'mailAddress':'kobayashi@nito.co.jp'
-                },
-                { 'name':'湯浅　あさみ',
-                  'mailAddress':'yuasa@nito.co.jp'
-                },
-                { 'name':'本田　宗太郎',
-                  'mailAddress':'honda@nito.co.jp'
-                }
-              ]
-            }];
-
-      //ヘッダータイトル
-      $scope.navtitle=$scope.deviceGroupData[0].groupName;
+            ];
 
 
-        //デバイス詳細データ遷移
-       $scope.deviceDetail = function(){
-         $location.path("/user_"+$routeParams.USER_ID+"/device_"+this.item.deviceId);
-       }
+      //TODO APIでCSVダウンロードできるように変更
+      //ダウンロードボタンアクション
+     $scope.download = function(){
+
+
+     }
+
 
 
     }]);
