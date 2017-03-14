@@ -15,6 +15,12 @@
         <p class="md-body-1">グループID</p>
         <span class="md-subhead">{{deviceGroupData[0].groupId}}</span>
       </md-card-title-text>
+      <md-button ng-click="deviceNameEdit()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24">
+            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+            <path d="M0 0h24v24H0z" fill="none"/>
+        </svg>
+      </md-button>
     </md-card-title>
     <md-card-content>
       <md-card-title-text>
@@ -73,23 +79,24 @@
                   <li ng-repeat="item in deviceGroupData[0].alertNotificationList">
                     <p class="md-body-1">{{item.name}}</p>
                     <p class="md-body-1">{{item.mailAddress}}</p>
-                    <!--TODO ボタン画像変更-->
                     <md-button ng-click="mailAddressEdit()">
-                        <svg width="24px" height="24px" viewBox="315 15 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                          <defs></defs>
-                          <g id="Material/Icons-black/chevron-right" stroke="none" fill="none" transform="translate(315.000000, 15.000000)" fill-rule="evenodd">
-                              <polygon id="Shape" fill="#D8001A" points="8.59997559 7.4 9.99997559 6 15.9999756 12 9.99997559 18 8.59997559 16.6 13.1999756 12"></polygon>
-                          </g>
-                        </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24">
+                          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                          <path d="M0 0h24v24H0z" fill="none"/>
+                      </svg>
+                      <!-- <editIcon></editIcon> -->
                     </md-button>
                     <md-button ng-click="mailAddressDelete()">
-                        del
+                      <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                           <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                           <path d="M0 0h24v24H0z" fill="none"/>
+                      </svg>
                     </md-button>
                   </li>
                 </ul>
               </md-card-content>
                 <!--通知設定ボタン-->
-              <md-button class="md-accent md-button md-ink-ripple" type="button" ng-transclude="">
+              <md-button class="md-accent md-button md-ink-ripple" type="button" ng-click="alertSetting()" ng-transclude="">
                 <!-- <span class="ng-scope">通知設定</span> -->
                 <div class="md-ripple-container">通知設定</div>
               </md-button>

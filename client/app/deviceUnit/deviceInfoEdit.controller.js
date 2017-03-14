@@ -47,11 +47,10 @@
       //ヘッダータイトル
       $scope.navtitle=$scope.deviceGroupData[0].groupName;
 
-
-        //デバイス詳細データ遷移
-       $scope.deviceDetail = function(){
-         $location.path("/user_"+$routeParams.USER_ID+"/device_"+this.item.deviceId);
-       }
+      //アラート設定画面遷移
+     $scope.alertSetting = function(){
+       $location.path("/user_"+$routeParams.USER_ID+"/device_"+$routeParams.DEVICE_ID+'/alert');
+     }
 
        //グループ名編集画面遷移
       $scope.deviceNameEdit = function(ev){
@@ -113,6 +112,21 @@
                    "cancel":"キャンセル"}
       dialogShow(ev,json);
       };
+
+      function dialogShow(ev,param){
+        var confirm = $mdDialog.prompt()
+          .title(param.title)
+          .placeholder(param.placeholder)
+          .ariaLabel(param.ariaLabel)
+          .initialValue(param.initialValue)
+          .targetEvent(ev)
+          .ok(param.ok)
+          .cancel(param.cancel);
+
+          $mdDialog.show(confirm);
+
+        };
+
 
       //アラート通知追加
       $scope.mailAddressAdd = function (ev){
