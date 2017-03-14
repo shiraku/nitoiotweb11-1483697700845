@@ -173,3 +173,11 @@
   .mapDetail .angular-google-map-container {
   	height: 200px;
   }
+
+  .google-chart{
+    height: 300px;
+  }
+
+  .md-docs-dark-theme{
+      margin-top: 4px;
+}
