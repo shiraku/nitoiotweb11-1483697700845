@@ -7,13 +7,20 @@
 
       /**　API テスト
       **/
-      $http.get('/api/things/show')
+//      $http.get('/api/things/show')
+//      .then(function successCallback(response) {
+//        console.log("posted successfully");
+//      }, function errorCallback(response) {
+//        console.error("error in posting");
+//      });
+      $http.get('/api/device_list/')
       .then(function successCallback(response) {
         console.log("posted successfully");
+        console.log(response);
       }, function errorCallback(response) {
         console.error("error in posting");
       });
-
+        
 
       //ヘッダータイトル
       $scope.navtitle='デバイス一覧';
@@ -39,12 +46,12 @@
       $scope.selectItem = 'month';
 
 
-      $http.get('/api/things/')
-      .then(function successCallback(response) {
-        console.log("posted successfully");
-      }, function errorCallback(response) {
-        console.error("error in posting");
-      });
+//      $http.get('/api/things/')
+//      .then(function successCallback(response) {
+//        console.log("posted successfully");
+//      }, function errorCallback(response) {
+//        console.error("error in posting");
+//      });
 
       //TODO APIでデータ取得する
       // $scope.deviceList = [

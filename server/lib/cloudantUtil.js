@@ -87,7 +87,11 @@ exports.getLiveData = function (req, res) {
     })
 };
 
-//Get m_user doc
+
+
+/**
+ * Get m_user doc
+ */
 exports.M_userEntitity = {
   //ユーザーIDからユーザー情報をGETし返却する
   getUser : function(query, callback){
@@ -96,13 +100,109 @@ exports.M_userEntitity = {
       if(err){
         return callback(err,doc);
       }
-      console.log(doc);
+//      console.log(doc);
       return callback(err,doc);
     });
   }
   
 };
 
+
+/**
+ * Get m_device doc
+ */
+exports.M_deviceEntitity = {
+  //デバイスIDからユーザー情報をGETし返却する
+  getDevice : function(query, callback){
+    var q = [];
+    for(var i =0; i < query.length; i++){
+      q.push('DEV_' + query[i].id);
+    }
+//      console.log('クエリ情報@M_deviceEntitity');
+//      console.log(q);
+    connectDoc('m_device');
+    db.get(q, function(err, doc) {
+      if(err){
+        return callback(err,doc);
+      }
+//      console.log('デバイス情報@M_deviceEntitity');
+//      console.log(doc);
+      return callback(err,doc);
+    });
+  }
+};
+
+
+/**
+ * Get eq_d doc
+ */
+exports.Eq_dEntitity = {
+  //デバイスIDから１日以内に起きた最新の感知データをget
+  getLatest : function(query, callback){
+    var q = [];
+    for(var i =0; i < query.length; i++){
+      q.push(query[i].id);
+    }
+    connectDoc('eq_d');
+      db.view('sc003/latest', {keys: q, descending:true} , function (err, res) {
+//        console.log('err object @getLatest');
+//        console.log(err);
+//        console.log('row object @getLatest');
+//        console.log(res);
+      return callback(err,res)
+    });
+  }
+};
+
+
+
+
+/**
+ * Get m_device doc
+ */
+exports.I_dataEntitity = {
+  //デバイスIDからユーザー情報をGETし返却する
+  getLatest : function(query, callback){
+    var q = [];
+    for(var i =0; i < query.length; i++){
+      q.push('DEV_' + query[i].id);
+    }
+//      console.log('クエリ情報@M_deviceEntitity');
+//      console.log(q);
+    connectDoc('i_data');
+    db.get(q, function(err, doc) {
+      if(err){
+        return callback(err,doc);
+      }
+//      console.log('デバイス情報@M_deviceEntitity');
+//      console.log(doc);
+      return callback(err,doc);
+    });
+  }
+};
+
+
+
+/**
+ * Get comment_data doc
+ */
+exports.Comment_dataEntitity = {
+  //デバイスIDから１日以内に起きた最新の感知データをget
+  getComment : function(query, callback){
+    var q = [];
+    for(var i =0; i < query.length; i++){
+      q.push(query[i].id);
+    }
+    connectDoc('eq_d');
+      db.view('sc003/latest', {key: query, descending:true} , function (err, res) {
+//        console.log('err object @getLatest');
+//        console.log(err);
+//        console.log('row object @getLatest');
+//        console.log(res);
+      return callback(err,res)
+    });
+  }
+};
 function handleError(res, err) {
     return res.status(500).send(err);
 }
