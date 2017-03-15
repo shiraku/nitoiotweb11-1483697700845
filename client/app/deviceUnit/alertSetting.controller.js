@@ -14,6 +14,58 @@
         $scope.navtitle="アラート設定（デバイス）";
       };
 
+      //震度地震動のセレクトボックスアイテム
+      $scope.seismicIntensitySelectItems =[
+        { 'value':3,
+          'label':3,
+        },
+        { 'value':4,
+          'label':4,
+        },
+        { 'value':5,
+          'label':5,
+        },
+        { 'value':6,
+          'label':6,
+        },
+        { 'value':7,
+          'label':7,
+        },
+        { 'value':0,
+          'label':'通知しない',
+        }
+      ]
+
+      //長周期地震動のデフォルト値設定
+      $scope.seismicIntensitySelectItem = 3;
+
+
+      //長周期地震動のセレクトボックスアイテム
+      $scope.longPeriodGroundMotionSelectItems =[
+        { 'value':1,
+          'label':1,
+        },
+        { 'value':2,
+          'label':2,
+        },
+        { 'value':3,
+          'label':3,
+        },
+        { 'value':4,
+          'label':4,
+        },
+        { 'value':0,
+          'label':'通知しない',
+        }
+      ]
+
+      //長周期地震動のデフォルト値設定
+      $scope.longPeriodGroundMotionSelectItem = 2;
+
+
+
+
+
       //通知闘値データ
       //TODO APIで取得するように変更
       $scope.thresholdValue = [

@@ -12,50 +12,104 @@
   <md-card>
     <md-card-content>
       <md-card-title-text>
-        <md-input-container class="md-block" flex-gt-sm>
-          <label>震度</label>
-          <input ng-model="thresholdValue.seismicIntensity">
-        </md-input-container>
+
+        <!--switch-->
+        <label>震度:</label>
+        <md-switch ng-model="switch.defaultValue" class="md-warn">
+          <div ng-if="!!switch.defaultValue">通知する</div>
+          <div ng-if="!switch.defaultValue">通知しない</div>
+        </md-switch>
+        <!--震度スライダー-->
+        <md-slider-container ng-if="!!switch.defaultValue">
+          <md-slider flex="" min="3" max="7" ng-model="seismicIntensityValue" aria-label="red">
+          </md-slider>
+          <md-input-container>
+            <input flex="" ng-model="seismicIntensityValue" aria-label="red" aria-controls="red-slider" type="number">
+          </md-input-container>
+        </md-slider-container>
+
+
+      </md-card-content>
+      <md-card-content>
+
+        <!--switch-->
+        <label>SI値:</label>
+        <md-switch ng-model="switch.defaultValue" class="md-warn">
+          <div ng-if="!!switch.defaultValue">通知する</div>
+          <div ng-if="!switch.defaultValue">通知しない</div>
+        </md-switch>
+        <!--SI値スライダー-->
+        <md-slider-container ng-if="!!switch.defaultValue">
+          <md-slider flex="" min="1" max="140" step="0.1" ng-model="siValue" aria-label="red">
+          </md-slider>
+          <md-input-container>
+            <input flex="" ng-model="siValue" aria-label="red" aria-controls="red-slider" type="number">
+          </md-input-container>
+        </md-slider-container>
+
+
+
       </md-card-title-text>
     </md-card-content>
     <md-card-content>
       <md-card-title-text>
-        <md-input-container class="md-block" flex-gt-sm>
-          <label>長周期地震動</label>
-          <input ng-model="thresholdValue.longPeriodGroundMotion">
-        </md-input-container>
+        <!--switch-->
+        <label>長周期地震動:</label>
+        <md-switch ng-model="switch.defaultValue" class="md-warn">
+          <div ng-if="!!switch.defaultValue">通知する</div>
+          <div ng-if="!switch.defaultValue">通知しない</div>
+        </md-switch>
+        <!--長周期地震動スライダ-->
+        <md-slider-container ng-if="!!switch.defaultValue">
+          <md-slider flex="" min="1" max="4" ng-model="longPeriodGroundMotionValue" aria-label="red">
+          </md-slider>
+          <md-input-container>
+            <input flex="" ng-model="longPeriodGroundMotionValue" aria-label="red" aria-controls="red-slider" type="number">
+          </md-input-container>
+        </md-slider-container>
+
       </md-card-title-text>
     </md-card-content>
     <md-card-content>
       <md-card-title-text>
-        <md-input-container class="md-block" flex-gt-sm>
-          <label>傾き</label>
-          <input ng-model="thresholdValue.slope">
-        </md-input-container>
+        <!--switch-->
+        <label>傾き:</label>
+        <md-switch ng-model="switch.defaultValue" class="md-warn">
+          <div ng-if="!!switch.defaultValue">通知する</div>
+          <div ng-if="!switch.defaultValue">通知しない</div>
+        </md-switch>
       </md-card-title-text>
     </md-card-content>
     <md-card-content>
       <md-card-title-text>
-        <md-input-container class="md-block" flex-gt-sm>
-          <label>雷サージ</label>
-          <input ng-model="thresholdValue.lightningSurge">
-        </md-input-container>
+        <!--switch-->
+        <label>雷サージ:</label>
+        <md-switch ng-model="switch.defaultValue" class="md-warn">
+          <div ng-if="!!switch.defaultValue">通知する</div>
+          <div ng-if="!switch.defaultValue">通知しない</div>
+        </md-switch>
       </md-card-title-text>
     </md-card-content>
     <md-card-content>
       <md-card-title-text>
-        <md-input-container class="md-block" flex-gt-sm>
-          <label>商用停電</label>
-          <input ng-model="thresholdValue.commercialBlackout">
-        </md-input-container>
+        <!--switch-->
+        <label>商用停電:</label>
+        <md-switch ng-model="switch.defaultValue" class="md-warn">
+          <div ng-if="!!switch.defaultValue">通知する</div>
+          <div ng-if="!switch.defaultValue">通知しない</div>
+        </md-switch>
       </md-card-title-text>
     </md-card-content>
     <md-card-content>
       <md-card-title-text>
-        <md-input-container class="md-block" flex-gt-sm>
-          <label>機器死活</label>
-          <input ng-model="thresholdValue.equipmentLifeAndDeath">
-        </md-input-container>
+
+        <!--switch-->
+        <label>機器異常:</label>
+        <md-switch ng-model="switch.defaultValue" class="md-warn">
+          <div ng-if="!!switch.defaultValue">通知する</div>
+          <div ng-if="!switch.defaultValue">通知しない</div>
+        </md-switch>
+
       </md-card-title-text>
     </md-card-content>
     <!--キャンセル-->
