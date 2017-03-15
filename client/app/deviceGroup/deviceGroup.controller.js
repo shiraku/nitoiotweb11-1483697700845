@@ -196,8 +196,8 @@ $scope.mailAddressDelete = function (ev){
 
 //グループ名編集画面遷移
 $scope.deviceNameEdit = function(ev){
- var json = {"title":"グループIDの編集",
-             "placeholder":"グループID",
+ var json = {"title":"グループ名前の編集",
+             "placeholder":"グループ名前",
              "ariaLabel":"",
              "initialValue":"",
              "ok":"登録",
