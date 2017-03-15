@@ -181,3 +181,7 @@
   .md-docs-dark-theme{
       margin-top: 4px;
 }
+
+  ul{
+    padding-left: 0;
+  }
