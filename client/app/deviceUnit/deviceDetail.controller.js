@@ -152,7 +152,7 @@
         };
 
        $scope.deviceDetailData = function(){
-         $location.path("/user_"+$routeParams.USER_ID+"/device_"+$routeParams.DEVICE_ID+"/"+this.item.date_id);
+         $location.path("/user_"+$routeParams.USER_ID+"/device_"+$routeParams.DEVICE_ID+"/date"+this.item.date_id);
        }
 
     }]);

@@ -48,10 +48,15 @@
       $scope.navtitle=$scope.deviceGroupData[0].groupName;
 
 
-        //デバイス詳細データ遷移
+        //デバイス編集遷移
        $scope.deviceDetail = function(){
-         $location.path("/user_"+$routeParams.USER_ID+"/device_"+this.item.deviceId);
+         $location.path("/user_"+$routeParams.USER_ID+"/device_"+this.item.deviceId+'/edit');
        }
+
+       //アラート設定画面遷移
+      $scope.alertSetting = function(){
+        $location.path("/user_"+$routeParams.USER_ID+"/device_"+$routeParams.DEVICE_ID+'/alert');
+      }
 
        //グループ名編集画面遷移
       $scope.groupNameEdit = function(ev){
@@ -188,6 +193,31 @@ $scope.mailAddressDelete = function (ev){
   }
 );
 };
+
+//グループ名編集画面遷移
+$scope.deviceNameEdit = function(ev){
+ var json = {"title":"グループIDの編集",
+             "placeholder":"グループID",
+             "ariaLabel":"",
+             "initialValue":"",
+             "ok":"登録",
+             "cancel":"キャンセル"}
+ dialogShow(ev,json);
+};
+
+function dialogShow(ev,param){
+  var confirm = $mdDialog.prompt()
+    .title(param.title)
+    .placeholder(param.placeholder)
+    .ariaLabel(param.ariaLabel)
+    .initialValue(param.initialValue)
+    .targetEvent(ev)
+    .ok(param.ok)
+    .cancel(param.cancel);
+
+    $mdDialog.show(confirm);
+
+  };
 
 
 
