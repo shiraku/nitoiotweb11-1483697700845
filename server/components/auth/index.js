@@ -40,12 +40,12 @@ Auth.prototype.init = function(){
   
   //セッションをシリアライズ
   passport.serializeUser(function(user, done){
-    done(null, {userId: user._id});
+    done(null, {userId: user});
   });
   
   //セッションをディシリアライズ
   passport.deserializeUser(function(serializeUser, done){
-    cloudantUtil.M_userEntitity.getUser(serializeUser.userId.split('_')[1], function(err, user){
+    cloudantUtil.M_userEntitity.getUser(serializeUser.userId._id.split('_')[1], function(err, user){
         done(err, user);
     });
   });
