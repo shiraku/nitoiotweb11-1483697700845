@@ -5,10 +5,15 @@
     <h3 class="ng-binding ng-isolate-scope">
       <a class="docs-anchor ng-scope" ng-href="#basic-usage" name="basic-usage" href="#basic-usage">デバイス一覧</a>
     </h3>
-      <md-input-container md-no-float="" class="md-block md-input-has-placeholder md-input-has-value">
+      <!-- <md-input-container md-no-float="" class="md-block md-input-has-placeholder md-input-has-value">
           <input ng-model="query" placeholder="絞り込み" class="ng-valid md-input ng-dirty ng-valid-parse ng-touched ng-not-empty" aria-label="Address 2">
           <div class="md-errors-spacer"></div>
-        </md-input-container>
+      </md-input-container> -->
+        <md-card-title-text>
+      <md-input-container class="md-block md-input-has-placeholder md-input-has-value searchInputArea md-docs-dark-theme" flex-gt-sm>
+        <input ng-model="query" placeholder="絞り込み" class="ng-valid md-input ng-dirty ng-valid-parse ng-touched ng-not-empty">
+      </md-input-container>
+    </md-card-title-text>
   </div>
 
 
@@ -114,6 +119,16 @@
         </md-tab>
         <md-tab label="グラフ">
           <md-content class="md-padding">
+            <md-input-container class="md-block" flex-gt-sm>
+              <label>グラフの表示期間を選択</label>
+                <md-select ng-change="changeItem" ng-model="selectItem">
+                <md-option ng-repeat="item in selectItems" value="{{item.value}}">
+                  {{item.label}}
+                </md-option>
+              </md-select>
+            </md-input-container>
+
+            <div id="chart_div"></div>
 <ul>
   <li ng-repeat="item in deviceList | filter:query">
 
@@ -134,67 +149,27 @@
           </g>
         </svg>
     </md-button>
-  </md-card-title>
+      </md-card-title>
 
  <!--デバイスカード　コンテンツ-->
   <md-card-content>
-    <!--職場責任者・連絡先-->
-    <div class="md-contentPaddingBottom">
-            <p flex="50" class="md-body-1">職場責任者：{{item.responsiblePerson}}</p>
-            <p flex="50" class="md-body-1">連絡先：{{item.telNo}}</p>
+    <!--グラフ-->
+    <!-- <div ng-if="!!item.chart"> -->
+    <!-- <div google-chart chart={{item.chart}} class="google-chart">-->
+    <div id={{item.deviceId}}  class="google-chart">
+    <!-- </div> -->
+    <!-- <div google-chart chart class="google-chart">
+      {{item.chart}}
+    </div> -->
     </div>
-    <!--ステータス-->
-    <div layout="row" layout-wrap>
-        <span class="md-subhead" ng-hide="item.status == 0 ">感知あり</span>
-        <span class="md-subhead" ng-hide="item.status != 0 ">感知なし</span>
+    <!--地震データない場合-->
+    <div ng-if="!item.chart">
+    <p flex class="md-body-1">地震データなし</p>
 
     </div>
-    <!--ステータスが異常ありの場合-->
-    <div ng-if="item.status != 0">
-
-    <!-- <div layout="row" layout-wrap> -->
-      <!--地震の場合-->
-      <div layout="row" class="md-contentPaddingBottom" layout-wrap ng-if="item.type == 'earthquake'">
-        <div flex="35">
-          <p flex class="md-body-1">傾き</p>
-          <p flex class="md-body-1">商用停電</p>
-          <p flex class="md-body-1">機器異常</p>
-        </div>
-        <div flex="35">
-          <p flex class="md-subhead">{{item.slope}}</p>
-          <p flex class="md-subhead">{{item.commercialBlackout}}</p>
-          <p flex class="md-subhead">{{item.equipmentAbnormality}}</p>
-        </div>
-        <div flex>
-        <div flex class="md-body-1">震度</div>
-        <div flex class="md-display-3">{{item.seismicIntensity}}</div>
-        </div>
-      </div>
-      <!--雷の場合-->
-      <div layout="row" class="md-contentPaddingBottom" layout-wrap ng-if="item.type == 'thunder'">
-        <div flex="35">
-          <p flex class="md-body-1">漏電</p>
-          <p flex class="md-body-1">商用停電</p>
-          <p flex class="md-body-1">機器異常</p>
-        </div>
-        <div flex="35">
-          <p flex class="md-subhead">{{item.leakage}}</p>
-          <p flex class="md-subhead">{{item.commercialBlackout}}</p>
-          <p flex class="md-subhead">{{item.equipmentAbnormality}}</p>
-        </div>
-        <div flex>
-          <div flex class="md-body-1">雷</div>
-          <div flex class="md-display-3">{{item.power}}</div>
-        </div>
-      </div>
 
 
-      　<p class="md-body-1">コメント・連絡事項</p>
-    <!-- <div > -->
-        <ul>
-          <li layout="row" ng-repeat="i in item.commentList">
-          <p class="md-subhead">{{i.comment}} {{i.commentDate}}</p>
-        </li>
+  </li>
       </ul>
     <!-- </div> -->
     </div>
@@ -216,7 +191,7 @@
                 <ui-gmap-markers models="markers" coords="'self'" icon="'icon'"></ui-gmap-markers>
               </ui-gmap-google-map>
             </div>
-            
+
           </md-content>
         </md-tab>
       </md-tabs>
