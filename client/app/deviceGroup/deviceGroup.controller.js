@@ -55,7 +55,7 @@
 
        //アラート設定画面遷移
       $scope.alertSetting = function(){
-        $location.path("/user_"+$routeParams.USER_ID+"/device_"+$routeParams.DEVICE_ID+'/alert');
+        $location.path("/user_"+$routeParams.USER_ID+"/group/alert");
       }
 
        //グループ名編集画面遷移
