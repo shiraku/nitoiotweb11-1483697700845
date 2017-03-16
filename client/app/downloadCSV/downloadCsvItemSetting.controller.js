@@ -8,26 +8,28 @@
       $scope.navtitle="データダウンロード";
 
       //デバイスグループデータ
-      $scope.selectItem = [
-                { 'id':'001',
+      $scope.selectItems = [
+                { 'value':1,
                   'label':'地震発生データ',
                 },
-                { 'id':'002',
+                { 'value':2,
                   'label':'AQデータ',
                 },
-                { 'id':'001',
+                { 'value':3,
                   'label':'ALデータ',
                 },
-                { 'id':'002',
+                { 'value':4,
                   'label':'AFデータ',
                 },
-                { 'id':'002',
+                { 'value':5,
                   'label':'雷発生データ',
                 },
-                { 'id':'001',
+                { 'value':6,
                   'label':'ユーザー一覧(デバイス一覧)',
                 }
             ];
+
+      $scope.selectItem = 1;
 
 
       //TODO APIでCSVダウンロードできるように変更
