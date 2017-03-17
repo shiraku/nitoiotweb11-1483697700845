@@ -5,6 +5,26 @@
     .controller('DeviceDetailCtrl',['$rootScope','$routeParams','$scope','$http','$location', function ($rootScope,$routeParams,$scope, $http, $location) {
 
 
+      //デバイス情報
+      $http.get('/api/device_detail/00000')
+      .then(function successCallback(response) {
+        console.log("/api/device_detail/00000 successfully");
+        console.log(response);
+      }, function errorCallback(response) {
+        console.error("error in /api/device_detail/00000");
+      });
+      
+      
+      //地震履歴情報
+      $http.get('/api/device_history_eq/00000')
+      .then(function successCallback(response) {
+        console.log("/api/device_history_eq/00000 successfully");
+        console.log(response);
+      }, function errorCallback(response) {
+        console.error("error in /api/device_history_eq/00000");
+      });
+      
+      
       //TODO APIでデータ取得をする
       $scope.deviceDetail = [
         {
@@ -152,7 +172,8 @@
         };
 
        $scope.deviceDetailData = function(){
-         $location.path("/user_"+$routeParams.USER_ID+"/device_"+$routeParams.DEVICE_ID+"/date"+this.item.date_id);
+//         $location.path("/user_"+$routeParams.USER_ID+"/device_"+$routeParams.DEVICE_ID+"/date"+this.item.date_id);
+         $location.path("/user_u000/device_00000/date20170216105553");
        }
 
     }]);

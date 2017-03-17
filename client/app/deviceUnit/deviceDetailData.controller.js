@@ -51,6 +51,35 @@
             ]
       }];
 
+      //グラフイメージ取得
+      var datePrm = $routeParams.YYYYMMDDHHMM.substr(0,4) + '-' + 
+        $routeParams.YYYYMMDDHHMM.substr(4,2) + '-' + 
+        $routeParams.YYYYMMDDHHMM.substr(6,2) + 'T' + 
+        $routeParams.YYYYMMDDHHMM.substr(8,2) + ':' + 
+        $routeParams.YYYYMMDDHHMM.substr(10,2) + ':' + 
+        $routeParams.YYYYMMDDHHMM.substr(12,2);
+      var id = datePrm + '_' + $routeParams.DEVICE_ID;
+      console.log(id);
+      $http.get('/api/chart_acceleration/' + id)
+      .then(function successCallback(response) {
+        console.log("posted successfully");
+        console.log(response);
+        $scope.chart_acceleration = response.data;
+      }, function errorCallback(response) {
+        console.error("error in posting");
+      });
+      
+      
+      //デバイス情報
+      $http.get('/api/device_detail/' + $routeParams.DEVICE_ID)
+      .then(function successCallback(response) {
+        console.log("/api/device_detail/ successfully");
+        console.log(response);
+      }, function errorCallback(response) {
+        console.error("error in /api/device_detail/");
+      });
+      
+      
       $scope.map = {
       // マップ初期表示の中心地
       center: {
