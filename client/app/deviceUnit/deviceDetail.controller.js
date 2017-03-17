@@ -35,6 +35,7 @@
           'address':'愛知県長久手市蟹原2201番地',//住所
           'memo':'本社横の倉庫',//メモ
           'earthquakeCurrentData':[{//地震の最新ステータスデータ
+                     "date_id":"20170216110735",
                      'seismicIntensity':'5.4',//地震
                      'slope':'倒壊',//傾き
                      'commercialBlackout':'あり',//商用停電
@@ -57,6 +58,7 @@
                }],
             'thunderCurrentData':[
                  {
+                      "date_id":"20170216110735",
                       'power':'5.4',//雷
                       'leakage':'なし',//漏電
                       'commercialBlackout':'あり',//商用停電
