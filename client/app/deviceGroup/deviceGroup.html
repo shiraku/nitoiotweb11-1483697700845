@@ -12,8 +12,8 @@
   <md-card>
       <md-card-content>
       <md-card-title-text>
-        <div class="md-body-1">グループID</div>
-        <div class="md-body-3">{{deviceGroupData[0].groupId}}</div>
+        <p class="md-body-1">グループID</p>
+        <span class="md-body-3">{{deviceGroupData[0].groupId}}</span>
       </md-card-title-text>
     </md-card-content>
 
@@ -22,12 +22,12 @@
     <md-card-content>
       <div layout="colom">
       <md-card-title-text>
-        <div class="md-body-1">グループ名前</div>
-        <div class="md-body-3">{{deviceGroupData[0].groupName}}</div>
+        <p class="md-body-1">グループ名前</p>
+        <span class="md-body-3">{{deviceGroupData[0].groupName}}</span>
+        <md-button ng-click="deviceNameEdit()">
+          <buttonpen></buttonpen>
+        </md-button>
       </md-card-title-text>
-      <md-button ng-click="deviceNameEdit()">
-        <buttonpen></buttonpen>
-      </md-button>
     </div>
     </md-card-content>
 
@@ -49,51 +49,44 @@
           <!--デバイスタブ-->
           <md-tab label="デバイス">
               <md-card>
-                  <ul>
-                    <li ng-repeat="item in deviceGroupData[0].deviceList | filter:query">
-
-                      <div layout="colom">
+                  <md-list-item class="md-3-line" ng-repeat="item in deviceGroupData[0].deviceList" ng-click="deviceDetail()">
                       <p class="md-body-4">{{item.deviceName}}</p>
-                        <md-button ng-click="deviceDetail()">
-                            <buttondetail></buttondetail>
-                        </md-button>
-                      </div>
-                    </li>
-                  </ul>
+                      <buttondetail></buttondetail>
+                  </md-list-item>
               </md-card>
           </md-tab>
 
         <!--アラートタブ-->
-          <md-tab label="アラート一覧">
-            <!-- <md-content class="md-padding"> -->
+          <md-tab label="アラート通知">
               <md-card>
-                  <ul>
-                    <li ng-repeat="item in deviceGroupData[0].alertNotificationList">
 
-                      <div layout="colom">
-                      <p class="md-body-4">{{item.name}}</p>
-                      <p class="md-body-5">{{item.mailAddress}}</p>
-                      <md-button ng-click="mailAddressEdit()">
-                        <buttonpen></buttonpen>
-                      </md-button>
-                      <md-button ng-click="mailAddressDelete()">
-                        <buttontrashbox></buttontrashbox>
-                      </md-button>
-                    </div>
-                    </li>
-                  </ul>
+                  <md-list-item class="md-3-line" ng-repeat="item in deviceGroupData[0].alertNotificationList" ng-click="null">
+                    <div layout>
+                    <p class="md-body-4">{{item.name}}</p>
+                    <p class="md-body-5">{{item.mailAddress}}</p>
+                    <md-button ng-click="mailAddressEdit($event,false)">
+                      <buttonpen></buttonpen>
+                    </md-button>
+                    <md-button ng-click="mailAddressDelete()">
+                      <buttontrashbox></buttontrashbox>
+                    </md-button>
+                  </div>
+                  </md-list-item>
+
+
+
+
                   <!--ボタン-->
               <div layout>
                 <md-button flex class="md-accent md-button md-ink-ripple md-text-button-1" type="button" ng-click="alertSetting()" ng-transclude="">
                   <div class="md-ripple-container md-ripple-container-1">通知設定</div>
                 </md-button>
-                <md-button flex class="md-accent md-button md-ink-ripple md-text-button-2" type="button" ng-click="mailAddressAdd()" ng-transclude="">
+                <md-button flex class="md-accent md-button md-ink-ripple md-text-button-2" type="button" ng-click="mailAddressAdd($event,true)" ng-transclude="">
                   <div class="md-ripple-container md-ripple-container-2">追加</div>
                 </md-button>
               </div>
 
                 </md-card>
-            <!-- </md-content> -->
           </md-tab>
 
       </md-tabs>

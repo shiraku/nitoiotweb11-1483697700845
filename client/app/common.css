@@ -81,10 +81,6 @@
   }*/
 
   /**カード**/
-  /*md-card md-card-title{
-    border-bottom: 1px solid #E3E3E3;
-    padding: 0px 0px 0px;
-  }*/
 
   /**カードタイトル　テキスト**/
   /*md-card md-card-title md-card-title-text .md-subhead{
@@ -229,6 +225,12 @@
     /*padding-top: 16px !important;*/
   }
 
+  md-card md-card-title md-card-title-text{
+    border-bottom: 1px solid #E3E3E3;
+    /*padding: 0px 0px 0px;*/
+  }
+
+
   /**文字**/
   .md-body-1{
     font-family: .HiraKakuInterface-W3;
@@ -258,11 +260,15 @@
     margin: 17px 0px;
   }
 
-  md-card ul{
+  /*md-card ul{
   margin: 0 20px;
-  }
+  }*/
 
-  md-card li{
+  /*md-card li{
+
+  }*/
+
+  md-list-item .md-list-item-inner{
     border-bottom: solid 1px #E3E3E3;
   }
 
@@ -287,3 +293,17 @@
   .md-ripple-container-2{
     color: #FFFFFF;
   }
+
+/**ダイアログ*******************************************************************/
+ md-dialog md-dialog-content .md-prompt-input-container{
+   margin-bottom: 0px;
+ }
+
+
+ md-dialog md-dialog-content .md-prompt-input-container-2{
+   margin-top: 0;
+ }
+
+ .md-button.md-default-theme.md-primary, .md-button.md-primary{
+   color: #D0011B;
+ }
