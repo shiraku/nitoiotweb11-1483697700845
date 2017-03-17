@@ -81,10 +81,6 @@
   }*/
 
   /**カード**/
-  /*md-card md-card-title{
-    border-bottom: 1px solid #E3E3E3;
-    padding: 0px 0px 0px;
-  }*/
 
   /**カードタイトル　テキスト**/
   /*md-card md-card-title md-card-title-text .md-subhead{
@@ -223,10 +219,31 @@
 
   /**カード*******************************************************************/
 
+
+  md-card{
+    margin-bottom: 40px;
+  }
+
+  /**デバイス一覧用**/
+  ul md-card{
+    margin-bottom: 20px;
+  }
+
   /**コンテント**/
   md-card-content{
     border-bottom: 1px solid #E3E3E3;
     /*padding-top: 16px !important;*/
+  }
+
+  md-card md-card-title md-card-title-text{
+    border-bottom: 1px solid #E3E3E3;
+    /*padding: 0px 0px 0px;*/
+  }
+
+
+  /***レイアウト用空白***/
+  .md-card-blank-top{
+    margin-top: 25px;
   }
 
   /**文字**/
@@ -258,13 +275,38 @@
     margin: 17px 0px;
   }
 
-  md-card ul{
-  margin: 0 20px;
+  .md-body-5{
+      /* 感知あり: */
+    font-family: .HiraKakuInterface-W7;
+    font-size: 17px;
+    color: rgba(0,0,0,0.87);
+    letter-spacing: 0;
+    line-height: 24px;
+    font-weight: bold;      /**オリジナル**/
   }
 
-  md-card li{
+  .md-body-6{
+      /* 震度・雷 */
+    font-family: .HiraKakuInterface-W7;
+    font-size: 64px;
+    color: rgba(0,0,0,0.87);
+    line-height: 64px;
+    font-weight: bold;       /**オリジナル**/
+  }
+
+  md-list-item .md-list-item-inner{
     border-bottom: solid 1px #E3E3E3;
   }
+
+  .md-list-item-2{
+    border-bottom: solid 1px #E3E3E3;
+  }
+
+  .md-list-item-2 .md-list-item-inner{
+    border-bottom: none;
+  }
+
+
 
   /* ボタン */
   .md-text-button-1{
@@ -287,3 +329,29 @@
   .md-ripple-container-2{
     color: #FFFFFF;
   }
+
+  buttondetail {
+    line-height: 0px;
+}
+
+/**ダイアログ*******************************************************************/
+ md-dialog md-dialog-content .md-prompt-input-container{
+   margin-bottom: 0px;
+ }
+
+
+ md-dialog md-dialog-content .md-prompt-input-container-2{
+   margin-top: 0;
+ }
+
+ .md-button.md-default-theme.md-primary, .md-button.md-primary{
+   color: #D0011B;
+ }
+
+/**GoogleMAP*******************************************************************/
+ .map .angular-google-map-container {
+  height: 600px;
+ }
+ .mapDetail .angular-google-map-container {
+  height: 200px;
+ }

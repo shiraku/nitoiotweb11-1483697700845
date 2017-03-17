@@ -3,16 +3,16 @@
   <!--ヘッダー読み込み-->
   <navitop></navitop>
 
-    <md-content class="md-padding">
+    <!-- <md-content class="md-padding"> -->
 
 
 <!--地震または雷-->
 <div class="md-toolbar-tools">
   <h3 class="ng-binding ng-isolate-scope">
-    <div ng-if="detailData[0].type == 'earthquake'">
+    <div ng-if="detailData.type == 'EQ'">
     <a class="docs-anchor ng-scope" ng-href="#basic-usage"name="basic-usage" href="#basic-usage">地震</a>
     </div>
-    <div ng-if="detailData[0].type == 'thunder'">
+    <div ng-if="detailData.type == 'thunder'">
     <a class="docs-anchor ng-scope" ng-href="#basic-usage"name="basic-usage" href="#basic-usage">雷</a>
     </div>
   </h3>
@@ -21,68 +21,68 @@
 <!--デバイスカード-->
   <md-card>
   <!--デバイスカード　タイトル（デバイス名）-->
-  <md-card-title>
+  <md-card-content>
     <!--タイトル（デバイス名）-->
     <md-card-title-text>
-      <span class="md-subhead">感知あり</span>
+      <span class="md-body-5">感知あり</span>
     </md-card-title-text>
-  </md-card-title>
+  </md-card-content>
 
  <!--デバイスカード　コンテンツ-->
   <md-card-content>
       <!--地震の場合-->
-      <div layout="row" layout-wrap ng-if="detailData[0].type == 'earthquake'">
+      <div layout="row" ng-if="detailData.type == 'EQ'">
         <div flex="25">
-          <div flex class="md-body-1">傾き</div>
-          <div flex class="md-body-1">商用停電</div>
-          <div flex class="md-body-1">機器異常</div>
+          <p flex class="md-body-1">傾き</p>
+          <p flex class="md-body-1">商用停電</p>
+          <p flex class="md-body-1">機器異常</p>
         </div>
-        <div flex="25">
-          <div flex class="md-body-1">{{detailData[0].slope}}</div>
-          <div flex class="md-body-1">{{detailData[0].commercialBlackout}}</div>
-          <div flex class="md-body-1">{{detailData[0].equipmentAbnormality}}</div>
+        <div flex="40">
+          <p flex class="md-body-3">{{detailData.slope}}</p>
+          <p flex class="md-body-3">{{detailData.commercialBlackout}}</p>
+          <p flex class="md-body-3">{{detailData.equipmentAbnormality}}</p>
         </div>
+        <div>
         <div flex class="md-body-1">震度</div>
-        <div flex class="md-display-3">{{detailData[0].seismicIntensity}}</div>
+        <div flex class="md-body-6">{{detailData.seismicIntensity}}</div>
+      </div>
       </div>
       <!--雷の場合-->
       <div layout="row" layout-wrap ng-if="item.type == 'thunder'">
         <div flex="25">
-          <div flex class="md-body-1">漏電</div>
-          <div flex class="md-body-1">商用停電</div>
-          <div flex class="md-body-1">機器異常</div>
+          <p flex class="md-body-1">漏電</p>
+          <p flex class="md-body-1">商用停電</p>
+          <p flex class="md-body-1">機器異常</p>
         </div>
-        <div flex="25">
-          <div flex class="md-body-1">{{detailData[0].leakage}}</div>
-          <div flex class="md-body-1">{{detailData[0].commercialBlackout}}</div>
-          <div flex class="md-body-1">{{detailData[0].equipmentAbnormality}}</div>
+        <div flex="40">
+          <p flex class="md-body-3">{{detailData.leakage}}</p>
+          <p flex class="md-body-3">{{detailData.commercialBlackout}}</p>
+          <p flex class="md-body-3">{{detailData.equipmentAbnormality}}</p>
         </div>
+        <div>
         <div flex class="md-body-1">雷</div>
-        <div flex class="md-display-3">{{detailData[0].power}}</div>
+        <div flex class="md-display-3">{{detailData.power}}</div>
+      </div>
       </div>
   　</md-card-content>
     <md-card-content>
-    <p class="md-body-1">コメント・連絡事項</p>
-    <div layout="row" layout-wrap>
-      <ul>
-        <li ng-repeat="item in detailData[0].commentList">
-        <p class="md-body-2">{{item.comment}}</p>
-        <p class="md-body-2">{{item.commentDate}}</p>
-      </li>
-    </ul>
-    </div>
-    <!--コメント入力ボタン-->
-  <md-button class="md-accent md-button md-ink-ripple" type="button" ng-click="addComment()" ng-transclude="">
-    <!-- <span class="ng-scope">通知設定</span> -->
-    <div class="md-ripple-container">コメント追加</div>
-  </md-button>
-  </md-card-content>
-    <md-card-content ng-hide="detailData[0].mediaNewsletter.length == 0 ">
-      <div layout="row" layout-wrap>
-        　<p class="md-body-1">メディア速報</p>
-          <p class="md-body-2">気象庁公報：{{detailData[0].mediaNewsletter[0].japanMeteorologicalAgency}}</p>
-          <p class="md-body-2">長周期地震動階級{{detailData[0].mediaNewsletter[0].longPeriodSeismicActivityClass}}</p>
-      </div>
+        <p class="md-body-1">コメント・連絡事項</p>
+        <div layout="row" layout-wrap>
+          <ul>
+            <li ng-repeat="item in detailData.commentList">
+            <p class="md-body-2">{{item.comment}}　{{item.commentDate}}</p>
+          </li>
+        </ul>
+        </div>
+        <!--コメント入力ボタン-->
+      <md-button class="md-accent md-button md-ink-ripple" type="button" ng-click="addComment()" ng-transclude="">
+        <div class="md-ripple-container">コメント追加</div>
+      </md-button>
+    </md-card-content>
+    <md-card-content ng-hide="detailData.mediaNewsletter.length == 0">
+          <div class="md-body-1">メディア速報</div>
+          <div class="md-body-2">気象庁公報：震度{{detailData.mediaNewsletter.japanMeteorologicalAgency}}</div>
+          <div class="md-body-2">長周期地震動階級：{{detailData.mediaNewsletter.longPeriodSeismicActivityClass}}</div>
   </md-card-content>
 </md-card>
 
@@ -96,16 +96,16 @@
 
           <md-card>
             <md-card-title>
-            <md-card-title-text>
-              <span class="md-subhead">合成加速度</span>
-            </md-card-title-text>
+            <!-- <md-card-title-text> -->
+              <span class="md-body-3">合成加速度</span>
+            <!-- </md-card-title-text> -->
           </md-card-title>
             <!--TODO NodeJSからバイナリで読み込むように変更-->
             <img ng-src={{chart_acceleration}}></img>
           </md-card>
 
 
-    </md-content>
+    <!-- </md-content> -->
   </div>
 </div>
 

@@ -19,101 +19,92 @@
 
 
   <div ng-cloak>
-    <md-content class="md-padding">
+    <!-- <md-content class="md-padding"> -->
       <md-tabs md-dynamic-height md-border-bottom>
         <md-tab label="一覧">
-          <md-content class="md-padding">
+          <!-- <md-content class="md-padding"> -->
 <ul>
   <li ng-repeat="item in deviceList | filter:query">
 
 <!--デバイスカード-->
   <md-card>
-  <!--デバイスカード　タイトル（デバイス名）-->
-  <md-card-title>
-    <!--タイトル（デバイス名）-->
-    <md-card-title-text>
-      <span class="md-subhead">{{item.deviceName}}</span>
-    </md-card-title-text>
-    <!--リンク-->
-     <md-button ng-click="deviceDetail()">
-        <buttondetail></buttondetail>
-    </md-button>
-  </md-card-title>
+
+    <md-list-item class="md-list-item-2" ng-click="deviceDetail()">
+      <p class="md-body-5">{{item.deviceName}}</p>
+      <buttondetail></buttondetail>
+    </md-list-item>
+
 
  <!--デバイスカード　コンテンツ-->
   <md-card-content>
     <!--職場責任者・連絡先-->
     <div class="md-contentPaddingBottom">
-            <p flex="50" class="md-body-1">職場責任者：{{item.responsiblePerson}}</p>
-            <p flex="50" class="md-body-1">連絡先：{{item.telNo}}</p>
+            <div class="md-body-1">職場責任者：{{item.responsiblePerson}}</div>
+            <div class="md-body-1">連絡先：{{item.telNo}}</div>
+            <!--TODO 発生日時--->
+            <div class="md-body-1">発生日時：{{item.telNo}}</div>
     </div>
-    <!--ステータス-->
-    <div layout="row" layout-wrap>
-        <span class="md-subhead" ng-hide="item.status == 0 ">感知あり</span>
-        <span class="md-subhead" ng-hide="item.status != 0 ">感知なし</span>
 
+    <div layout="row" layout-wrap class="md-card-blank-top">
+        <span class="md-body-3" ng-hide="item.status == 0 ">感知あり</span>
+        <span class="md-body-3" ng-hide="item.status != 0 ">感知なし</span>
     </div>
+
     <!--ステータスが異常ありの場合-->
     <div ng-if="item.status != 0">
 
     <!-- <div layout="row" layout-wrap> -->
       <!--地震の場合-->
       <div layout="row" class="md-contentPaddingBottom" layout-wrap ng-if="item.type == 'earthquake'">
-        <div flex="35">
+        <div flex="25">
           <p flex class="md-body-1">傾き</p>
           <p flex class="md-body-1">商用停電</p>
           <p flex class="md-body-1">機器異常</p>
         </div>
-        <div flex="35">
-          <p flex class="md-subhead">{{item.slope}}</p>
-          <p flex class="md-subhead">{{item.commercialBlackout}}</p>
-          <p flex class="md-subhead">{{item.equipmentAbnormality}}</p>
+        <div flex="40">
+          <p flex class="md-body-3">{{item.slope}}</p>
+          <p flex class="md-body-3">{{item.commercialBlackout}}</p>
+          <p flex class="md-body-3">{{item.equipmentAbnormality}}</p>
         </div>
-        <div flex>
+        <div>
         <div flex class="md-body-1">震度</div>
-        <div flex class="md-display-3">{{item.seismicIntensity}}</div>
+        <div flex class="md-body-6">{{item.seismicIntensity}}</div>
       </div>
       </div>
       <!--雷の場合-->
       <div layout="row" class="md-contentPaddingBottom" layout-wrap ng-if="item.type == 'thunder'">
-        <div flex="35">
+        <div flex="25">
           <p flex class="md-body-1">漏電</p>
           <p flex class="md-body-1">商用停電</p>
           <p flex class="md-body-1">機器異常</p>
         </div>
-        <div flex="35">
-          <p flex class="md-subhead">{{item.leakage}}</p>
-          <p flex class="md-subhead">{{item.commercialBlackout}}</p>
-          <p flex class="md-subhead">{{item.equipmentAbnormality}}</p>
+        <div flex="40">
+          <p flex class="md-body-3">{{item.leakage}}</p>
+          <p flex class="md-body-3">{{item.commercialBlackout}}</p>
+          <p flex class="md-body-3">{{item.equipmentAbnormality}}</p>
         </div>
-        <div flex>
+        <div>
           <div flex class="md-body-1">雷</div>
-          <div flex class="md-display-3">{{item.power}}</div>
+          <div flex class="md-body-6">{{item.power}}</div>
         </div>
       </div>
 
 
-      　<p class="md-body-1">コメント・連絡事項</p>
+      　<div class="md-body-1">コメント・連絡事項</div>
     <!-- <div > -->
         <ul>
-          <li layout="row" ng-repeat="i in item.commentList">
-          <p class="md-subhead">{{i.comment}} {{i.commentDate}}</p>
+          <li layout="row">
+          <p class="md-body-3">{{comment}} {{commentDate}}</p>
         </li>
       </ul>
-    <!-- </div> -->
-
-
   </md-card-content>
 </md-card>
-
-<!--デバイスカード終わり-->
 </li>
 </ul>
-
-          </md-content>
-        </md-tab>
+</md-tab>
+<!--グラフタブ--------------->
         <md-tab label="グラフ">
-          <md-content class="md-padding">
+
             <md-input-container class="md-block" flex-gt-sm>
               <label>グラフの表示期間を選択</label>
                 <md-select ng-change="changeItem" ng-model="selectItem">
@@ -123,62 +114,44 @@
               </md-select>
             </md-input-container>
 
-            <div id="chart_div"></div>
-<ul>
-  <li ng-repeat="item in deviceList | filter:query">
-
-<!--デバイスカード-->
-  <md-card>
-  <!--デバイスカード　タイトル（デバイス名）-->
-  <md-card-title>
-    <!--タイトル（デバイス名）-->
-    <md-card-title-text>
-      <span class="md-subhead">{{item.deviceName}}</span>
-    </md-card-title-text>
-    <!--リンク-->
-     <md-button ng-click="deviceDetail()">
-        <buttondetail></buttondetail>
-    </md-button>
-      </md-card-title>
-
- <!--デバイスカード　コンテンツ-->
-  <md-card-content>
-    <!--地震データ有りの場合 グラフを表示する-->
-    <div id={{item.deviceId}}  class="google-chart">
-    </div>
-    <!--地震データ無しの場合 地震データ無しの文言を表示する-->
-    <!-- <div ng-if="!item.earthquakeHistoryList.length">
-    <p flex class="md-body-1">地震データなし</p>
-    </div> -->
 
 
-  </li>
+      <ul>
+        <li ng-repeat="item in deviceList | filter:query">
+
+        <md-card>
+          <md-list-item class="md-list-item-2" ng-click="deviceDetail()">
+            <p class="md-body-5">{{item.deviceName}}</p>
+            <buttondetail></buttondetail>
+          </md-list-item>
+       <!--デバイスカード　コンテンツ-->
+        <md-card-content>
+          <!--地震データ有りの場合 グラフを表示する-->
+          <div id={{item.deviceId}}  class="google-chart">
+          </div>
+          <!--地震データ無しの場合 地震データ無しの文言を表示する-->
+          <!-- <div ng-if="!item.earthquakeHistoryList.length">
+          <p flex class="md-body-1">地震データなし</p>
+          </div> -->
+          </md-card-content>
+      </md-card>
+
+        </li>
       </ul>
-    <!-- </div> -->
-    </div>
-
-  </md-card-content>
-</md-card>
-
-<!--デバイスカード終わり-->
-</li>
-</ul>
-
-          </md-content>
         </md-tab>
+
+<!--マップタブ--------------->
         <md-tab label="マップ">
-          <md-content class="md-padding">
             <!--MAP-->
             <div class="map">
               <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true">
                 <ui-gmap-markers models="markers" coords="'self'" icon="'icon'"></ui-gmap-markers>
               </ui-gmap-google-map>
             </div>
-
-          </md-content>
         </md-tab>
+
+
       </md-tabs>
-    </md-content>
   </div>
 </div>
 
