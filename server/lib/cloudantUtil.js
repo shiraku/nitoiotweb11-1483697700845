@@ -69,24 +69,6 @@ function connectDoc(dbName) {
     })
 };
 
-// Get root doc
-exports.getLiveData = function (req, res) {
-  // db.get(rootDoc, function (err, doc) {
-  //     if (err) {
-  //         return handleError(res, err);
-  //     }
-  //     return res.status(200).json(doc.attributes);
-  // })
-  var id = 'muser_u000';
-  // var key = request.query.key;
-    db.get('muser_u000', function (err, doc) {
-        if (err) {
-            return handleError(res, err);
-        }
-        return res.status(200).json(doc);
-    })
-};
-
 
 
 /**
@@ -103,8 +85,25 @@ exports.M_userEntitity = {
 //      console.log(doc);
       return callback(err,doc);
     });
-  }
+  },
   
+  updateUser : function(query, data, callback){
+    connectDoc('m_user');
+//    console.log("query, data@updateUser");
+//    console.log(query, data);
+    db.merge(query, data , function(err, doc) {
+//    console.log("err@updateUser");
+//    console.log(err);
+//    console.log("doc@updateUser");
+//    console.log(doc);
+      if(err){
+        return callback(err,doc);
+      }
+//      console.log(doc);
+      return callback(err,doc);
+    });
+  }
+
 };
 
 
@@ -351,14 +350,17 @@ function handleError(res, err) {
  */
 exports.EqimageEntitity = {
   //デバイスIDからユーザー情報をGETし返却する
-  getChartImage : function(query){
+  getChartImage : function(query, callback){
 //      console.log('クエリ情報@M_deviceEntitity');
 //      console.log(query);
     connectDoc('eqimage');
-    return db.getAttachment(query, 'eq.png', function(err) {
+    db.getAttachment(query, 'eq.png', function(err, dat) {
       if(err){
         return callback(err);
       }
+
+      var result = dat.body.toString('base64');
+      callback( null, result );   
     });
     
   }

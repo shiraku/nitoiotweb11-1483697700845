@@ -106,11 +106,11 @@
       console.log(id);
       $http.get('/api/chart_acceleration/' + id)
       .then(function successCallback(response) {
-        console.log("posted successfully");
+        console.log("/api/chart_acceleration/ successfully");
         console.log(response);
-        $scope.chart_acceleration = response.data;
+        $scope.chart_acceleration = 'data:image/jpg;base64,' + response.data.toString('base64');
       }, function errorCallback(response) {
-        console.error("error in posting");
+        console.error("error in /api/chart_acceleration/");
       });
       
       

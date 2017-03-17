@@ -75,20 +75,13 @@ var deviceDetail = {
     var self = this;
     var reqest = req;
     var response = res;
-//    cloudantUtil.EqimageEntitity.getChartImage(userDevice, function(err, dat){
-////      var filePath = 'images/eq.png';
-//////      var readStream = fs.createReadStream(filePath);
-////      console.log("dat@getChartImage");
-////      console.log(dat.body);
-//      if(err) {return response.status('404').sendfile(err);}
-////      var buf = fs.readFileSync(dat.body);
-////      return response.status('200').sendFile(dat, { 'Content-Type': 'image/png' });
-//    });
-    var readStream = cloudantUtil.EqimageEntitity.getChartImage(userDevice);
-    res.set({"Content-Type": "image/png"});
-////    res.status('200').send(readStream)
-//    console.log(readStream);
-    readStream.pipe(res)
+    cloudantUtil.EqimageEntitity.getChartImage(userDevice, function(err, dat){
+//      console.log("dat@getChartImage");
+//      console.log(dat);
+      if(err) {return response.status('404').sendfile(err);}
+      res.writeHead( 200, { 'Content-type': 'image/jpeg; charset=utf-8' } );
+      res.end( dat );
+    });
   }
   
 }

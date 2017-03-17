@@ -12,6 +12,7 @@ var Auth = require('./components/auth');
 //var cloudantUtil = require('./../../lib/cloudantUtil');
 var deviceList = require('./api/device/deviceList');
 var deviceDetail = require('./api/deviceUnit/deviceDetail');
+var user = require('./api/user/user');
 var auth = new Auth();
 
 
@@ -27,7 +28,13 @@ module.exports = function(app) {
    .get(errors[404]);
 
 
-  // All other routes should redirect to the index.html
+
+    /**
+   * ログイン関連のapi
+   * メソッドによって処理が変わる
+   * get:ログイン画面の表示
+   * post:ログイン認証
+   */
   app.get('/login',function(req, res) {
       res.sendFile(path.resolve(app.get('appPath') + '/index.html'),{query: req.query.query});
     });
@@ -74,7 +81,13 @@ module.exports = function(app) {
   
   
   //APIは認証チェック対象外
-  //アカウント情報取得API
+    /**
+   * アカウント関連のapi
+   * メソッドによりCRADを判断
+   * get:取得
+   * post:追加・更新
+   * delete:削除
+   */
   app.get('/api/user/',function(req, res) {
       if(!req.user) res.status(500).json({ error: "ログインされていません" });
       var obj = new Object();
@@ -83,7 +96,35 @@ module.exports = function(app) {
       res.status(200).json(obj);
     });
   
-  //デバイス一覧情報取得API
+    /**
+   * メール送信先関連のapi
+   * メソッドによりCRADを判断
+   * get:取得
+   * post:追加・更新
+   * delete:削除
+   */
+  //読み込み
+  app.get('/api/user/sendto/',function(req, res) {
+      user.getSendtoUser(req,res);
+    });
+  //追加・更新
+  app.post('/api/user/sendto/',function(req, res) {
+      user.saveSendtoUser(req,res);
+    });
+  //削除
+  app.delete('/api/user/sendto/:mailid',function(req, res) {
+      user.deleteSendtoUser(req,res);
+    });
+//  app.post('/api/user/:id',function(req, res) {
+//      user.updateUser(req,res);
+//    });
+  
+  
+    /**
+   * デバイス一覧関連のapi
+   * 紐づいているデバイスの最新情報をまとめて返す
+   * グラフ情報を別API（/api/device_history_eq/:id）
+   */
   //show
   app.get('/api/device_list',function(req, res) {
       deviceList.getList(req,res);
@@ -99,24 +140,39 @@ module.exports = function(app) {
 //    });
   
   
-  //デバイス情報取得API
+    /**
+   * デバイス単体関連のapi
+   * デバイスの基本情報と最新情報を返す
+   * 履歴は別API（/api/device_history_:type/:id）
+   */
   //show
   app.get('/api/device_detail/:id',function(req, res) {
       deviceDetail.getInfo(req,res);
     });
   
 
-  //地震、雷履歴取得API
+    /**
+   * 履歴関連のapi
+   * リクエスト日から１年前までのデータを返却する
+   * prams:type eq=地震 fl=雷
+   * prams:id デバイスID（５桁の数字）
+   */
   //show
   app.get('/api/device_history_:type/:id',function(req, res) {
       deviceDetail.getHistory(req,res);
     });
 
-  //合成加速度イメージ取得API
+
+    /**
+   * グラフイメージのapi
+   * 合成加速度のイメージを返却
+   * prams:id データ履歴ID（デバイスID＋データ発生時間）
+   */
   //show
   app.get('/api/chart_acceleration/:id',function(req, res) {
       deviceDetail.getChartImage(req,res);
     });
+  
   
   // All other routes should redirect to the index.html
   app.get('/*',function(req, res) {
