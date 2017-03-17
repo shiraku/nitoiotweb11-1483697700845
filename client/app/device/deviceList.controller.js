@@ -13,6 +13,7 @@
 //      }, function errorCallback(response) {
 //        console.error("error in posting");
 //      });
+      //デバイス一覧情報
       $http.get('/api/device_list/')
       .then(function successCallback(response) {
         console.log("posted successfully");
@@ -20,6 +21,28 @@
       }, function errorCallback(response) {
         console.error("error in posting");
       });
+      
+      //グラフ
+      $http.get('/api/user/')
+      .then(function successCallback(response) {
+        console.log("posted successfully");
+        console.log(response);
+        for(var i = 0; i < response.data.device.length; i++){
+          $http.get('/api/device_history_eq/'+ response.data.device[i].id)
+          .then(function successCallback(response) {
+            console.log("posted successfully");
+            console.log(response);
+          }, function errorCallback(response) {
+            console.error("error in posting");
+          }); 
+        }
+      }, function errorCallback(response) {
+        console.error("error in posting");
+      });
+      
+      
+      
+      
         
 
       //ヘッダータイトル

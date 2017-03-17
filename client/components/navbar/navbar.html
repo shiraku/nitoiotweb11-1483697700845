@@ -1,16 +1,37 @@
 <div class="navbar navbar-default navbar-static-top" ng-controller="NavbarCtrl">
 
-  <div class="container">
-
-    <div class="navbar-header">
+  <!-- <div class="container"> -->
+  <div>
+    <!-- <div class="navbar-header">
       <div layout="colom">
-      <md-button class="md-icon-button md-primary" ng-click="toggleLeft()" aria-label="Settings">
-        <!-- <md-icon md-svg-icon="img/icons/menu.svg"></md-icon> -->
+      <md-button class="md-icon-button md-primary humbergerMenu" ng-click="toggleLeft()" aria-label="Settings">
         <i class="material-icons">menu</i>
       </md-button>
       <div class="navbar-brand">{{navtitle}}</div>
     </div>
-    </div>
+    </div> -->
+
+    <md-toolbar class="md-hue-2">
+      <div class="md-toolbar-tools commonNavbar">
+        <!-- <md-button class="md-icon-button" aria-label="Settings" ng-disabled="true">
+          <md-icon md-svg-icon="img/icons/menu.svg"></md-icon>
+        </md-button> -->
+        <md-button class="md-icon-button md-primary humbergerMenu" ng-click="toggleLeft()" aria-label="Settings">
+          <!-- <i class="material-icons">menu</i> -->
+          <svg width="24px" height="24px" viewBox="16 40 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+              <desc>Created with Sketch.</desc>
+              <defs></defs>
+              <g id="Material/Icons-black/menu" stroke="none" fill="none" opacity="0.54" transform="translate(16.000000, 40.000000)" fill-rule="evenodd">
+                  <path d="M3,18 L21,18 L21,16 L3,16 L3,18 L3,18 Z M3,13 L21,13 L21,11 L3,11 L3,13 L3,13 Z M3,6 L3,8 L21,8 L21,6 L3,6 L3,6 Z" id="Shape" fill="#000000"></path>
+              </g>
+          </svg>
+        </md-button>
+
+        <h2 flex="" md-truncate="">{{navtitle}}</h2>
+
+      </div>
+    </md-toolbar>
 
   </div>
 </div>

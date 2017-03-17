@@ -114,9 +114,17 @@ exports.M_userEntitity = {
 exports.M_deviceEntitity = {
   //デバイスIDからユーザー情報をGETし返却する
   getDevice : function(query, callback){
-    var q = [];
-    for(var i =0; i < query.length; i++){
-      q.push('DEV_' + query[i].id);
+    var q;
+    if(typeof query == "object" || typeof query == "array"){
+      console.log('query is type of array');
+      q = [];
+      for(var i =0; i < query.length; i++){
+        q.push('DEV_' + query[i].id);
+      }
+    }else{
+//      console.log('query isnt type of array');
+      q = 'DEV_' + query;
+//      console.log(q);
     }
 //      console.log('クエリ情報@M_deviceEntitity');
 //      console.log(q);
@@ -139,23 +147,150 @@ exports.M_deviceEntitity = {
 exports.Eq_dEntitity = {
   //デバイスIDから１日以内に起きた最新の感知データをget
   getLatest : function(query, callback){
-    var q = [];
-    for(var i =0; i < query.length; i++){
-      q.push(query[i].id);
+    var q, option;
+    if(typeof query == "object" || typeof query == "array"){
+//      console.log('query is type of array');
+      q = [];
+      for(var i =0; i < query.length; i++){
+        q.push(query[i].id);
+      }
+      option = {keys: q,  descending:true};
+    }else{
+      option = {key: query,  descending:true};
     }
+//      console.log('クエリ情報@M_deviceEntitity');
+//      console.log(option);
     connectDoc('eq_d');
-      db.view('sc003/latest', {keys: q, descending:true} , function (err, res) {
+      db.view('sc003/latest', option , function (err, res) {
 //        console.log('err object @getLatest');
 //        console.log(err);
 //        console.log('row object @getLatest');
 //        console.log(res);
+//        
       return callback(err,res)
+    });
+  },
+  
+  //デバイスIDから１年前までの感知データをget
+  getHistory : function(query, callback){
+    var option;
+    var d = new Date();
+    
+    //スタート時間を取得　アクセス時間から１年前の日付を作成
+    var toDoubleDigits = function(num) {
+      num += "";
+      if (num.length === 1) {
+        num = "0" + num;
+      }
+     return num;     
+    };
+    var sd = String((d.getFullYear() - 1)) + 
+        String(toDoubleDigits(d.getMonth()+1)) + 
+        String(toDoubleDigits(d.getDate()));
+    var today = String((d.getFullYear())) + 
+        String(toDoubleDigits(d.getMonth()+1)) + 
+        String(toDoubleDigits(d.getDate()));
+//    
+//    var sd = new Date(d.getFullYear() - 1,d.getMonth(),d.getDate());
+    
+    option = {startkey: [query, today], endkey:[query, sd],  descending:true};
+//    console.log("query@getLatest");
+//    console.log(option);
+    connectDoc('eq_d');
+    
+      db.view('sc001/dlist', option , function (err, res) {
+//        console.log('err object @getHistory');
+//        console.log(err);
+//        console.log('row object @getHistory');
+//        console.log(res);
+        if(!res) return callback({error:"データが取得できませんでした。"});
+        var obj = new Object();
+        var di = '';
+        for(var i = 0; i < res.length; i++ ){
+          if(di == '' || di != res[i].key[0]) {
+            di = res[i].key[0];
+            obj["device_id"] = di;
+            obj["data"] = new Array();
+          }
+          obj.data.push(res[i].value);
+        }
+      return callback(err,obj)
     });
   }
 };
 
 
 
+
+/**
+ * Get fl_d doc
+ */
+exports.Fl_dEntitity = {
+  //デバイスIDから１日以内に起きた最新の感知データをget
+  getLatest : function(query, callback){
+    var q, option;
+    if(typeof query == "object" || typeof query == "array"){
+//      console.log('query is type of array');
+      q = [];
+      for(var i =0; i < query.length; i++){
+        q.push(query[i].id);
+      }
+      option = {keys: q,  descending:true};
+    }else{
+      option = {key: query,  descending:true};
+    }
+//      console.log('クエリ情報@M_deviceEntitity');
+//      console.log(option);
+    connectDoc('fl_d');
+      db.view('sc003/latest', option , function (err, res) {
+//        console.log('err object @getLatest');
+//        console.log(err);
+//        console.log('row object @getLatest');
+//        console.log(res);
+        
+      return callback(err,res)
+    });
+  },
+  
+  //デバイスIDから過去のの感知データをget
+  getHistory : function(query, callback){
+    var q, option;
+    var d = new Date();
+    var sd = new Date(d.getFullYear() - 1,d.getMonth(),d.getDate());
+    if(typeof query == "object" || typeof query == "array"){
+//      console.log('query is type of array');
+      q = [];
+      for(var i =0; i < query.length; i++){
+        q.push(query[i].id);
+      }
+      option = {startkey: [q, sd],  descending:true};
+    }else{
+      option = {startkey: [query, sd],  descending:true};
+    }
+    
+//    console.log("query@getLatest");
+//    console.log(option);
+    connectDoc('fl_d');
+      db.view('sc001/dlist', option , function (err, res) {
+//        console.log('err object @getHistory');
+//        console.log(err);
+//        console.log('row object @getHistory');
+//        console.log(res);
+        if(!res) return callback({error:"データが取得できませんでした。"});
+        var obj = new Object();
+        var di = '';
+        for(var i = 0; i < res.length; i++ ){
+          if(di == '' || di != res[i].key[0]) {
+            di = res[i].key[0];
+            obj["device_id"] = di;
+            obj["data"] = new Array();
+          }
+          obj.data.push(res[i].value);
+        }
+      return callback(err,obj)
+    });
+  }
+};
 
 /**
  * Get m_device doc
@@ -191,13 +326,15 @@ exports.Comment_dataEntitity = {
   getComment : function(query, callback){
     var q = [];
     for(var i =0; i < query.length; i++){
-      q.push(query[i].id);
+      q.push('DEV_' + query[i].id);
     }
-    connectDoc('eq_d');
-      db.view('sc003/latest', {key: query, descending:true} , function (err, res) {
+//        console.log('query @getComment');
+//        console.log(q);
+    connectDoc('comment_data');
+      db.view('sc001/indexByDevice', {keys: q, descending:true} , function (err, res) {
 //        console.log('err object @getLatest');
 //        console.log(err);
-//        console.log('row object @getLatest');
+//        console.log('row object @getComment');
 //        console.log(res);
       return callback(err,res)
     });
@@ -206,3 +343,23 @@ exports.Comment_dataEntitity = {
 function handleError(res, err) {
     return res.status(500).send(err);
 }
+
+
+
+/**
+ * Get eqimage doc
+ */
+exports.EqimageEntitity = {
+  //デバイスIDからユーザー情報をGETし返却する
+  getChartImage : function(query){
+//      console.log('クエリ情報@M_deviceEntitity');
+//      console.log(query);
+    connectDoc('eqimage');
+    return db.getAttachment(query, 'eq.png', function(err) {
+      if(err){
+        return callback(err);
+      }
+    });
+    
+  }
+};

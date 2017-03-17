@@ -5,8 +5,6 @@
 'use strict';
 var express = require('express');
 var cloudantUtil = require('./../../lib/cloudantUtil');
-var Auth = require('./../../components/auth');
-var auth = new Auth();
 var app = express();
 
 var deviceList = {
@@ -15,41 +13,63 @@ var deviceList = {
   latestData : {},
   latestEQJson : {},
   latestEQDate : {},
+  commentJson : {},
+  commentDate : new Array(),
   //show device
-  show : function(req,res) {
+  getList : function(req,res) {
 //    console.log('セッションユーザー情報@deviceListクラス');
 //    console.log(req.user);
     if(!req.user) {
-      return { error: "ログインされていません" };
+      return res.status('500').json({ error: "ログインされていません" });
     }
     var userDevice = req.user.device;
-    var responseJson,devicesJson,latestJson,latestEQJson
+    var responseJson,devicesJson,latestJson,latestEQJson,commentJson;
     var self = this;
     var reqest = req;
     var response = res;
     cloudantUtil.M_deviceEntitity.getDevice(userDevice, function(err, devices){
-      if(err) {return err;}
+      if(err) {return response.status('500').json(err);}
       self.devicesJson = devices;
 //      console.log("dat@devicesJson");
 //      console.log(self.devicesJson);
       cloudantUtil.I_dataEntitity.getLatest(userDevice, function(err, latest){
-        if(err) {return err;}
+        if(err) {return response.status('500').json(err);}
         self.latestJson = latest;
 //          console.log("dat@latestJson");
 //          console.log(self.latestJson);
         cloudantUtil.Eq_dEntitity.getLatest(userDevice, function(err, latest){
-          if(err) {return err;}
+          if(err) {return response.status('500').json(err);}
           self.latestEQJson = latest;
 //            console.log("dat@latestEQJson");
 //            console.log(self.latestEQJson);
-          responseJson = self.createJson();
-          
+          cloudantUtil.Comment_dataEntitity.getComment(userDevice, function(err, dat){
+            if(err) {return response.status('500').json(err);}
+            self.commentJson = dat;
+//            console.log("dat@getComment");
+//            console.log(dat);
+            
+            responseJson = self.createJson();
 //            console.log(response);
-          return response.json(responseJson);
+            return response.status('200').json(responseJson);
+          });
         });
       });
     });
   },
+  
+//  getHistory : function(req,res){
+//    if(!req.user) {
+//      return res.status('500').json({ error: "ログインされていません" });
+//    }
+//    var userDevice = req.user.device;
+//    var self = this;
+//    var reqest = req;
+//    var response = res;
+//    cloudantUtil.Eq_dEntitity.getHistory(userDevice, function(err, dat){
+//      if(err) {return response.json(err);}
+//      return response.json(dat);
+//    });
+//  },
                                             
   createJson : function(){
     var responseJson = new Array();
@@ -62,26 +82,34 @@ var deviceList = {
         obj["deviceName"] = dat.deviceName;
         obj["responsiblePerson"] = dat.responsiblePerson;
         obj["telNo"] = dat.telNo;
+        obj["address"] = dat.address; 
+        obj["memo"] = dat.memo;
         obj["latitude"] = dat.latitude;
         obj["longitude"] = dat.longitude;
-        obj["status"] = flgSense;
+        obj["status"] = (flgSense) ? '感知あり':'感知なし';
         if(flgSense){
           obj["type"] = self.latestEQDate.value.type;
 //          console.log("self.latestEQDate.datas");
 //          console.log(self.latestEQDate.value.datas);
-          obj["seismicIntensity"] = self.latestEQDate.value.datas[0].value;
+          obj["seismicIntensity"] = self.latestEQDate.value.datas.seismicIntensity;
+          obj["power"] = self.latestEQDate.value.datas.power,
+          obj["leakage"] = self.latestEQDate.value.datas.leakage,
+          obj["slope"] = self.latestEQDate.value.datas.slope,
+          obj["commercialBlackout"] = self.latestEQDate.value.datas.commercialBlackout,
+          obj["equipmentAbnormality"] = self.latestEQDate.value.datas.equipmentAbnormality
         }
-        if(self.hasLatest(dat._id)){
-            console.log("self.latestDate.datas");
-            console.log(self.latestDate);
-            obj["slope"] = self.latestDate.slope;
-            obj["commercialBlackout"] = self.latestDate.commercialBlackout;
-            obj["equipmentAbnormality"] = self.latestDate.equipmentAbnormality;
+//        if(self.hasLatest(dat._id)){
+////            console.log("self.latestDate.datas");
+////            console.log(self.latestDate);
+//            obj["slope"] = self.latestDate.slope;
+//            obj["commercialBlackout"] = self.latestDate.commercialBlackout;
+//            obj["equipmentAbnormality"] = self.latestDate.equipmentAbnormality;
+//        }
+        if(self.hasComment(dat._id,self.latestEQDate.value.date_id)){
+//            console.log("self.commentDate");
+//            console.log(self.commentDate);
+            obj["commentList"] = self.commentDate;
         }
-//      if(flgSense){
-//        comment = this.getComment(this.latestEQDate.data.date);
-//        if(!comment.device_id)
-//      }
 //      console.log("データ単体@createJson");
 //      console.log(obj);
       responseJson.push(obj);
@@ -127,12 +155,27 @@ var deviceList = {
     return flg;
   },
   
-  getComment : function(date){
-    cloudantUtil.Comment_dataEntitity.getComment(date, function(err, dat){
-      console.log("dat@getComment");
-      console.log(dat);
-      return dat;
-    });
+  hasComment : function(id,date){
+//    console.log("date@hasComment");
+//    console.log(date,id);
+    if(!this.commentJson.length) return false;
+//    console.log("hasData@hasComment");
+    var key = id + "_" + date;
+    var flg = false;
+//    console.log("this.commentJson@hasComment");
+//    console.log(this.commentJson);
+    for(var i = 0; i < this.commentJson.length; i++){
+//      console.log("check.commentJson@hasComment");
+//      console.log(this.commentJson[i].value.related_id);
+//      console.log(key);
+      if(this.commentJson[i].value.related_id == key){
+//        console.log("matchId@hasComment");
+        flg =  true;
+        this.commentDate.push(this.commentJson[i].value);
+        
+      }
+    }
+    return flg;
   } 
 }
 module.exports = deviceList;

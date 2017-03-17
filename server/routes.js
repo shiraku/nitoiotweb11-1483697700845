@@ -9,7 +9,9 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var errors = require('./components/errors');
 var Auth = require('./components/auth');
+//var cloudantUtil = require('./../../lib/cloudantUtil');
 var deviceList = require('./api/device/deviceList');
+var deviceDetail = require('./api/deviceUnit/deviceDetail');
 var auth = new Auth();
 
 
@@ -72,25 +74,49 @@ module.exports = function(app) {
   
   
   //APIは認証チェック対象外
-  //デバイス情報取得API
-  //show
-  app.get('/api/device_list',function(req, res) {
-      deviceList.show(req,res);
-//      if(!dat.device_list) {
-//        return res.status(500).send(dat);
-//      } else {
-//        return res.status(200).send(dat);
-//      }
+  //アカウント情報取得API
+  app.get('/api/user/',function(req, res) {
+      if(!req.user) res.status(500).json({ error: "ログインされていません" });
+      var obj = new Object();
+      obj["device"] = req.user.device;
+      obj["sendto"] = req.user.sendto;
+      res.status(200).json(obj);
     });
   
-  //create
+  //デバイス一覧情報取得API
+  //show
+  app.get('/api/device_list',function(req, res) {
+      deviceList.getList(req,res);
+    });
+  
+//  
+//  //デバイス一覧履歴取得API
+//  //一覧での履歴取得ができないためコメントアウト
+//  //履歴情報は/api/device_history_:type/:idにてデバイス毎に取得
+//  //show
+//  app.get('/api/device_history_eq',function(req, res) {
+//      deviceList.getHistory(req,res);
+//    });
   
   
-  //updata
+  //デバイス情報取得API
+  //show
+  app.get('/api/device_detail/:id',function(req, res) {
+      deviceDetail.getInfo(req,res);
+    });
   
-  
-  //delete
-  
+
+  //地震、雷履歴取得API
+  //show
+  app.get('/api/device_history_:type/:id',function(req, res) {
+      deviceDetail.getHistory(req,res);
+    });
+
+  //合成加速度イメージ取得API
+  //show
+  app.get('/api/chart_acceleration/:id',function(req, res) {
+      deviceDetail.getChartImage(req,res);
+    });
   
   // All other routes should redirect to the index.html
   app.get('/*',function(req, res) {
@@ -100,6 +126,7 @@ module.exports = function(app) {
         var url = encodeURIComponent(req.path);
         res.redirect('/login?query=' + url);
       }
+//        res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
     });
   
 
