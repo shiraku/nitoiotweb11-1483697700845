@@ -21,7 +21,7 @@
       }, function errorCallback(response) {
         console.error("error in posting");
       });
-      
+
       //グラフ
       $http.get('/api/user/')
       .then(function successCallback(response) {
@@ -34,16 +34,16 @@
             console.log(response);
           }, function errorCallback(response) {
             console.error("error in posting");
-          }); 
+          });
         }
       }, function errorCallback(response) {
         console.error("error in posting");
       });
-      
-      
-      
-      
-        
+
+
+
+
+
 
       //ヘッダータイトル
       $scope.navtitle='デバイス一覧';
@@ -247,69 +247,6 @@
 
 
             }
-
-        // //チャートを作成する
-        // function createChart(dataList) {
-        //      var chart = {};
-        //      chart.type = "ColumnChart";
-        //
-        //     //  chart.data = [{label:'date' type:'datetime'},{label:'number',type:'number'}];
-        //
-        //     chart.data ={
-        //
-        //     cols: [
-        //       {
-        //           id: 'month',
-        //           label: '年月',
-        //           type: 'date'
-        //       },
-        //       {
-        //           id: 'sales',
-        //           label: '地震',
-        //           type: 'number'
-        //       }
-        //   ],
-        //   rows: []}
-        //
-        //
-        //
-        //      for(var s=0; dataList.length > s; s++){
-        //
-        //        var d = dataList[s];
-        //
-        //       //  chart.data.rows.push([new Date(d.date),d.datas[0].value]);
-        //
-        //       // var tmpdate = Date(d.date);
-        //
-        //
-        //       chart.data.rows.push({c:[{v:new Date(2017,1,1),f:"hello"},{v:d.datas[0].value,f:"hello"}]});
-        //
-        //      }
-        //
-        //      chart.options = {
-        //             hAxis: {
-        //               title: '時間',
-        //                format: 'yyyy/MM/dd',
-        //               viewWindow: {
-        //                   min: new Date(2017,1,1),
-        //                   max: new Date(2017,1,31)
-        //                 }
-        //             },
-        //             vAxis: {
-        //               title: '震度',
-        //               viewWindow : {
-        //                   min: 0,
-        //                   max: 8
-        //               }
-        //             },
-        //             legend:'none'
-        //
-        //       }
-        //      return chart;
-        // }
-
-
-
 
        //画面遷移
        $scope.deviceDetail = function(){

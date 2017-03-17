@@ -40,7 +40,7 @@
       <md-card-content>
       <md-card-title-text>
         <p class="md-body-1">緯度・経度</p>
-        <span class="md-subhead">{{deviceGroupData[0].groupName}}</span>
+        <span class="md-subhead">{{deviceGroupData[0].latLon}}</span>
         <md-button ng-click="latlonEdit()">
           <buttonpen></buttonpen>
         </md-button>
@@ -50,7 +50,7 @@
       <md-card-content>
       <md-card-title-text>
         <p class="md-body-1">メモ</p>
-        <span class="md-subhead">{{deviceGroupData[0].groupName}}</span>
+        <span class="md-subhead">{{deviceGroupData[0].memo}}</span>
         <md-button ng-click="memoEdit()">
           <buttonpen></buttonpen>
         </md-button>
@@ -60,13 +60,13 @@
       <md-card-content>
       <md-card-title-text>
         <p class="md-body-1">責任者</p>
-        <span class="md-subhead">{{deviceGroupData[0].groupName}}</span>
+        <span class="md-subhead">{{deviceGroupData[0].respon}}</span>
         <md-button ng-click="responsiblePersonEdit()">
           <buttonpen></buttonpen>
         </md-button>
       </md-card-title-text>
         </md-card-content>
-        
+
           <md-card-content>
       <md-card-title-text>
         <p class="md-body-1">連絡先</p>
