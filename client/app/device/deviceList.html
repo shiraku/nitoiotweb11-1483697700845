@@ -2,9 +2,9 @@
   <!--ヘッダー読み込み-->
   <navitop></navitop>
   <div class="md-toolbar-tools" layout="column">
-    <h3 class="ng-binding ng-isolate-scope">
+    <!-- <h3 class="ng-binding ng-isolate-scope">
       <a class="docs-anchor ng-scope" ng-href="#basic-usage" name="basic-usage" href="#basic-usage">デバイス一覧</a>
-    </h3>
+    </h3> -->
       <!-- <md-input-container md-no-float="" class="md-block md-input-has-placeholder md-input-has-value">
           <input ng-model="query" placeholder="絞り込み" class="ng-valid md-input ng-dirty ng-valid-parse ng-touched ng-not-empty" aria-label="Address 2">
           <div class="md-errors-spacer"></div>
@@ -21,7 +21,7 @@
   <div ng-cloak>
     <md-content class="md-padding">
       <md-tabs md-dynamic-height md-border-bottom>
-        <md-tab label="サマリー情報">
+        <md-tab label="一覧">
           <md-content class="md-padding">
 <ul>
   <li ng-repeat="item in deviceList | filter:query">
@@ -36,12 +36,7 @@
     </md-card-title-text>
     <!--リンク-->
      <md-button ng-click="deviceDetail()">
-        <svg width="24px" height="24px" viewBox="315 15 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-          <defs></defs>
-          <g id="Material/Icons-black/chevron-right" stroke="none" fill="none" transform="translate(315.000000, 15.000000)" fill-rule="evenodd">
-              <polygon id="Shape" fill="#D8001A" points="8.59997559 7.4 9.99997559 6 15.9999756 12 9.99997559 18 8.59997559 16.6 13.1999756 12"></polygon>
-          </g>
-        </svg>
+        <buttondetail></buttondetail>
     </md-button>
   </md-card-title>
 
@@ -142,31 +137,19 @@
     </md-card-title-text>
     <!--リンク-->
      <md-button ng-click="deviceDetail()">
-        <svg width="24px" height="24px" viewBox="315 15 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-          <defs></defs>
-          <g id="Material/Icons-black/chevron-right" stroke="none" fill="none" transform="translate(315.000000, 15.000000)" fill-rule="evenodd">
-              <polygon id="Shape" fill="#D8001A" points="8.59997559 7.4 9.99997559 6 15.9999756 12 9.99997559 18 8.59997559 16.6 13.1999756 12"></polygon>
-          </g>
-        </svg>
+        <buttondetail></buttondetail>
     </md-button>
       </md-card-title>
 
  <!--デバイスカード　コンテンツ-->
   <md-card-content>
-    <!--グラフ-->
-    <!-- <div ng-if="!!item.chart"> -->
-    <!-- <div google-chart chart={{item.chart}} class="google-chart">-->
+    <!--地震データ有りの場合 グラフを表示する-->
     <div id={{item.deviceId}}  class="google-chart">
-    <!-- </div> -->
-    <!-- <div google-chart chart class="google-chart">
-      {{item.chart}}
-    </div> -->
     </div>
-    <!--地震データない場合-->
-    <div ng-if="!item.chart">
+    <!--地震データ無しの場合 地震データ無しの文言を表示する-->
+    <!-- <div ng-if="!item.earthquakeHistoryList.length">
     <p flex class="md-body-1">地震データなし</p>
-
-    </div>
+    </div> -->
 
 
   </li>

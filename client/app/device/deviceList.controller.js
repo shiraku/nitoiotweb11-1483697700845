@@ -51,22 +51,22 @@
       //グラフのX軸選択用
       $scope.selectItems=[
                 { 'value':'day',
-                  'label':'直近の１日',
+                  'label':'１日',
                 },
                 { 'value':'week',
-                  'label':'直近の１週間',
+                  'label':'１週間',
                 },
                 { 'value':'month',
-                  'label':'直近の１か月',
+                  'label':'１か月',
                 },
                 { 'value':'year',
-                  'label':'直近の１年',
+                  'label':'１年',
                 }
             ];
 
 
-
-      $scope.selectItem = $scope.selectItems['day'];
+      //グラフの表示期間のデフォル値設定
+      $scope.selectItem = 'month';
 
 
 //      $http.get('/api/things/')
@@ -155,27 +155,16 @@
 
 
 
+/////グラフタブ用///////////////////////////////////////////////////////////////////////////////////////
+
         rePackJson();
 
         //グラフの表示期間が変更された時、グラフを再描画する。
         $scope.$watch('selectItem', function(newValue, oldValue, scope) {
               console.log(newValue);
+              $scope.selectItem = newValue;
               rePackJson();
         });
-
-       //過去データを取得する
-
-       //TODO デフォルト表示は1日で良いか
-      //→１ヶ月
-       //TODO 地震のデータがない場合は、”地震データなし”と表記することで良いか。
-         //→オK
-       //TODO 表示する直近の1日、１週間の定義について
-                //最後に地震が起きた日から　１週間
-                //今現在ページを開いている日時から　１週間　こっち！！！！
-       //TODO 地震のデータは過去ぶん全部取得してくるのか（表示に不要な１年前以上も）
-       //TODO 最新データは履歴のデータに入ってくるか。
-              //→くる場合、グラフに考慮必要なし　　　こっち！！！！
-              //→来ない場合、グラフデータに組み込む必要あり。
 
 
        //取得したデータをもとにチャートを作成し、デバイスリストに詰め直す
@@ -197,23 +186,35 @@
           google.charts.load('current', {packages: ['controls','corechart', 'bar']});
           google.charts.setOnLoadCallback(drawChart);
 
+
+          // function countdate (){
+          //
+          //   switch scope.selectItem
+          //
+          //
+          // }
+
             function drawChart() {
 
               for(var x=0; tmpdeviceList.length>x; x++){
 
                 var data = new google.visualization.DataTable();
-                data.addColumn('datetime', 'Time of Day');
-                data.addColumn('number', 'Motivation Level');
+                data.addColumn('datetime', 'yyyy/mm/dd hh:mm');
+                data.addColumn('number', '震度');
 
                 data.addRows(
                   [
-                             [new Date(2014,7,1,15,0,0), 3],
-                             [new Date(2014,11,20,18,0,0), 4],
-                             [new Date(2014,11,21,21,0,0), 7],
-                             [new Date(2014,11,22,15,0,0), 3],
-                             [new Date(2014,11,23,18,0,0), 4],
+                             [new Date(2017,1,1,15,0,0), 3],
+                             [new Date(2017,1,20,18,0,0), 4],
+                             [new Date(2017,2,2,21,0,0), 7],
+                             [new Date(2017,2,11,15,0,0), 3],
+                             [new Date(2017,2,12,18,0,0), 4],
                 ]
               );
+
+                var dt = new Date();
+
+                var min = new Date (dt.setMonth(dt.getMonth() -1));
 
                 var options = {
                   // title: '',
@@ -221,8 +222,8 @@
                     title: '日時',
                     format: 'yyyy/MM/dd',
                     viewWindow: {
-                        min: new Date(2014,11,1,0,0,0),
-                        max: new Date(2014,11,31,0,0,0)
+                        min: min,
+                        max: new Date()
                     }
                   },
                   vAxis: {
@@ -315,11 +316,13 @@
          $location.path("/user_"+$routeParams.USER_ID+"/device_"+this.item.deviceId);
        }
 
+
+/////MAPタブ用///////////////////////////////////////////////////////////////////////////////////////
       $scope.map = {
       // マップ初期表示の中心地
       center: {
-        latitude: 34.7019399, // 緯度
-        longitude: 135.51002519999997 // 経度
+        latitude: 35.459923,//34.7019399, // 緯度
+        longitude: 139.635290//135.51002519999997 // 経度
       },
       // マップ初期表示の拡大
       zoom: 19

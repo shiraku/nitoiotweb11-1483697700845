@@ -2,6 +2,10 @@
 
   <!--ヘッダー読み込み-->
   <navitop></navitop>
+  
+  <!--エラーメッセージ-->
+  <div ng-show="error" class="alert alert-danger">{{error}}</div>
+  <div ng-show="success" class="alert alert-success">{{success}}</div>
 
   <div class="md-toolbar-tools">
     <h3 class="ng-binding ng-isolate-scope">
@@ -10,25 +14,31 @@
   </div>
 
   <md-card>
-    <md-card-title>
+      <md-card-content>
       <md-card-title-text>
-        <p class="md-body-1">グループID</p>
-        <span class="md-subhead">{{deviceGroupData[0].groupId}}</span>
-      </md-card-title-text>
-      <md-button ng-click="deviceNameEdit()">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24">
-            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-            <path d="M0 0h24v24H0z" fill="none"/>
-        </svg>
-      </md-button>
-    </md-card-title>
-    <md-card-content>
-      <md-card-title-text>
-        <p class="md-body-1">グループ名前</p>
-        <span class="md-subhead">{{deviceGroupData[0].groupName}}</span>
+        <div class="md-body-1">グループID</div>
+        <div class="md-body-3">{{deviceGroupData[0].groupId}}</div>
       </md-card-title-text>
     </md-card-content>
+
+
+
+    <md-card-content>
+      <div layout="colom">
+      <md-card-title-text>
+        <div class="md-body-1">グループ名前</div>
+        <div class="md-body-3">{{deviceGroupData[0].groupName}}</div>
+      </md-card-title-text>
+      <md-button ng-click="deviceNameEdit()">
+        <buttonpen></buttonpen>
+      </md-button>
+    </div>
+    </md-card-content>
+
   </md-card>
+
+
+  <!--ツールバー--->
 
   <div class="md-toolbar-tools">
     <h3 class="ng-binding ng-isolate-scope">
@@ -37,81 +47,60 @@
   </div>
 
   <div ng-cloak>
-    <md-content class="md-padding">
+
+
       <md-tabs md-dynamic-height md-border-bottom>
-        <md-tab label="デバイス">
-          <md-content class="md-padding">
+          <!--デバイスタブ-->
+          <md-tab label="デバイス">
+              <md-card>
+                  <ul>
+                    <li ng-repeat="item in deviceGroupData[0].deviceList | filter:query">
 
-
-
-  <md-card>
-    <md-card-content>
-      <ul>
-        <li ng-repeat="item in deviceGroupData[0].deviceList | filter:query">
-
-          <div layout="colom">
-          <p class="md-body-1">{{item.deviceName}}</p>
-            <md-button ng-click="deviceDetail()">
-                <svg width="24px" height="24px" viewBox="315 15 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                  <defs></defs>
-                  <g id="Material/Icons-black/chevron-right" stroke="none" fill="none" transform="translate(315.000000, 15.000000)" fill-rule="evenodd">
-                      <polygon id="Shape" fill="#D8001A" points="8.59997559 7.4 9.99997559 6 15.9999756 12 9.99997559 18 8.59997559 16.6 13.1999756 12"></polygon>
-                  </g>
-                </svg>
-            </md-button>
-          </div>
-        </li>
-      </ul>
-    </md-card-content>
-  </md-card>
-
-
-
-          </md-content>
-        </md-tab>
-
-
-        <md-tab label="アラート一覧">
-          <md-content class="md-padding">
-            <md-card>
-              <md-card-content>
-                <ul>
-                  <li ng-repeat="item in deviceGroupData[0].alertNotificationList">
-                    <p class="md-body-1">{{item.name}}</p>
-                    <p class="md-body-1">{{item.mailAddress}}</p>
-                    <md-button ng-click="mailAddressEdit()">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24">
-                          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                          <path d="M0 0h24v24H0z" fill="none"/>
-                      </svg>
-                      <!-- <editIcon></editIcon> -->
-                    </md-button>
-                    <md-button ng-click="mailAddressDelete()">
-                      <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-                           <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-                           <path d="M0 0h24v24H0z" fill="none"/>
-                      </svg>
-                    </md-button>
-                  </li>
-                </ul>
-              </md-card-content>
-                <!--通知設定ボタン-->
-              <md-button class="md-accent md-button md-ink-ripple" type="button" ng-click="alertSetting()" ng-transclude="">
-                <!-- <span class="ng-scope">通知設定</span> -->
-                <div class="md-ripple-container">通知設定</div>
-              </md-button>
-              <!--追加ボタン-->
-              <md-button class="md-accent md-button md-ink-ripple" type="button" ng-click="mailAddressAdd()" ng-transclude="">
-                <!-- <span class="ng-scope">追加</span> -->
-                <div class="md-ripple-container">追加</div>
-              </md-button>
-
+                      <div layout="colom">
+                      <p class="md-body-4">{{item.deviceName}}</p>
+                        <md-button ng-click="deviceDetail()">
+                            <buttondetail></buttondetail>
+                        </md-button>
+                      </div>
+                    </li>
+                  </ul>
               </md-card>
-          </md-content>
-        </md-tab>
+          </md-tab>
+
+        <!--アラートタブ-->
+          <md-tab label="アラート一覧">
+            <!-- <md-content class="md-padding"> -->
+              <md-card>
+                  <ul>
+                    <li ng-repeat="item in deviceGroupData[0].alertNotificationList">
+
+                      <div layout="colom">
+                      <p class="md-body-4">{{item.name}}</p>
+                      <p class="md-body-5">{{item.mailAddress}}</p>
+                      <md-button ng-click="mailAddressEdit()">
+                        <buttonpen></buttonpen>
+                      </md-button>
+                      <md-button ng-click="mailAddressDelete()">
+                        <buttontrashbox></buttontrashbox>
+                      </md-button>
+                    </div>
+                    </li>
+                  </ul>
+                  <!--ボタン-->
+              <div layout>
+                <md-button flex class="md-accent md-button md-ink-ripple md-text-button-1" type="button" ng-click="alertSetting()" ng-transclude="">
+                  <div class="md-ripple-container md-ripple-container-1">通知設定</div>
+                </md-button>
+                <md-button flex class="md-accent md-button md-ink-ripple md-text-button-2" type="button" ng-click="mailAddressAdd()" ng-transclude="">
+                  <div class="md-ripple-container md-ripple-container-2">追加</div>
+                </md-button>
+              </div>
+
+                </md-card>
+            <!-- </md-content> -->
+          </md-tab>
 
       </md-tabs>
-    </md-content>
   </div>
 </div>
 
