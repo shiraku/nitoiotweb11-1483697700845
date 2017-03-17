@@ -2,25 +2,20 @@
 'use strict';
 
     angular.module('nitoiotweb11App')
-    .controller('DeviceDetailDataCtrl',['$rootScope','$routeParams','$scope','$http','$location', function ($rootScope,$routeParams,$scope, $http, $location) {
+    .controller('DeviceDetailDataCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog', function ($rootScope,$routeParams,$scope, $http, $location,$mdDialog) {
 
       //ヘッダータイトル
-      //TODO 日付の形式を変更する。
-      $scope.navtitle=$routeParams.YYYYMMDDHHMM+"詳細データ";
+      var str = $routeParams.YYYYMMDDHHMM;
+      var titleYear = str.slice(0,4);
+      var titleMonth = str.slice(4,6);
+      var titleDay = str.slice(6,8);
+      $scope.navtitle=titleYear+"/"+titleMonth+"/"+titleDay+"詳細データ";
+
 
       //TODO APIでデータ取得する
       $scope.graphData = [
 
       ];
-      // $scope.mapInfo = [
-      //
-      //   {
-      //     "device_id":"00000",
-      //     "device_name":"00000",
-      //     "latitude":"00000",
-      //     "longitude":"00000",
-      //   }
-      //  ];
 
        $scope.detailData = [
        {
@@ -50,6 +45,55 @@
               }
             ]
       }];
+
+
+      $scope.addComment = function(ev){
+        // $scope.mailAddressEdit.title = 'メールアドレスの編集';
+        // $scope.mailAddressEdit.placeholder_name = this.item.name;
+        // $scope.mailAddressEdit.placeholder_mailaddress = this.item.mailAddress;
+
+        var item = {
+          title : "コメント追加",
+          // placeholder:"コメント"
+        };
+
+        $mdDialog.show({
+           targetEvent: ev,
+           template:
+           '<md-dialog>'+
+           '  <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">'+
+           '    <h2 class="md-title ng-binding">'+item.title+'</h2>'+
+           '    <div class="md-dialog-content-body ng-scope">'+
+           '     <p class="ng-binding"></p>'+
+           '   </div>'+
+           '<md-input-container class="md-block">'+
+            // '<label>'+item.placeholder+'</label>'+
+            '<textarea ng-model="user.biography" md-maxlength="150" rows="5" md-select-on-focus=""></textarea>'+
+            '</md-input-container>'+
+           '  <md-checkbox name="tos" ng-model="project.tos" required="">重要なコメントとして登録する</md-checkbox>'+
+           ' </md-dialog-content>'+
+           ' <md-dialog-actions>'+
+           ' <button class="md-primary md-cancel-button md-button ng-scope md-default-theme md-ink-ripple" type="button" ng-click="closeDialog()" style="">キャンセル</button>'+
+           ' <button class="md-primary md-confirm-button md-button md-ink-ripple md-default-theme" type="button" ng-click="regist()">登録</button>'+
+           ' </md-dialog-actions>'+
+           ' </md-dialog>',
+        controller:['$scope', '$route', '$location', function ($scope, $route, $location) {
+
+        //キャンセルボタン押下
+        $scope.closeDialog = function() {
+        $mdDialog.hide();
+        }
+
+        //登録ボタン押下
+        $scope.regist = function() {
+        $mdDialog.hide();
+        }
+
+        }]
+        });
+      }
+
+      ///MAP用データ/////////////////////////////////////////////
 
       //グラフイメージ取得
       var datePrm = $routeParams.YYYYMMDDHHMM.substr(0,4) + '-' + 
@@ -83,8 +127,8 @@
       $scope.map = {
       // マップ初期表示の中心地
       center: {
-        latitude: 34.7019399, // 緯度
-        longitude: 135.51002519999997 // 経度
+        latitude: 35.459923, // 緯度
+        longitude: 139.635290 // 経度
       },
       // マップ初期表示の拡大
       zoom: 19

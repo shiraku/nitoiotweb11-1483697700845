@@ -6,48 +6,6 @@
     <md-content class="md-padding">
 
 
-
-
-
-<!--グラフ-->
-        <div class="md-toolbar-tools">
-          <h3 class="ng-binding ng-isolate-scope">
-            <a class="docs-anchor ng-scope" ng-href="#basic-usage" name="basic-usage" href="#basic-usage">グラフ</a>
-          </h3>
-        </div>
-
-          <md-card>
-            <md-card-title>
-            <md-card-title-text>
-              <span class="md-subhead">合成加速度</span>
-            </md-card-title-text>
-          </md-card-title>
-            <!--TODO NodeJSからバイナリで読み込むように変更-->
-            <img ng-src="{{chart_acceleration}}"></img>
-          </md-card>
-
-
-<!--マップ-->
-        <div class="md-toolbar-tools">
-          <h3 class="ng-binding ng-isolate-scope">
-            <a class="docs-anchor ng-scope" ng-href="#basic-usage" name="basic-usage" href="#basic-usage">マップ</a>
-          </h3>
-        </div>
-
-        <md-card>
-          <md-content class="md-padding">
-            <!--MAP-->
-            <div class="mapDetail">
-              <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true">
-                <ui-gmap-markers models="markers" coords="'self'" icon="'icon'"></ui-gmap-markers>
-              </ui-gmap-google-map>
-            </div>
-
-          </md-content>
-        </md-card>
-
-
-
 <!--地震または雷-->
 <div class="md-toolbar-tools">
   <h3 class="ng-binding ng-isolate-scope">
@@ -113,6 +71,11 @@
       </li>
     </ul>
     </div>
+    <!--コメント入力ボタン-->
+  <md-button class="md-accent md-button md-ink-ripple" type="button" ng-click="addComment()" ng-transclude="">
+    <!-- <span class="ng-scope">通知設定</span> -->
+    <div class="md-ripple-container">コメント追加</div>
+  </md-button>
   </md-card-content>
     <md-card-content ng-hide="detailData[0].mediaNewsletter.length == 0 ">
       <div layout="row" layout-wrap>
@@ -123,12 +86,47 @@
   </md-card-content>
 </md-card>
 
-<!--デバイスカード終わり-->
+
+<!--グラフ-->
+        <div class="md-toolbar-tools">
+          <h3 class="ng-binding ng-isolate-scope">
+            <a class="docs-anchor ng-scope" ng-href="#basic-usage" name="basic-usage" href="#basic-usage">グラフ</a>
+          </h3>
+        </div>
+
+          <md-card>
+            <md-card-title>
+            <md-card-title-text>
+              <span class="md-subhead">合成加速度</span>
+            </md-card-title-text>
+          </md-card-title>
+            <!--TODO NodeJSからバイナリで読み込むように変更-->
+            <img src="https://62ea1b2c-ff5c-44e4-9e5a-5992c9cc72a5-bluemix.cloudant.com/eqimage/2017-02-13T23:47:58_00014/eq.png"></img>
+          </md-card>
 
 
     </md-content>
   </div>
 </div>
+
+<!--マップ-->
+        <div class="md-toolbar-tools">
+          <h3 class="ng-binding ng-isolate-scope">
+            <a class="docs-anchor ng-scope" ng-href="#basic-usage" name="basic-usage" href="#basic-usage">マップ</a>
+          </h3>
+        </div>
+
+        <md-card>
+          <md-content class="md-padding">
+            <!--MAP-->
+            <div class="mapDetail">
+              <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true">
+                <ui-gmap-markers models="markers" coords="'self'" icon="'icon'"></ui-gmap-markers>
+              </ui-gmap-google-map>
+            </div>
+
+          </md-content>
+        </md-card>
 
 
 
