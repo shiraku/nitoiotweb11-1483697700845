@@ -294,6 +294,23 @@
     font-weight: bold;       /**オリジナル**/
   }
 
+  .md-body-7{
+    font-family: .HiraKakuInterface-W3;
+    font-size: 20px;
+    color: rgba(0,0,0,0.87);
+    letter-spacing: 0;
+    line-height: 24px;
+  }
+.md-body-8{
+    /* ホームチェッカー: */
+  font-family: .HiraKakuInterface-W7;
+  font-size: 20px;
+  color: rgba(0,0,0,0.87);
+  letter-spacing: 0;
+  line-height: 24px;
+  font-weight: bold;
+}
+
   md-list-item .md-list-item-inner{
     border-bottom: solid 1px #E3E3E3;
   }
@@ -306,7 +323,7 @@
     border-bottom: none;
   }
 
-
+/**ボタン*******************************************************************/
 
   /* ボタン */
   .md-text-button-1{
@@ -355,3 +372,38 @@
  .mapDetail .angular-google-map-container {
   height: 200px;
  }
+
+/**ログイン画面*******************************************************************/
+
+ /* app bar bg: */
+ .loginbar{
+background: #F5F5F5;
+box-shadow: 0 0 4px 0 rgba(0,0,0,0.12), 0 4px 4px 0 rgba(0,0,0,0.24);
+height: 300px;
+margin: 0;
+}
+
+ .loginContent{
+background: #FFFFFF;
+box-shadow: 0 0 2px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24);
+border-radius: 2px;
+border: 1px solid rgba(0,0,0,0.12);
+position: absolute;
+position: relative;
+top: -100px;
+padding: 50px;
+}
+
+ .loginContent md-input-container{
+   margin-bottom: 0px;
+ }
+
+.loginText{
+  text-align: center;
+  padding: 25px;
+}
+
+.logoContent{
+  text-align: center;
+  padding: 70px;
+}
