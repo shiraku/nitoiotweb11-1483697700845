@@ -5,16 +5,8 @@
     .controller('AlertSettingCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog) {
 
 
-      
-      //アラート情報
-      $http.get('/api/alert/')
-      .then(function successCallback(response) {
-        console.log("posted successfully");
-        console.log(response);
-      }, function errorCallback(response) {
-        console.error("error in posting");
-      });
-      
+
+
       //URLでグループ設定がアラート設定か切り替えを行う。
       if(!$routeParams.DEVICE_ID){
         //グループ
@@ -28,102 +20,110 @@
         $scope.case = "device";
       };
 
-      //スライダーのデフォルト値設定
-        $scope.slider = {
-          //震度
-          //SI値 TODO SI値のデフォルト値を設定する
-          //長周期地震動
-          seismicIntensity:3,
-          si:3,
-          longPeriodGroundMotion:2
-        };
+        //デフォルト値設定
+              //スライダー
+                $scope.slider = {
+                  //震度
+                  //SI値 TODO SI値のデフォルト値を設定する
+                  //長周期地震動
+                  seismicIntensity:3,
+                  si:3,
+                  longPeriodGroundMotion:2
+                };
 
 
-      //通知する/通知しないのデフォルト値設定
-        $scope.switch = {
-          //震度
-          //SI値
-          //長周期地震動
-          //傾き
-          //雷サージ
-          //商用停電
-          //機器異常
-          seismicIntensity:true,
-          si:false,
-          longPeriodGroundMotion:true,
-          slope:true,
-          lightningSurge:true,
-          commercialBlackout:true,
-          deviceAbnormality:true
-        };
-
-
-
-        //SI値か震度通知する場合は、どちらか一つのみを選択する。
-        //震度が”通知する”になった場合SI値は"通知しない"にする。
-        $scope.$watch('switch.seismicIntensity', function(newValue, oldValue, scope) {
-              console.log(newValue);
-              if (newValue) {
-                $scope.switch.si = false;
-              }
-        });
-
-        //SI値が”通知する”になった場合震度は"通知しない"にする。
-        $scope.$watch('switch.si', function(newValue, oldValue, scope) {
-              console.log(newValue);
-              if (newValue) {
-                $scope.switch.seismicIntensity = false;
-              }
-        });
+              //通知する/通知しない
+                $scope.switch = {
+                  //震度
+                  //SI値
+                  //長周期地震動
+                  //傾き
+                  //雷サージ
+                  //商用停電
+                  //機器異常
+                  seismicIntensity:true,
+                  si:false,
+                  longPeriodGroundMotion:true,
+                  slope:true,
+                  lightningSurge:true,
+                  commercialBlackout:true,
+                  deviceAbnormality:true
+                };
 
 
 
-        //通知闘値データ取得
-        //TODO APIで取得するように変更
-
-        // $http.get('/api/device_list/')
-        // .then(function successCallback(response) {
-        //   console.log("posted successfully");
-        //   console.log(response);
-
-
-          var response = {
-
-            seismicIntensityValue : 4,
-            siValue : 127.8,
-            longPeriodGroundMotionValue : 3,
-            seismicIntensity: true,
-            si : false,
-            longPeriodGroundMotion : true,
-            slope : true,
-            lightningSurge : true,
-            commercialBlackout : false,
-            deviceAbnormality: false
-
-          }
-
-
-          //スライダー
-          $scope.slider.seismicIntensity  = response.seismicIntensityValue;
-          $scope.slider.si  = response.siValue;
-          $scope.slider.longPeriodGroundMotion  = response.longPeriodGroundMotionValue;
-
-          //通知する/通知しない
-          $scope.switch.seismicIntensity = response.seismicIntensity;
-          $scope.switch.si  = response.si;
-          $scope.switch.longPeriodGroundMotion  = response.longPeriodGroundMotion;
-          $scope.switch.slope  = response.slope;
-          $scope.switch.lightningSurge  = response.lightningSurge;
-          $scope.switch.commercialBlackout  = response.commercialBlackout;
-          $scope.switch.deviceAbnormality = response.deviceAbnormality;
-
-
-        // }, function errorCallback(response) {
-        //   console.error("error in posting");
+        // //TODO どうにかする
+        ////SI値か震度通知する場合は、どちらか一つのみを選択する。
+        // //震度が”通知する”になった場合SI値は"通知しない"にする。
+        // $scope.$watch('switch.seismicIntensity', function(newValue, oldValue, scope) {
+        //       console.log(newValue);
+        //       if (newValue) {
+        //         $scope.switch.si = false;
+        //       }
+        // });
+        //
+        // //SI値が”通知する”になった場合震度は"通知しない"にする。
+        // $scope.$watch('switch.si', function(newValue, oldValue, scope) {
+        //       console.log(newValue);
+        //       if (newValue) {
+        //         $scope.switch.seismicIntensity = false;
+        //       }
         // });
 
 
 
+        //通知闘値データ取得
+
+        //アラート情報
+        $http.get('/api/alert/')
+        .then(function successCallback(response) {
+          console.log("posted successfully");
+          console.log(response);
+
+          //詰め直す
+          var obj = response.data;
+
+          //TODO これで良いかどうかは確認。
+          //各設定値が0の場合は設定なしとみなす。0でない場合は、設定有りとみなす。
+
+          //設定ありの場合
+          if(obj.si >0){
+            $scope.switch.si  = true;
+            $scope.slider.si  = parseFloat(obj.si);
+          }else{
+            //設定なしの場合
+            $scope.switch.si  = false;
+          }
+
+          //設定ありの場合
+          if(obj.seismicIntensity > 0){
+            $scope.switch.seismicIntensity = true;
+            $scope.slider.seismicIntensity  = parseInt(obj.seismicIntensity,10);
+          }else{
+            //設定なしの場合
+            $scope.switch.seismicIntensity = false;
+          }
+
+          //設定ありの場合
+          if(obj.lpgm > 0){
+            $scope.switch.longPeriodGroundMotion = true;
+            $scope.slider.longPeriodGroundMotion  = parseInt(obj.lpgm,10);
+          }else{
+            //設定なしの場合
+            $scope.switch.longPeriodGroundMotion = false;
+          }
+
+          //通知する/通知しない
+          $scope.switch.slope  = obj.slope;
+          $scope.switch.lightningSurge  = obj.lightningSurge;
+          $scope.switch.commercialBlackout  = obj.commercialBlackout;
+          $scope.switch.deviceAbnormality = obj.deviceAbnormality;
+
+
+
+        }, function errorCallback(response) {
+          console.error("error in posting");
+        });
 
 
       //キャンセルボタン押下
@@ -143,26 +143,21 @@
           $scope.postUrl = "device"+$routeParams.USER_ID+$routeParams.DEVICE_ID;
         }
 
-
         //送信データ
         var postData = {
 
 
-          //スライダー
+          //スライダーの値
           seismicIntensity : $scope.slider.seismicIntensity,
           si : $scope.slider.si,
-          longPeriodGroundMotionValue : $scope.slider.longPeriodGroundMotion,
+          lpgm : $scope.slider.longPeriodGroundMotion,
           //通知する/通知しない
-          seismicIntensity: $scope.switch.seismicIntensity,
-          si : $scope.switch.si,
-          lpgm : $scope.switch.longPeriodGroundMotion,
           slope : $scope.switch.slope,
           lightningSurge : $scope.switch.lightningSurge,
           commercialBlackout : $scope.switch.commercialBlackout,
           equipmentAbnormality: $scope.switch.deviceAbnormality
 
         }
-
 
         //POST処理
         $http({
