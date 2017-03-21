@@ -72,10 +72,18 @@ function connectDoc(dbName) {
 
 
 /**
- * Get m_user doc
+ * m_userへのアクセス
+ * ユーザー情報に関するデータベース
+ * getUser：ユーザーIDからユーザー情報をGETし返却する
+ * updateUser：渡された値をアップデートまたは追加登録する
  */
 exports.M_userEntitity = {
-  //ユーザーIDからユーザー情報をGETし返却する
+  
+  /**
+ * ユーザーIDからユーザー情報をGETし返却する
+ * prams:query U+数字５桁のuser_ID配列または文字列
+ * prams:callback コールバック
+ */
   getUser : function(query, callback){
     connectDoc('m_user');
     db.get('muser_' + query, function(err, doc) {
@@ -87,6 +95,12 @@ exports.M_userEntitity = {
     });
   },
   
+  /**
+ * 渡された値をアップデートまたは追加登録する
+ * prams:query DEV_U+数字５桁の文字列
+ * prams:data アップデートするデータ（Objecrt）
+ * prams:callback コールバック
+ */
   updateUser : function(query, data, callback){
     connectDoc('m_user');
 //    console.log("query, data@updateUser");
@@ -102,16 +116,25 @@ exports.M_userEntitity = {
 //      console.log(doc);
       return callback(err,doc);
     });
-  }
+  },
+  
 
 };
 
 
+
 /**
- * Get m_device doc
+ * M_deviceへのアクセス
+ * ユーザー情報に関するデータベース
+ * getDevice：デバイスIDからユーザー情報をGETし返却する
+ * updateUser：渡された値をアップデートまたは追加登録する
  */
 exports.M_deviceEntitity = {
-  //デバイスIDからユーザー情報をGETし返却する
+  /**
+ * ユーザーIDからユーザー情報をGETし返却する
+ * prams:query U+数字５桁のuser_ID配列または文字列
+ * prams:callback コールバック
+ */
   getDevice : function(query, callback){
     var q;
     if(typeof query == "object" || typeof query == "array"){
@@ -125,26 +148,50 @@ exports.M_deviceEntitity = {
       q = 'DEV_' + query;
 //      console.log(q);
     }
-//      console.log('クエリ情報@M_deviceEntitity');
-//      console.log(q);
+      console.log('クエリ情報@M_deviceEntitity');
+      console.log(q);
     connectDoc('m_device');
     db.get(q, function(err, doc) {
       if(err){
         return callback(err,doc);
       }
-//      console.log('デバイス情報@M_deviceEntitity');
-//      console.log(doc);
+      console.log('デバイス情報@M_deviceEntitity');
+      console.log(doc);
+      return callback(err,doc);
+    });
+  },
+  
+  updateDevice : function(query, data, callback){
+    connectDoc('m_device');
+//    console.log("query, data@updateDevice");
+//    console.log(query, data);
+    db.merge(query, data , function(err, doc) {
+//    console.log("err@updateUser");
+//    console.log(err);
+//    console.log("doc@updateUser");
+//    console.log(doc);
+      if(err){
+        return callback(err);
+      }
       return callback(err,doc);
     });
   }
 };
 
 
+
 /**
- * Get eq_d doc
+ * Eq_dへのアクセス
+ * 地震情報に関するデータベース
+ * getLatest：デバイスIDから１日以内に起きた最新の感知データを返却する
+ * getHistory：デバイスIDから１年前までの感知データを返却する
  */
 exports.Eq_dEntitity = {
-  //デバイスIDから１日以内に起きた最新の感知データをget
+  /**
+ * デバイスIDから１日以内に起きた最新の感知データを返却する
+ * prams:query U+数字５桁のuser_ID配列または文字列
+ * prams:callback コールバック
+ */
   getLatest : function(query, callback){
     var q, option;
     if(typeof query == "object" || typeof query == "array"){
@@ -220,9 +267,11 @@ exports.Eq_dEntitity = {
 
 
 
-
 /**
- * Get fl_d doc
+ * fl_dへのアクセス
+ * 雷情報に関するデータベース
+ * getLatest：デバイスIDから１日以内に起きた最新の感知データを返却する
+ * getHistory：デバイスIDから１年前までの感知データを返却する
  */
 exports.Fl_dEntitity = {
   //デバイスIDから１日以内に起きた最新の感知データをget
@@ -291,8 +340,12 @@ exports.Fl_dEntitity = {
   }
 };
 
+
+
 /**
- * Get m_device doc
+ * i_dataへのアクセス
+ * 最新情報に関するデータベース
+ * getLatest：デバイスIDから１日以内に起きた最新の感知データを返却する
  */
 exports.I_dataEntitity = {
   //デバイスIDからユーザー情報をGETし返却する
@@ -318,7 +371,9 @@ exports.I_dataEntitity = {
 
 
 /**
- * Get comment_data doc
+ * comment_dataへのアクセス
+ * コメント情報に関するデータベース
+ * getComment：感知データIDに関するコメントをすべて取得し返却する
  */
 exports.Comment_dataEntitity = {
   //デバイスIDから１日以内に起きた最新の感知データをget
@@ -346,10 +401,12 @@ function handleError(res, err) {
 
 
 /**
- * Get eqimage doc
+ * eqimageへのアクセス
+ * グラフイメージ情報に関するデータベース
+ * getChartImage：感知データIDから合成加速度イメージを取得し返却する
  */
 exports.EqimageEntitity = {
-  //デバイスIDからユーザー情報をGETし返却する
+  //感知データIDから合成加速度イメージを取得し返却する
   getChartImage : function(query, callback){
 //      console.log('クエリ情報@M_deviceEntitity');
 //      console.log(query);

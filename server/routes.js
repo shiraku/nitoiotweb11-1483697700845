@@ -11,7 +11,7 @@ var errors = require('./components/errors');
 var Auth = require('./components/auth');
 //var cloudantUtil = require('./../../lib/cloudantUtil');
 var deviceList = require('./api/device/deviceList');
-var deviceDetail = require('./api/deviceUnit/deviceDetail');
+var deviceUnit = require('./api/device/deviceUnit');
 var user = require('./api/user/user');
 var auth = new Auth();
 
@@ -147,7 +147,21 @@ module.exports = function(app) {
    */
   //show
   app.get('/api/device_detail/:id',function(req, res) {
-      deviceDetail.getInfo(req,res);
+      deviceUnit.getDeviceDetail(req,res);
+    });
+  
+    /**
+   * デバイス単体関連のapi
+   * デバイスの基本情報のみを返す
+   * 履歴は別API（/api/device_history_:type/:id）
+   */
+  //show
+  app.get('/api/device_basicinfo/:id',function(req, res) {
+      deviceUnit.getDeviceBasicInfo(req,res);
+    });
+  //show
+  app.post('/api/device_basicinfo/:id',function(req, res) {
+      deviceUnit.updateDeviceBasicInfo(req,res);
     });
   
 
@@ -159,7 +173,7 @@ module.exports = function(app) {
    */
   //show
   app.get('/api/device_history_:type/:id',function(req, res) {
-      deviceDetail.getHistory(req,res);
+      deviceUnit.getHistory(req,res);
     });
 
 
@@ -170,7 +184,21 @@ module.exports = function(app) {
    */
   //show
   app.get('/api/chart_acceleration/:id',function(req, res) {
-      deviceDetail.getChartImage(req,res);
+      deviceUnit.getChartImage(req,res);
+    });
+
+
+    /**
+   * アラート設定のapi
+   * アラート閾値の設定と設定値を返却
+   * prams:id ユーザーID（U数字３桁）
+   */
+  //show
+  app.get('/api/alert/',function(req, res) {
+      user.getAlert(req,res);
+    });
+  app.post('/api/alert/',function(req, res) {
+      user.updateAlert(req,res);
     });
   
   

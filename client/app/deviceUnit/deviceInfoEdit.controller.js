@@ -4,6 +4,24 @@
     angular.module('nitoiotweb11App')
     .controller('DeviceInfoEditCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog) {
 
+      //送信者一覧情報
+      $http.get('/api/device_basicinfo/' + $routeParams.DEVICE_ID + '/')
+      .then(function successCallback(response) {
+        console.log("posted successfully");
+        console.log(response);
+      }, function errorCallback(response) {
+        console.error("error in posting");
+      });
+      
+      //送信者一覧情報
+      $http.get('/api/user/')
+      .then(function successCallback(response) {
+        console.log("posted successfully");
+        console.log(response);
+      }, function errorCallback(response) {
+        console.error("error in posting");
+      });
+      
 
       //デバイスグループデータ
       //TODO APIで取得するように変更
@@ -58,6 +76,7 @@
                     "placeholder":"デバイス名",
                     "ariaLabel":"",
                     "initialValue":"",
+                    "itemKey":"deviceName",
                     "ok":"登録",
                     "cancel":"キャンセル"}
         dialogShow(ev,json);
@@ -69,6 +88,7 @@
                        "placeholder":"住所",
                        "ariaLabel":"",
                        "initialValue":"",
+                       "itemKey":"address",
                        "ok":"登録",
                        "cancel":"キャンセル"}
           dialogShow(ev,json);
@@ -85,6 +105,7 @@
                    "placeholder":"メモ",
                    "ariaLabel":"",
                    "initialValue":"",
+                    "itemKey":"memo",
                    "ok":"登録",
                    "cancel":"キャンセル"}
        dialogShow(ev,json);
@@ -96,6 +117,7 @@
                    "placeholder":"責任者",
                    "ariaLabel":"",
                    "initialValue":"",
+                    "itemKey":"responsiblePerson",
                    "ok":"登録",
                    "cancel":"キャンセル"}
        dialogShow(ev,json);
@@ -108,6 +130,7 @@
                    "placeholder":"連絡先",
                    "ariaLabel":"",
                    "initialValue":"",
+                    "itemKey":"telNo",
                    "ok":"登録",
                    "cancel":"キャンセル"}
       dialogShow(ev,json);
@@ -122,8 +145,35 @@
           .targetEvent(ev)
           .ok(param.ok)
           .cancel(param.cancel);
+        
+        var itemKey = param.itemKey
 
-          $mdDialog.show(confirm);
+          $mdDialog.show(confirm)
+            .then(function(val) {
+            //登録の場合
+            //TODO 削除のリクエストを投げる
+              $http({
+                method: 'post',
+                url: '/api/device_basicinfo/' + $routeParams.DEVICE_ID + '/',
+                data: { key: itemKey, value: val }
+              })
+              .then(
+                function successCallback(response){
+                  console.log(response);
+                  if(!response.data.error) {
+                    console.log("success");
+                    $rootScope.success = response.data.message;
+                  } else {
+                    $rootScope.error = response.data.message;
+                  }
+
+                },
+                function errorCallback(response){
+                    $rootScope.error = response.data.message;
+
+                }
+              ); 
+          });
 
         };
 
@@ -184,6 +234,28 @@ $scope.closeDialog = function() {
 //登録ボタン押下
 $scope.regist = function() {
   $mdDialog.hide();
+  //編集内容をpost
+  $http({
+    method: 'POST',
+    url: '/api/user/sendto/',
+    data: { name: $scope.dialog.name, mailid: $scope.dialog.mailAddress, key: "nito_nems02@yahoo.co.jp" }
+  })
+  .then(
+    function successCallback(response){
+      console.log(response);
+      if(!response.data.error) {
+        console.log("success");
+        $rootScope.success = response.data.message;
+      } else {
+        $rootScope.error = response.data.message;
+      }
+
+    },
+    function errorCallback(response){
+        $rootScope.error = response.data.message;
+
+    }
+  ); 
 }
 
 }]
@@ -206,6 +278,26 @@ $scope.mailAddressDelete = function (ev){
     $mdDialog.show(confirm).then(function() {
     //削除の場合
       //TODO 削除のリクエストを投げる
+        $http({
+          method: 'DELETE',
+          url: '/api/user/sendto/nito_nems02@yahoo.co.jp/'
+        })
+        .then(
+          function successCallback(response){
+            console.log(response);
+            if(!response.data.error) {
+              console.log("success");
+              $rootScope.success = response.data.message;
+            } else {
+              $rootScope.error = response.data.message;
+            }
+
+          },
+          function errorCallback(response){
+              $rootScope.error = response.data.message;
+
+          }
+        ); 
     }
     //キャンセルの場合
     , function() {

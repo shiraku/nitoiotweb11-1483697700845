@@ -2,6 +2,10 @@
 
   <!--ヘッダー読み込み-->
   <navitop></navitop>
+  
+  <!--エラーメッセージ-->
+  <div ng-show="error" class="alert alert-danger">{{error}}</div>
+  <div ng-show="success" class="alert alert-success">{{success}}</div>
 
   <div class="md-toolbar-tools">
     <h3 class="ng-binding ng-isolate-scope">

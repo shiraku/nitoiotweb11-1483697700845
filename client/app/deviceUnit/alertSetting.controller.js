@@ -5,6 +5,16 @@
     .controller('AlertSettingCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog) {
 
 
+      
+      //アラート情報
+      $http.get('/api/alert/')
+      .then(function successCallback(response) {
+        console.log("posted successfully");
+        console.log(response);
+      }, function errorCallback(response) {
+        console.error("error in posting");
+      });
+      
       //URLでグループ設定がアラート設定か切り替えを行う。
       if(!$routeParams.DEVICE_ID){
         //グループ
@@ -139,30 +149,34 @@
 
 
           //スライダー
-          seismicIntensityValue : $scope.slider.seismicIntensity,
-          siValue : $scope.slider.si,
+          seismicIntensity : $scope.slider.seismicIntensity,
+          si : $scope.slider.si,
           longPeriodGroundMotionValue : $scope.slider.longPeriodGroundMotion,
           //通知する/通知しない
           seismicIntensity: $scope.switch.seismicIntensity,
           si : $scope.switch.si,
-          longPeriodGroundMotion : $scope.switch.longPeriodGroundMotion,
+          lpgm : $scope.switch.longPeriodGroundMotion,
           slope : $scope.switch.slope,
           lightningSurge : $scope.switch.lightningSurge,
           commercialBlackout : $scope.switch.commercialBlackout,
-          deviceAbnormality: $scope.switch.deviceAbnormality
+          equipmentAbnormality: $scope.switch.deviceAbnormality
 
         }
 
 
         //POST処理
-        // $http.post('/api/alertSetting/')
-        // .then(function successCallback(response) {
-        //   console.log("posted successfully");
-        //   console.log(response);
-            $location.path($scope.backUrl);
-        // }, function errorCallback(response) {
-        //   console.error("error in posting");
-        // });
+        $http({
+          method: 'post',
+          url: '/api/alert/',
+          data: postData
+        })
+        .then(function successCallback(response) {
+          console.log("posted successfully");
+          console.log(response);
+          $location.path($scope.backUrl);
+        }, function errorCallback(response) {
+          console.error("error in posting");
+        });
 
 
       }

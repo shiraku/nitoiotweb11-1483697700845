@@ -7,6 +7,12 @@ var express = require('express');
 var cloudantUtil = require('./../../lib/cloudantUtil');
 var app = express();
 
+  /***********************************************
+ * デバイスリスト deviceList
+ * getSendtoUser:メール送信先の取得api file
+ * saveSendtoUser:メール送信先の更新と追加api
+ * deleteSendtoUser:メール送信先の削除api
+ *************************************************/
 var deviceList = {
   devicesJson : {},
   latestJson : {},
@@ -15,7 +21,13 @@ var deviceList = {
   latestEQDate : {},
   commentJson : {},
   commentDate : new Array(),
-  //show device
+  
+  
+  /**
+ * 所有デイバス情報のリスト
+ * prams:req express requestオブジェクト
+ * prams:res express responseオブジェクト
+ */
   getList : function(req,res) {
 //    console.log('セッションユーザー情報@deviceListクラス');
 //    console.log(req.user);
@@ -70,7 +82,12 @@ var deviceList = {
 //      return response.json(dat);
 //    });
 //  },
-                                            
+  
+  
+  /**
+ * 所有デイバス情報のリストJSONの作成
+ * return:デバイスリストオブジェクト
+ */
   createJson : function(){
     var responseJson = new Array();
     var self = this;
@@ -120,6 +137,10 @@ var deviceList = {
     return {"device_list":responseJson};
   },
   
+  /**
+ * 感知データがあるかのチェック
+ * prams:device　デバイスID
+ */
   hasSense : function(device){
     if(!this.latestEQJson.length) return false;
 //    console.log("device@hasSense");
@@ -137,24 +158,33 @@ var deviceList = {
     return flg;
   },
   
-  hasLatest : function(device){
-//    console.log("device@hasLatest");
-//    console.log(device);
-    if(!this.latestEQJson.length) return false;
-//    console.log("hasData@hasLatest");
-    var deviceId = device.split('_')[1];
-    var flg = false;
-    for(var i = 0; i < this.latestJson.length; i++){
-      if(this.latestJson[i].key == deviceId){
-//        console.log("matchId@hasLatest");
-        flg =  true;
-        this.latestDate = this.latestJson[i];
-        break;
-      }
-    }
-    return flg;
-  },
+  /**
+ * 感知データがあるかのチェック
+ * prams:device　デバイスID
+ */
+//  hasLatest : function(device){
+////    console.log("device@hasLatest");
+////    console.log(device);
+//    if(!this.latestEQJson.length) return false;
+////    console.log("hasData@hasLatest");
+//    var deviceId = device.split('_')[1];
+//    var flg = false;
+//    for(var i = 0; i < this.latestJson.length; i++){
+//      if(this.latestJson[i].key == deviceId){
+////        console.log("matchId@hasLatest");
+//        flg =  true;
+//        this.latestDate = this.latestJson[i];
+//        break;
+//      }
+//    }
+//    return flg;
+//  },
   
+  /**
+ * コメントデータがあるかのチェック
+ * prams:id　デバイスID
+ * prams:date　感知データID
+ */
   hasComment : function(id,date){
 //    console.log("date@hasComment");
 //    console.log(date,id);
