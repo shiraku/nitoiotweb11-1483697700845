@@ -126,14 +126,38 @@
       //連絡先編集画面遷移
       $scope.telNoEdit = function(ev){
 
-       var json = {"title":"連絡先",
-                   "placeholder":"連絡先",
-                   "ariaLabel":"",
-                   "initialValue":"",
-                    "itemKey":"telNo",
-                   "ok":"登録",
-                   "cancel":"キャンセル"}
-      dialogShow(ev,json);
+//       var json = {"title":"連絡先",
+//                   "placeholder":"連絡先",
+//                   "ariaLabel":"",
+//                   "initialValue":"",
+//                    "itemKey":"telNo",
+//                   "ok":"登録",
+//                   "cancel":"キャンセル"}
+        var json = {
+           "template":
+           '<form name="dialog">'+
+           '<md-dialog>'+
+           '  <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">'+
+           '    <h2 class="md-title ng-binding">連絡先</h2>'+
+           '    <div class="md-dialog-content-body ng-scope">'+
+           '     <p class="ng-binding"></p>'+
+           '   </div>'+
+           '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme">'+
+           '     <input type="number" ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="telNo" name="telNo" value="" placeholder="連絡先" class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="+this.title+" aria-invalid="false" style="">'+
+           '     <div ng-messages="telNo.$error"  class="md-errors-spacer" ng-hide="telNo.$valid">'+
+             '     <div ng-message="email">半角数字で入力してください</div>'+
+             '     </div>'+
+           ' </md-input-container>'+
+           ' </md-dialog-content>'+
+           ' <md-dialog-actions>'+
+           ' <button class="md-primary md-cancel-button md-button ng-scope md-default-theme md-ink-ripple" type="button" ng-click="closeDialog()" style="">キャンセル</button>'+
+           ' <button class="md-primary md-confirm-button md-button md-ink-ripple md-default-theme" type="button" ng-click="regist()">登録</button>'+
+           ' </md-dialog-actions>'+
+           ' </md-dialog>'+
+           ' </form>',
+           "targetEvent": ev,
+        }
+      dialogShowTemp(ev,json);
       };
 
       function dialogShow(ev,param){
@@ -176,6 +200,51 @@
           });
 
         };
+      
+      function dialogShowTemp(ev,param){
+
+          $mdDialog.show({
+           targetEvent: param.targetEvent,
+           template: param.template,
+            controller:['$scope', '$route', '$location', function ($scope, $route, $location) {
+
+              //キャンセルボタン押下
+              $scope.closeDialog = function() {
+                $mdDialog.hide();
+              }
+
+              //登録ボタン押下
+              $scope.regist = function() {
+                if($scope.dialog.telNo == undefined) return false;
+                if($scope.dialog.telNo.$invalid) return false;
+                $mdDialog.hide();
+                //編集内容をpost
+                $http({
+                method: 'post',
+                url: '/api/device_basicinfo/' + $routeParams.DEVICE_ID + '/',
+                data: { key: "telNo", value: $scope.dialog.telNo.$modelValue }
+              })
+                .then(
+                  function successCallback(response){
+                    console.log(response);
+                    if(!response.data.error) {
+                      console.log("success");
+                      $rootScope.success = response.data.message;
+                    } else {
+                      $rootScope.error = response.data.message;
+                    }
+
+                  },
+                  function errorCallback(response){
+                      $rootScope.error = response.data.message;
+
+                  }
+                ); 
+              }
+          }]
+          });
+
+        };
 
 
 //ボタン押下のアクション
@@ -198,12 +267,14 @@ function showMailAddressDialog($event,flg){
   item.title = 'メールアドレスの編集';
   item.placeholder_name = this.item.name;
   item.placeholder_mailaddress = this.item.mailAddress;
+  item.key = "key='" + item.placeholder_mailaddress + "'"
 
 }
 
 $mdDialog.show({
      targetEvent: $event,
      template:
+     '<form name="dialog">'+
      '<md-dialog>'+
      '  <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">'+
      '    <h2 class="md-title ng-binding">'+item.title+'</h2>'+
@@ -211,20 +282,25 @@ $mdDialog.show({
      '     <p class="ng-binding"></p>'+
      '   </div>'+
      '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme">'+
-     '     <input ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="dialog.name" placeholder='+item.placeholder_name+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
+     '     <input ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="name" name="name" value="'+item.placeholder_name+'" placeholder='+item.placeholder_name+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
      '     <div class="md-errors-spacer"></div>'+
      '   </md-input-container>'+
      '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme md-prompt-input-container-2">'+
-     '     <input ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="dialog.mailAddress" placeholder='+item.placeholder_mailaddress+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
-     '     <div class="md-errors-spacer"></div>'+
+     '     <input type="email" ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="mailAddress" name="mailAddress" value='+item.placeholder_mailaddress+' placeholder='+item.placeholder_mailaddress+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
+     '     <input type="hidden" ng-model="key" name="key" placeholder='+item.placeholder_mailaddress+' ng-init="'+item.key+'" class="ng-hide">'+
+     '     <div ng-messages="dialog.mailAddress.$error"  class="md-errors-spacer" ng-hide="dialog.mailAddress.$valid">'+
+       '     <div ng-message="email">メールアドレスを正しく入力してください</div>'+
+       '     </div>'+
      '   </md-input-container>'+
      ' </md-dialog-content>'+
      ' <md-dialog-actions>'+
      ' <button class="md-primary md-cancel-button md-button ng-scope md-default-theme md-ink-ripple" type="button" ng-click="closeDialog()" style="">キャンセル</button>'+
      ' <button class="md-primary md-confirm-button md-button md-ink-ripple md-default-theme" type="button" ng-click="regist()">登録</button>'+
      ' </md-dialog-actions>'+
-     ' </md-dialog>',
+     ' </md-dialog>'+
+     ' </form>',
 controller:['$scope', '$route', '$location', function ($scope, $route, $location) {
+
 
 //キャンセルボタン押下
 $scope.closeDialog = function() {
@@ -233,12 +309,14 @@ $scope.closeDialog = function() {
 
 //登録ボタン押下
 $scope.regist = function() {
+  if($scope.dialog.name == undefined && $scope.dialog.mailAddress == undefined) return false;
+  if($scope.dialog.mailAddress.$invalid) return false;
   $mdDialog.hide();
   //編集内容をpost
   $http({
     method: 'POST',
     url: '/api/user/sendto/',
-    data: { name: $scope.dialog.name, mailid: $scope.dialog.mailAddress, key: "nito_nems02@yahoo.co.jp" }
+    data: { name: $scope.dialog.name.$modelValue, mailid: $scope.dialog.mailAddress.$modelValue, key: $scope.dialog.key.$modelValue }
   })
   .then(
     function successCallback(response){

@@ -51,8 +51,8 @@ var user = {
     
 //    console.log("req.user.sendto@updateSendtoUser");
 //    console.log(req.user.sendto);
-//    console.log("req.data@updateSendtoUser");
-//    console.log(req.body);
+    console.log("req.data@updateSendtoUser");
+    console.log(req.body);
     var prm = req.body;
     var num;
     var reqest = req;
@@ -78,9 +78,13 @@ var user = {
     }
     
     //送信者情報の更新
-    if(getMail.length == 1){
+        console.log("getMail@saveSendtoUser");
+        console.log(getMail);
+    if(getMail.length){
       if(req.body.name) req.user.sendto[num].name = req.body.name;
       if(req.body.mailid) req.user.sendto[num].mailid = req.body.mailid;
+        console.log("req.user.sendto@saveSendtoUser");
+        console.log(req.user.sendto);
       cloudantUtil.M_userEntitity.updateUser(req.user._id, {"sendto" : req.user.sendto} , function(err, res){
   //      console.log("dat@saveSendtoUser");
   //      console.log(res);
