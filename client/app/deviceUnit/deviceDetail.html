@@ -15,15 +15,15 @@
             <md-card-content>
 
               <md-card-title-text>
-                <span class="md-body-5">{{deviceDetail[0].deviceName}}</span>
+                <span class="md-body-5">{{deviceDetail.deviceName}}</span>
               </md-card-title-text>
             </md-card-content>
 
             <md-card-content>
-                  <p class="md-subhead">職場責任者：{{deviceDetail[0].responsiblePerson}}</p>
-                  <p class="md-subhead">連絡先：{{deviceDetail[0].telNo}}</p>
-                  <p class="md-subhead">住所：{{deviceDetail[0].address}}</p>
-                  <p class="md-subhead">メモ：{{deviceDetail[0].memo}}</p>
+                  <p class="md-subhead">職場責任者：{{deviceDetail.responsiblePerson}}</p>
+                  <p class="md-subhead">連絡先：{{deviceDetail.telNo}}</p>
+                  <p class="md-subhead">住所：{{deviceDetail.address}}</p>
+                  <p class="md-subhead">メモ：{{deviceDetail.memo}}</p>
             </md-card-content>
           </md-card>
 
@@ -38,18 +38,19 @@
 <md-card>
   <!--現在のステータス-->
 
-      <md-list-item class="md-list-item-2" ng-click="deviceDetailData()" ng-hide="deviceDetail[0].earthquakeCurrentData.length == 0">
+      <md-list-item class="md-list-item-2" ng-click="deviceDetailData()" ng-hide="!deviceDetail.earthquakeCurrentData">
       <p class="md-body-5">感知あり</p>
       <buttondetail></buttondetail>
     </md-list-item>
 
-    <md-list-item class="md-list-item-2"ng-hide="deviceDetail[0].earthquakeCurrentData.length != 0">
+    <md-list-item class="md-list-item-2"ng-hide="deviceDetail.earthquakeCurrentData">
     <p class="md-body-5">感知なし</p>
   </md-list-item>
 
      <!--デバイスカード　コンテンツ-->
-      <md-card-content ng-hide="deviceDetail[0].earthquakeCurrentData.length == 0 ">
+      <md-card-content ng-hide="!deviceDetail.earthquakeCurrentData">
           <!--地震の場合-->
+          <p flex class="md-body-1">発生日時：{{deviceDetail.earthquakeCurrentData.date}}</p>
           <div layout="row" layout-wrap>
             <div flex="25">
               <p flex class="md-body-1">傾き</p>
@@ -57,45 +58,47 @@
               <p flex class="md-body-1">機器異常</p>
             </div>
             <div flex="40">
-              <p flex class="md-body-3">{{deviceDetail[0].earthquakeCurrentData[0].slope}}</p>
-              <p flex class="md-body-3">{{deviceDetail[0].earthquakeCurrentData[0].commercialBlackout}}</p>
-              <p flex class="md-body-3">{{deviceDetail[0].earthquakeCurrentData[0].equipmentAbnormality}}</p>
+              <p flex class="md-body-3">{{deviceDetail.earthquakeCurrentData.datas.slope}}</p>
+              <p flex class="md-body-3">{{deviceDetail.earthquakeCurrentData.datas.commercialBlackout}}</p>
+              <p flex class="md-body-3">{{deviceDetail.earthquakeCurrentData.datas.equipmentAbnormality}}</p>
             </div>
             <div>
             <div flex class="md-body-1">震度</div>
-            <div flex class="md-body-6">{{deviceDetail[0].earthquakeCurrentData[0].seismicIntensity}}</div>
+            <div flex class="md-body-6">{{deviceDetail.earthquakeCurrentData.datas.seismicIntensity}}</div>
           </div>
           </div>
       　</md-card-content>
-        <md-card-content ng-hide="deviceDetail[0].earthquakeCurrentData.length == 0 ">
+        <md-card-content ng-hide="!deviceDetail.earthquakeCurrentData">
         <p class="md-body-1">コメント・連絡事項</p>
         <div layout="row" layout-wrap>
           <ul>
-            <li ng-repeat="item in deviceDetail[0].earthquakeCurrentData[0].commentList">
+            <!--TODO コメント日時表示させる--->
+            <li ng-repeat="item in deviceDetail.earthquakeCurrentData.datas.commentList">
             <p class="md-body-2">{{item.comment}}　{{item.commentDate}}</p>
           </li>
         </ul>
         </div>
       </md-card-content>
-      <md-card-content ng-hide="deviceDetail[0].earthquakeCurrentData[0].mediaNewsletter.length == 0 ">
+      <!--TODO メディア速報表示させる--->
+      <md-card-content ng-hide="deviceDetail.earthquakeCurrentData.datas.mediaNewsletter.length == 0 ">
           　<p class="md-body-1">メディア速報</p>
-            <p class="md-body-2">気象庁公報：震度{{deviceDetail[0].earthquakeCurrentData[0].mediaNewsletter[0].japanMeteorologicalAgency}}</p>
-            <p class="md-body-2">長周期地震動階級：{{deviceDetail[0].earthquakeCurrentData[0].mediaNewsletter[0].longPeriodSeismicActivityClass}}</p>
+            <p class="md-body-2">気象庁公報：震度{{deviceDetail.earthquakeCurrentData.datas.mediaNewsletter[0].japanMeteorologicalAgency}}</p>
+            <p class="md-body-2">長周期地震動階級：{{deviceDetail.earthquakeCurrentData.datas.mediaNewsletter[0].longPeriodSeismicActivityClass}}</p>
       </md-card-content>
   <!--地震履歴-->
 
   <md-card-content>
   <p class="md-body-1">地震履歴</p>
 
-        <md-list-item class="md-3-line" ng-repeat="item in deviceDetail[0].earthquakeHistoryList[0].data | limitTo: earthquakeHistoryViews: 0" ng-click="deviceDetailData()">
+        <md-list-item class="md-3-line" ng-repeat="item in earthquakeHistoryList | limitTo: earthquakeHistoryViews: 0" ng-click="deviceDetailData()" ng-hide="item.datas.type !='EQ'">
             <p class="md-body-1">{{item.date}}</p>
-            <span class="md-body-1">{{item.datas[0].value}}</span>
+            <span class="md-body-1">{{item.datas.seismicIntensity}}</span>
             <buttondetail></buttondetail>
         </md-list-item>
 
 
         <div layout layout-align="center">
-          <md-button class="md-accent md-button md-ink-ripple" type="button" ng-transclude=""　ngclick="earthquakeHistoryMoreClick()" ng-hide="earthquakeHistoryViews >= deviceDetail[0].earthquakeHistoryList[0].data.length">
+          <md-button class="md-accent md-button md-ink-ripple" type="button" ng-transclude=""　ngclick="earthquakeHistoryMoreClick()" ng-hide="earthquakeHistoryViews >= earthquakeHistoryList.length">
             <div class="md-ripple-container">さらに表示</div>
           </md-button>
         </div>
@@ -117,17 +120,18 @@
   <md-card>
     <!--現在のステータス-->
 
-      <md-list-item class="md-list-item-2" ng-click="deviceDetailData()" ng-hide="deviceDetail[0].thunderCurrentData.length == 0">
+      <md-list-item class="md-list-item-2" ng-click="deviceDetailData()" ng-hide="!deviceDetail.thunderCurrentData">
       <p class="md-body-5">感知あり</p>
       <buttondetail></buttondetail>
       </md-list-item>
 
-      <md-list-item class="md-list-item-2"ng-hide="deviceDetail[0].thunderCurrentData.length != 0">
+      <md-list-item class="md-list-item-2"ng-hide="deviceDetail.thunderCurrentData">
       <p class="md-body-5">感知なし</p>
       </md-list-item>
 
      <!--デバイスカード　コンテンツ-->
-      <md-card-content ng-hide="deviceDetail[0].thunderCurrentData.length == 0 ">
+      <md-card-content ng-hide="!deviceDetail.thunderCurrentData">
+          <p flex class="md-body-1">発生日時：{{deviceDetail.thunderCurrentData.date}}</p>
           <div layout="row" layout-wrap>
             <div flex="25">
               <p flex class="md-body-1">漏電</p>
@@ -135,45 +139,45 @@
               <p flex class="md-body-1">機器異常</p>
             </div>
             <div flex="40">
-              <p flex class="md-body-3">{{deviceDetail[0].thunderCurrentData[0].leakage}}</p>
-              <p flex class="md-body-3">{{deviceDetail[0].thunderCurrentData[0].commercialBlackout}}</p>
-              <p flex class="md-body-3">{{deviceDetail[0].thunderCurrentData[0].equipmentAbnormality}}</p>
+              <p flex class="md-body-3">{{deviceDetail.thunderCurrentData[0].leakage}}</p>
+              <p flex class="md-body-3">{{deviceDetail.thunderCurrentData[0].commercialBlackout}}</p>
+              <p flex class="md-body-3">{{deviceDetail.thunderCurrentData[0].equipmentAbnormality}}</p>
             </div>
             <div>
             <div flex class="md-body-1">雷</div>
-            <div flex class="md-body-6">{{deviceDetail[0].thunderCurrentData[0].power}}</div>
+            <div flex class="md-body-6">{{deviceDetail.thunderCurrentData[0].power}}</div>
           </div>
           </div>
       　</md-card-content>
-        <md-card-content ng-hide="deviceDetail[0].thunderCurrentData.length == 0 ">
+        <md-card-content ng-hide="!deviceDetail.thunderCurrentData">
         <p class="md-body-1">コメント・連絡事項</p>
         <div layout="row" layout-wrap>
           <ul>
-            <li ng-repeat="item in deviceDetail[0].thunderCurrentData[0].commentList">
+            <li ng-repeat="item in deviceDetail.thunderCurrentData.commentList">
             <p class="md-body-2">{{item.comment}}　{{item.commentDate}}</p>
           </li>
         </ul>
         </div>
       </md-card-content>
-      <md-card-content ng-hide="deviceDetail[0].thunderCurrentData[0].mediaNewsletter.length == 0 ">
+      <md-card-content ng-hide="!deviceDetail.thunderCurrentDa">
         <!-- <div layout="row" layout-wrap> -->
           　<p class="md-body-1">メディア速報</p>
-            <p class="md-body-2">気象庁公報：{{deviceDetail[0].thunderCurrentData[0].mediaNewsletter[0].japanMeteorologicalAgency}}</p>
-            <p class="md-body-2">長周期地震動階級{{deviceDetail[0].thunderCurrentData[0].mediaNewsletter[0].longPeriodSeismicActivityClass}}</p>
+            <p class="md-body-2">気象庁公報：{{deviceDetail.thunderCurrentData[0].mediaNewsletter[0].japanMeteorologicalAgency}}</p>
+            <p class="md-body-2">長周期地震動階級{{deviceDetail.thunderCurrentData[0].mediaNewsletter[0].longPeriodSeismicActivityClass}}</p>
         <!-- </div> -->
     </md-card-content>
 
     <!--地震履歴-->
     <md-card-content>
       <p class="md-body-1">雷履歴</p>
-      <md-list-item class="md-3-line" ng-repeat="item in deviceDetail[0].thunderHistoryList[0].data | limitTo: thunderHistoryViews: 0" ng-click="deviceDetailData()">
+      <md-list-item class="md-3-line" ng-repeat="item in thunderHistoryList | limitTo: thunderHistoryViews: 0" ng-click="deviceDetailData()" ng-hide="item.datas.type=='EQ'">
           <p class="md-body-1">{{item.date}}</p>
-          <span class="md-body-1">{{item.datas[0].value}}</span>
+          <span class="md-body-1">{{item.datas.power}}</span>
           <buttondetail></buttondetail>
       </md-list-item>
 
       <div layout layout-align="center">
-        <md-button class="md-accent md-button md-ink-ripple" type="button" ng-transclude=""　ngclick="thunderHistoryMoreClick()" ng-hide="thunderHistoryViews >= deviceDetail[0].thunderHistoryList[0].data.length">
+        <md-button class="md-accent md-button md-ink-ripple" type="button" ng-transclude=""　ngclick="thunderHistoryMoreClick()" ng-hide="thunderHistoryViews >= thunderHistoryList.length">
           <div class="md-ripple-container">さらに表示</div>
         </md-button>
       </div>
