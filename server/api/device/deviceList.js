@@ -32,7 +32,7 @@ var deviceList = {
 //    console.log('セッションユーザー情報@deviceListクラス');
 //    console.log(req.user);
     if(!req.user) {
-      return res.status('500').json({ error: "ログインされていません" });
+      return res.status('200').json({ error: "ログインされていません" });
     }
     var userDevice = req.user.device;
     var responseJson,devicesJson,latestJson,latestEQJson,commentJson;
@@ -40,25 +40,25 @@ var deviceList = {
     var reqest = req;
     var response = res;
     cloudantUtil.M_deviceEntitity.getDevice(userDevice, function(err, devices){
-      if(err) {return response.status('500').json(err);}
+      if(err) {return response.status('200').json(err);}
       self.devicesJson = devices;
-//      console.log("dat@devicesJson");
-//      console.log(self.devicesJson);
+      console.log("dat@devicesJson");
+      console.log(self.devicesJson);
       cloudantUtil.I_dataEntitity.getLatest(userDevice, function(err, latest){
-        if(err) {return response.status('500').json(err);}
+        if(err) {return response.status('200').json(err);}
         self.latestJson = latest;
-//          console.log("dat@latestJson");
-//          console.log(self.latestJson);
+          console.log("dat@latestJson");
+          console.log(self.latestJson);
         cloudantUtil.Eq_dEntitity.getLatest(userDevice, function(err, latest){
-          if(err) {return response.status('500').json(err);}
+          if(err) {return response.status('200').json(err);}
           self.latestEQJson = latest;
-//            console.log("dat@latestEQJson");
-//            console.log(self.latestEQJson);
+            console.log("dat@latestEQJson");
+            console.log(self.latestEQJson);
           cloudantUtil.Comment_dataEntitity.getComment(userDevice, function(err, dat){
-            if(err) {return response.status('500').json(err);}
+            if(err) {return response.status('200').json(err);}
             self.commentJson = dat;
-//            console.log("dat@getComment");
-//            console.log(dat);
+            console.log("dat@getComment");
+            console.log(dat);
             
             responseJson = self.createJson();
 //            console.log(response);
@@ -114,6 +114,11 @@ var deviceList = {
           obj["slope"] = self.latestEQDate.value.datas.slope,
           obj["commercialBlackout"] = self.latestEQDate.value.datas.commercialBlackout,
           obj["equipmentAbnormality"] = self.latestEQDate.value.datas.equipmentAbnormality
+          if(self.hasComment(dat._id,self.latestEQDate.value.date_id)){
+  //            console.log("self.commentDate");
+  //            console.log(self.commentDate);
+              obj["commentList"] = self.commentDate;
+          }
         }
 //        if(self.hasLatest(dat._id)){
 ////            console.log("self.latestDate.datas");
@@ -122,11 +127,6 @@ var deviceList = {
 //            obj["commercialBlackout"] = self.latestDate.commercialBlackout;
 //            obj["equipmentAbnormality"] = self.latestDate.equipmentAbnormality;
 //        }
-        if(self.hasComment(dat._id,self.latestEQDate.value.date_id)){
-//            console.log("self.commentDate");
-//            console.log(self.commentDate);
-            obj["commentList"] = self.commentDate;
-        }
 //      console.log("データ単体@createJson");
 //      console.log(obj);
       responseJson.push(obj);
