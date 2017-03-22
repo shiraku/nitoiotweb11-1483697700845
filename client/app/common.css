@@ -373,6 +373,10 @@
   height: 200px;
  }
 
+ .mapEdit .angular-google-map-container {
+  height: 200px;
+ }
+
 /**ログイン画面*******************************************************************/
 
  /* app bar bg: */
@@ -406,4 +410,14 @@ padding: 50px;
 .logoContent{
   text-align: center;
   padding: 70px;
+}
+
+
+
+md-menu-content{
+  padding : 0;
+}
+
+.mailId{
+      text-align: right;
 }
