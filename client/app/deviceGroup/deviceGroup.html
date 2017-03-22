@@ -2,7 +2,7 @@
 
   <!--ヘッダー読み込み-->
   <navitop></navitop>
-  
+
   <!--エラーメッセージ-->
   <div ng-show="error" class="alert alert-danger">{{error}}</div>
   <div ng-show="success" class="alert alert-success">{{success}}</div>
@@ -17,7 +17,7 @@
       <md-card-content>
       <md-card-title-text>
         <p class="md-body-1">グループID</p>
-        <span class="md-body-3">{{deviceGroupData[0].groupId}}</span>
+        <span class="md-body-3">{{deviceGroupData.groupId}}</span>
       </md-card-title-text>
     </md-card-content>
 
@@ -27,7 +27,7 @@
       <div layout="colom">
       <md-card-title-text>
         <p class="md-body-1">グループ名</p>
-        <span class="md-body-3">{{deviceGroupData[0].groupName}}</span>
+        <span class="md-body-3">{{deviceGroupData.groupName}}</span>
         <md-button ng-click="deviceNameEdit($event)">
           <buttonpen></buttonpen>
         </md-button>
@@ -53,8 +53,8 @@
           <!--デバイスタブ-->
           <md-tab label="デバイス">
               <md-card>
-                  <md-list-item class="md-3-line" ng-repeat="item in deviceGroupData[0].deviceList" ng-click="deviceDetail()">
-                      <p class="md-body-4">{{item.deviceName}}</p>
+                  <md-list-item class="md-3-line" ng-repeat="item in deviceList" ng-click="deviceDetail()">
+                      <p class="md-body-4">{{item.name}}</p>
                       <buttondetail></buttondetail>
                   </md-list-item>
               </md-card>
@@ -64,14 +64,14 @@
           <md-tab label="アラート通知">
               <md-card>
 
-                  <md-list-item class="md-3-line" ng-repeat="item in deviceGroupData[0].alertNotificationList" ng-click="null">
+                  <md-list-item class="md-3-line" ng-repeat="item in sendto" ng-click="null">
                     <div layout>
                     <p class="md-body-4">{{item.name}}</p>
-                    <p class="md-body-5">{{item.mailAddress}}</p>
+                    <p class="md-body-5">{{item.mailid}}</p>
                     <md-button ng-click="mailAddressEdit($event,false)">
                       <buttonpen></buttonpen>
                     </md-button>
-                    <md-button ng-click="mailAddressDelete()">
+                    <md-button ng-click="mailAddressDelete($event)">
                       <buttontrashbox></buttontrashbox>
                     </md-button>
                   </div>

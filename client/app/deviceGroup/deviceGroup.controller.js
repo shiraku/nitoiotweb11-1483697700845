@@ -5,58 +5,27 @@
     .controller('DeviceGroupCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog) {
 
 
-      
+
       //送信者一覧情報
       $http.get('/api/user/')
       .then(function successCallback(response) {
         console.log("posted successfully");
         console.log(response);
+
+        var obj = response.data;
+
+        //TODO 白倉さんにグループID/名取得方法について聞く。
+        // $scope.deviceGroupData.groupId = obj.device
+        // $scope.deviceGroupData.groupName = obj.sendto;
+        //ヘッダータイトル
+        // $scope.navtitle=$scope.deviceGroupData[0].groupName;
+        $scope.deviceList = obj.device
+        $scope.sendto = obj.sendto;
+
+
       }, function errorCallback(response) {
         console.error("error in posting");
       });
-      
-      //デバイスグループデータ
-      //TODO APIで取得するように変更
-      $scope.deviceGroupData = [
-        {
-              'groupId':'grp_0001',
-              'groupName':'日東工業　設備管理',
-              'deviceList':[
-                { 'deviceId':'00000',
-                  'deviceName':'デバイス１',
-                },
-                { 'deviceId':'00001',
-                  'deviceName':'デバイス２',
-                },
-                { 'deviceId':'00003',
-                  'deviceName':'デバイス３',
-                },
-                { 'deviceId':'00004',
-                  'deviceName':'デバイス４',
-                },
-                { 'deviceId':'00005',
-                  'deviceName':'デバイス５',
-                }
-            ],
-              'alertNotificationList':[
-                { 'name':'山田　修',
-                  'mailAddress':'yamada@nito.co.jp'
-                },
-                { 'name':'小林　武',
-                  'mailAddress':'kobayashi@nito.co.jp'
-                },
-                { 'name':'湯浅　あさみ',
-                  'mailAddress':'yuasa@nito.co.jp'
-                },
-                { 'name':'本田　宗太郎',
-                  'mailAddress':'honda@nito.co.jp'
-                }
-              ]
-            }];
-
-      //ヘッダータイトル
-      $scope.navtitle=$scope.deviceGroupData[0].groupName;
-
 
         //デバイス編集遷移
        $scope.deviceDetail = function(){
@@ -98,14 +67,14 @@
       if(flg){
       item.title = 'メールアドレスの追加',
       item.placeholder_name = '名前',
-      item.placeholder_mailaddress = 'メールアドレス'
+      item.placeholder_mailid = 'メールアドレス'
 
       }else{
 
       item.title = 'メールアドレスの編集';
       item.placeholder_name = this.item.name;
-      item.placeholder_mailaddress = this.item.mailAddress;
-
+      item.placeholder_mailid = this.item.mailid;
+      item.key = this.item.mailid;
     }
 
     $mdDialog.show({
@@ -122,7 +91,7 @@
          '     <div class="md-errors-spacer"></div>'+
          '   </md-input-container>'+
          '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme md-prompt-input-container-2">'+
-         '     <input ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="dialog.mailAddress" placeholder='+item.placeholder_mailaddress+' initialValue='+item.placeholder_mailaddress+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
+         '     <input ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="dialog.mailAddress" placeholder='+item.placeholder_mailid+' initialValue='+item.placeholder_mailid+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
          '     <div class="md-errors-spacer"></div>'+
          '   </md-input-container>'+
          ' </md-dialog-content>'+
@@ -141,11 +110,18 @@
     //登録ボタン押下
     $scope.regist = function() {
       $mdDialog.hide();
+
+      //新規登録の場合
+      if(!item.key){
+        item.key = $scope.dialog.mailAddress;
+      }
+      console.log ("sendto Post name"+$scope.dialog.name+ "key"+item.key+"mailId"+$scope.dialog.mailAddress);
+
       //編集内容をpost
       $http({
         method: 'POST',
         url: '/api/user/sendto/',
-        data: { name: $scope.dialog.name, mailid: $scope.dialog.mailAddress, key: "nito_nems02@yahoo.co.jp" }
+        data: { name: $scope.dialog.name, mailid: $scope.dialog.mailAddress, key: item.key }
       })
       .then(
         function successCallback(response){
@@ -160,9 +136,9 @@
         },
         function errorCallback(response){
             $rootScope.error = response.data.message;
-          
+
         }
-      ); 
+      );
     }
 
     }]
@@ -172,6 +148,9 @@
 //アラート通知追加
 //TODO mail address DELETEの場合　メールアドレスを送る様にする。
 $scope.mailAddressDelete = function (ev){
+
+  //削除するMailIdを詰める。
+  var deleteMailId = this.item.mailid;
 
   // Appending dialog to document.body to cover sidenav in docs app
   var confirm = $mdDialog.confirm()
@@ -185,9 +164,10 @@ $scope.mailAddressDelete = function (ev){
   $mdDialog.show(confirm).then(function() {
   //削除の場合
     //TODO 削除のリクエストを投げる
+        console.log("send to deleteMailId"+deleteMailId);
         $http({
           method: 'DELETE',
-          url: '/api/user/sendto/nito_nems02@yahoo.co.jp/'
+          url: '/api/user/sendto/'+deleteMailId+'/'
         })
         .then(
           function successCallback(response){
@@ -204,7 +184,7 @@ $scope.mailAddressDelete = function (ev){
               $rootScope.error = response.data.message;
 
           }
-        ); 
+        );
   }
   //キャンセルの場合
   , function() {
