@@ -42,23 +42,23 @@ var deviceList = {
     cloudantUtil.M_deviceEntitity.getDevice(userDevice, function(err, devices){
       if(err) {return response.status('200').json(err);}
       self.devicesJson = devices;
-      console.log("dat@devicesJson");
-      console.log(self.devicesJson);
+//      console.log("dat@devicesJson");
+//      console.log(self.devicesJson);
       cloudantUtil.I_dataEntitity.getLatest(userDevice, function(err, latest){
         if(err) {return response.status('200').json(err);}
         self.latestJson = latest;
-          console.log("dat@latestJson");
-          console.log(self.latestJson);
+//          console.log("dat@latestJson");
+//          console.log(self.latestJson);
         cloudantUtil.Eq_dEntitity.getLatest(userDevice, function(err, latest){
           if(err) {return response.status('200').json(err);}
           self.latestEQJson = latest;
-            console.log("dat@latestEQJson");
-            console.log(self.latestEQJson);
+//            console.log("dat@latestEQJson");
+//            console.log(self.latestEQJson);
           cloudantUtil.Comment_dataEntitity.getComment(userDevice, function(err, dat){
             if(err) {return response.status('200').json(err);}
             self.commentJson = dat;
-            console.log("dat@getComment");
-            console.log(dat);
+//            console.log("dat@getComment");
+//            console.log(dat);
             
             responseJson = self.createJson();
 //            console.log(response);
@@ -91,6 +91,8 @@ var deviceList = {
   createJson : function(){
     var responseJson = new Array();
     var self = this;
+    console.log("self.latestEQDate.value@createJson");
+    console.log(self.latestEQDate);
     this.devicesJson.forEach(function (dat){
       var flgSense = (self.hasSense(dat._id)) ? 1 : 0;
       var obj = new Object();
@@ -105,7 +107,7 @@ var deviceList = {
         obj["longitude"] = dat.longitude;
         obj["status"] = (flgSense) ? '感知あり':'感知なし';
         if(flgSense){
-          obj["type"] = self.latestEQDate.value.type;
+          obj["type"] = self.latestEQDate.value.datas.type;
 //          console.log("self.latestEQDate.datas");
 //          console.log(self.latestEQDate.value.datas);
           obj["seismicIntensity"] = self.latestEQDate.value.datas.seismicIntensity;
