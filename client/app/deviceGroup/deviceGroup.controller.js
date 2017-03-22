@@ -15,8 +15,8 @@
         var obj = response.data;
 
         //TODO 白倉さんにグループID/名取得方法について聞く。
-        // $scope.deviceGroupData.groupId = obj.device
-        // $scope.deviceGroupData.groupName = obj.sendto;
+        $scope.groupId = "dev0000"
+        $scope.groupName = "デバイス１";
         //ヘッダータイトル
         // $scope.navtitle=$scope.deviceGroupData[0].groupName;
         $scope.deviceList = obj.device
@@ -29,7 +29,7 @@
 
         //デバイス編集遷移
        $scope.deviceDetail = function(){
-         $location.path("/user_"+$routeParams.USER_ID+"/device_"+this.item.deviceId+'/edit');
+         $location.path("/user_"+$routeParams.USER_ID+"/device_"+this.item.id+'/edit');
        }
 
        //アラート設定画面遷移
@@ -196,9 +196,9 @@ $scope.mailAddressDelete = function (ev){
 //グループ名編集画面遷移
 $scope.deviceNameEdit = function($event){
  var json = {"title":"グループ名の編集",
-             "placeholder":this.deviceGroupData[0].groupName,
+             "placeholder":this.groupName,
              "ariaLabel":"",
-             "initialValue":this.deviceGroupData[0].groupName,
+             "initialValue":this.groupName,
              "ok":"登録",
              "cancel":"キャンセル"}
  dialogShow($event,json);

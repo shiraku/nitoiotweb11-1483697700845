@@ -15,24 +15,25 @@
 
   <md-card>
       <md-card-content>
-      <md-card-title-text>
-        <p class="md-body-1">グループID</p>
-        <span class="md-body-3">{{deviceGroupData.groupId}}</span>
-      </md-card-title-text>
+      <!-- <md-card-title-text> -->
+        <span class="md-body-1">グループID</span>
+        <p class="md-body-3">{{groupId}}</p>
+      <!-- </md-card-title-text> -->
     </md-card-content>
 
 
 
     <md-card-content>
-      <div layout="colom">
-      <md-card-title-text>
-        <p class="md-body-1">グループ名</p>
-        <span class="md-body-3">{{deviceGroupData.groupName}}</span>
+      <!-- <div layout="colom"> -->
+      <!-- <md-card-title-text> -->
+        <span class="md-body-1">グループ名</span>
+          <!-- <div layout="colom"> -->
+        <p class="md-body-3">{{groupName}}</p>
         <md-button ng-click="deviceNameEdit($event)">
           <buttonpen></buttonpen>
         </md-button>
-      </md-card-title-text>
-    </div>
+      <!-- </md-card-title-text> -->
+    <!-- </div> -->
     </md-card-content>
 
   </md-card>
@@ -65,20 +66,26 @@
               <md-card>
 
                   <md-list-item class="md-3-line" ng-repeat="item in sendto" ng-click="null">
-                    <div layout>
+                    <!-- <div layout> -->
                     <p class="md-body-4">{{item.name}}</p>
-                    <p class="md-body-5">{{item.mailid}}</p>
-                    <md-button ng-click="mailAddressEdit($event,false)">
-                      <buttonpen></buttonpen>
-                    </md-button>
-                    <md-button ng-click="mailAddressDelete($event)">
-                      <buttontrashbox></buttontrashbox>
-                    </md-button>
-                  </div>
+                    <p class="md-body-1 mailId">{{item.mailid}}</p>
+                    <md-menu>
+                     <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)"  aria-label="More">
+                        <i class="material-icons">more_vert</i>
+                      </md-button>
+
+                     <md-menu-content>
+                       <md-menu-item>
+                         <md-button ng-click="mailAddressEdit($event,false)" aria-label="Do something">編集</md-button>
+                       </md-menu-item>
+                       <md-menu-item>
+                         <md-button ng-click="mailAddressDelete()" aria-label="Do something">削除</md-button>
+                       </md-menu-item>
+                     </md-menu-content>
+
+                   </md-menu>
+                  <!-- </div> -->
                   </md-list-item>
-
-
-
 
                   <!--ボタン-->
               <div layout>
