@@ -214,7 +214,32 @@ function dialogShow(ev,param){
     .ok(param.ok)
     .cancel(param.cancel);
 
-    $mdDialog.show(confirm);
+    $mdDialog.show(confirm).then(function() {
+  //削除の場合
+    //TODO 削除のリクエストを投げる
+        console.log("send to groupName"+dialog.groupName);
+        $http({
+          method: 'post',
+          url: '/api/user/',
+          data:{name: dialog.groupName}
+        })
+        .then(
+          function successCallback(response){
+            console.log(response);
+            if(!response.data.error) {
+              console.log("success");
+              $rootScope.success = response.data.message;
+            } else {
+              $rootScope.error = response.data.message;
+            }
+
+          },
+          function errorCallback(response){
+              $rootScope.error = response.data.message;
+
+          }
+        );
+    });
 
   };
 

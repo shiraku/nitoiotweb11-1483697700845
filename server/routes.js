@@ -95,6 +95,9 @@ module.exports = function(app) {
       obj["sendto"] = req.user.sendto;
       res.status(200).json(obj);
     });
+  app.post('/api/user/',function(req, res) {
+      user.updateUser(req,res);
+    });
   
     /**
    * メール送信先関連のapi
@@ -115,9 +118,6 @@ module.exports = function(app) {
   app.delete('/api/user/sendto/:mailid',function(req, res) {
       user.deleteSendtoUser(req,res);
     });
-//  app.post('/api/user/:id',function(req, res) {
-//      user.updateUser(req,res);
-//    });
   
   
     /**

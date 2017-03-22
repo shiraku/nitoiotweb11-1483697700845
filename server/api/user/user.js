@@ -17,13 +17,50 @@ var app = express();
  *************************************************/
 var user = {
   /**
+ * ユーザー情報の更新と追加api file
+ * prams:req express requestオブジェクト
+ * prams:res express responseオブジェクト
+ */
+  updateUser : function(req,res) {
+    if(!req.user) {
+      return res.status('200').json({ error: "ログインされていません" });
+    }
+    
+//    console.log("req.user.sendto@updateSendtoUser");
+//    console.log(req.user.sendto);
+    console.log("req.data@updateSendtoUser");
+    console.log(req.body);
+    var prm = req.body;
+    var num;
+    var reqest = req;
+    var response = res;
+    var getMail;
+
+    prm.forEach(function(prop){
+      if(!req.user.hasOwnProperty(prop)) return response.status('200').send({message:'該当する項目がありません。', error: true});
+    });
+    
+    
+    //送信者情報の更新
+    console.log("prm@updateUser");
+    console.log(prm);
+    cloudantUtil.M_userEntitity.updateUser(req.user._id, prm , function(err, res){
+//      console.log("dat@saveSendtoUser");
+//      console.log(res);
+      if(err) {return response.status('200').send({message:'登録に失敗しました。', error: true});}
+      return response.status('200').send({message:'更新しました。'});
+    });
+  },
+  
+  
+  /**
  * メール送信先の取得api file
  * prams:req express requestオブジェクト
  * prams:res express responseオブジェクト
  */
   getSendtoUser : function(req,res) {
     if(!req.user) {
-      return res.status('500').json({ error: "ログインされていません" });
+      return res.status('200').json({ error: "ログインされていません" });
     }
     
 //    console.log("req.user.sendto@updateSendtoUser");
@@ -35,7 +72,7 @@ var user = {
     var reqest = req;
     var response = res;
     cloudantUtil.M_userEntitity.getUser(userId, function(err, dat){
-      if(err) {return response.status('500').json(err);}
+      if(err) {return response.status('200').json(err);}
       return response.status('200').json(dat.sendto);
     });
   },
@@ -46,7 +83,7 @@ var user = {
  */
   saveSendtoUser : function(req,res) {
     if(!req.user) {
-      return res.status('500').json({ error: "ログインされていません" });
+      return res.status('200').json({ error: "ログインされていません" });
     }
     
 //    console.log("req.user.sendto@updateSendtoUser");
@@ -121,7 +158,7 @@ var user = {
  */
   deleteSendtoUser : function(req,res) {
     if(!req.user) {
-      return res.status('500').json({ error: "ログインされていません" });
+      return res.status('200').json({ error: "ログインされていません" });
     }
 //    console.log("req.user.sendto@updateSendtoUser");
 //    console.log(req.user.sendto);
@@ -157,7 +194,7 @@ var user = {
  */
   getAlert : function(req,res) {
     if(!req.user) {
-      return res.status('500').json({ error: "ログインされていません" });
+      return res.status('200').json({ error: "ログインされていません" });
     }
     
       console.log(req.user._id);
@@ -166,7 +203,7 @@ var user = {
     cloudantUtil.M_userEntitity.getUser(req.user._id.split('_')[1], function(err, dat){
       console.log("dat@getAlert");
       console.log(dat);
-      if(err) {return response.status('500').json(err);}
+      if(err) {return response.status('200').json(err);}
       return response.status('200').json(dat.sendto[0].alert);
     });
   },
@@ -177,7 +214,7 @@ var user = {
  */
   updateAlert : function(req,res) {
     if(!req.user) {
-      return res.status('500').json({ error: "ログインされていません" });
+      return res.status('200').json({ error: "ログインされていません" });
     }
     
     var reqest = req;
