@@ -108,7 +108,7 @@
                       <p class="md-body-4">{{item.name}}</p>
                       <p class="md-body-1 mailId">{{item.mailid}}</p>
 
-                      <md-menu>
+                      <md-menu ng-if="!admin_mflg">
                        <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)"  aria-label="More">
                           <i class="material-icons">more_vert</i>
                         </md-button>
@@ -128,7 +128,7 @@
                     </md-list-item>
 
                     <!--ボタン-->
-                <div layout>
+                <div layout ng-if="!admin_mflg">
                   <md-button flex class="md-accent md-button md-ink-ripple md-text-button-1" type="button" ng-click="alertSetting()" ng-transclude="">
                     <div class="md-ripple-container md-ripple-container-1">通知設定</div>
                   </md-button>

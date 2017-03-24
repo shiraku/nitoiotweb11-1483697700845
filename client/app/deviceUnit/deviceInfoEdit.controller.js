@@ -38,6 +38,7 @@
         console.log(response);
           var obj = response.data;
           $scope.sendto = obj.sendto;
+          $scope.admin_mflg = obj.admin_mflg;
       }, function errorCallback(response) {
         console.error("error in posting");
       });
