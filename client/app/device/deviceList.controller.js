@@ -5,46 +5,6 @@
     .controller('DeviceListCtrl',['$rootScope','$routeParams','$scope','$http','$location','GoogleChartService', function ($rootScope,$routeParams,$scope, $http, $location,GoogleChartService) {
 
 
-      /**　API テスト
-      **/
-//      $http.get('/api/things/show')
-//      .then(function successCallback(response) {
-//        console.log("posted successfully");
-//      }, function errorCallback(response) {
-//        console.error("error in posting");
-//      });
-      //デバイス一覧情報
-      $http.get('/api/device_list/')
-      .then(function successCallback(response) {
-        console.log("posted successfully");
-        console.log(response);
-      }, function errorCallback(response) {
-        console.error("error in posting");
-      });
-
-      //グラフ
-      $http.get('/api/user/')
-      .then(function successCallback(response) {
-        console.log("posted successfully");
-        console.log(response);
-        for(var i = 0; i < response.data.device.length; i++){
-          $http.get('/api/device_history_eq/'+ response.data.device[i].id)
-          .then(function successCallback(response) {
-            console.log("posted successfully");
-            console.log(response);
-          }, function errorCallback(response) {
-            console.error("error in posting");
-          });
-        }
-      }, function errorCallback(response) {
-        console.error("error in posting");
-      });
-
-
-
-
-
-
       //ヘッダータイトル
       $scope.navtitle='デバイス一覧';
 
@@ -63,18 +23,161 @@
                   'label':'１年',
                 }
             ];
-
-
       //グラフの表示期間のデフォル値設定
       $scope.selectItem = 'month';
 
+      //デバイス一覧情報
+      $http.get('/api/device_list/')
+      .then(function successCallback(response) {
+        console.log("posted successfully");
+        console.log(response);
+        //TODO dataに発生日時を追加していただく。（白倉さん）
+        var obj = response.data;
+        $scope.deviceList = obj.device_list
+      }, function errorCallback(response) {
+        console.error("error in posting");
+      });
 
-//      $http.get('/api/things/')
-//      .then(function successCallback(response) {
-//        console.log("posted successfully");
-//      }, function errorCallback(response) {
-//        console.error("error in posting");
-//      });
+      $scope.graphData = [];
+      //グラフ
+      $http.get('/api/user/')
+      .then(function successCallback(response) {
+        console.log("posted successfully");
+        console.log(response);
+        for(var i = 0; i < response.data.device.length; i++){
+          var deviceName = response.data.device[i].name;
+          $http.get('/api/device_history_eq/'+ response.data.device[i].id)
+          .then(function successCallback(response) {
+            console.log("posted successfully");
+            console.log(response);
+            $scope.graphData.push(response.data);
+            $scope.$emit('graphData',response.data);
+
+            // google.charts.load('current', {packages: ['controls','corechart', 'bar']});
+            // google.charts.setOnLoadCallback(drawChart(deviceName,response));
+            // google.charts.load('current', {packages: ['controls','corechart', 'bar']});
+            // google.charts.setOnLoadCallback(function(){
+            //
+            //   var data = new google.visualization.DataTable();
+            //   data.addColumn('datetime', 'yyyy/mm/dd hh:mm');
+            //   data.addColumn('number', '震度');
+            //
+            //   var rows = [];
+            //
+            //   for(var i=0; response.data.data.length > i; i++){
+            //     var d = response.data.data[i];
+            //     rows.push([new Date(d.date),d.datas[0].value]);
+            //     }
+            //   data.addRows(rows);
+            //
+            //   var dt = new Date();
+            //   var min = new Date (dt.setMonth(dt.getMonth() -1));
+            //
+            //   var options = {
+            //     hAxis: {
+            //       title: '日時',
+            //       format: 'yyyy/MM/dd',
+            //       viewWindow: {
+            //           min: min,
+            //           max: new Date()
+            //       }
+            //     },
+            //     vAxis: {
+            //       title: '震度',
+            //       viewWindow : {
+            //           min: 0,
+            //           max: 8
+            //       }
+            //     },
+            //     legend:'none'
+            //   };
+            //
+            //   var id = "DEV_"+response.data.device_id;
+            //   var chart = new google.visualization.ColumnChart(document.getElementById(id));
+            //   chart.draw(data, options);
+
+            // }
+            // );
+
+
+          }, function errorCallback(response) {
+            console.error("error in posting");
+          });
+        }
+
+        // google.charts.load('current', {packages: ['controls','corechart', 'bar']});
+        // google.charts.setOnLoadCallback(drawChart);
+
+      }, function errorCallback(response) {
+        console.error("error in posting");
+      });
+      // });
+
+      // $scope.$on('graphData', (event, response.data) {
+        // $scope.urls.splice(0, 1);
+        // if ($scope.urls.length >= 1) {
+        //   $scope.$emit('executeTask', data);
+        // }
+      // });
+
+      // $scope.$on('graphData',(event,data){
+        // $scope.urls.splice(0, 1);
+        // if ($scope.urls.length >= 1) {
+        //   $scope.$emit('executeTask', data);
+        // }
+        // google.charts.load('current', {packages: ['controls','corechart', 'bar']});
+        // google.charts.setOnLoadCallback(function(){
+        //
+        //   var data = new google.visualization.DataTable();
+        //   data.addColumn('datetime', 'yyyy/mm/dd hh:mm');
+        //   data.addColumn('number', '震度');
+        //
+        //   var rows = [];
+        //
+        //   for(var i=0; response.data.data.length > i; i++){
+        //     var d = response.data.data[i];
+        //     rows.push([new Date(d.date),d.datas[0].value]);
+        //     }
+        //   data.addRows(rows);
+        //
+        //   var dt = new Date();
+        //   var min = new Date (dt.setMonth(dt.getMonth() -1));
+        //
+        //   var options = {
+        //     hAxis: {
+        //       title: '日時',
+        //       format: 'yyyy/MM/dd',
+        //       viewWindow: {
+        //           min: min,
+        //           max: new Date()
+        //       }
+        //     },
+        //     vAxis: {
+        //       title: '震度',
+        //       viewWindow : {
+        //           min: 0,
+        //           max: 8
+        //       }
+        //     },
+        //     legend:'none'
+        //   };
+          //
+          // var id = "DEV_"+response.data.device_id;
+          // var chart = new google.visualization.ColumnChart(document.getElementById(id));
+          // chart.draw(data, options);
+        // });
+
+
+
+      //グラフの表示期間が変更された時、グラフを再描画する。
+      $scope.$watch('selectItem', function(newValue, oldValue, scope) {
+            console.log(newValue);
+            $scope.selectItem = newValue;
+            // rePackJson();
+            // google.charts.load('current', {packages: ['controls','corechart', 'bar']});
+            // google.charts.setOnLoadCallback(drawChart);
+      });
+
 
       //TODO APIでデータ取得する
       // $scope.deviceList = [
@@ -157,96 +260,147 @@
 
 /////グラフタブ用///////////////////////////////////////////////////////////////////////////////////////
 
-        rePackJson();
+        // rePackJson();
 
-        //グラフの表示期間が変更された時、グラフを再描画する。
-        $scope.$watch('selectItem', function(newValue, oldValue, scope) {
-              console.log(newValue);
-              $scope.selectItem = newValue;
-              rePackJson();
-        });
+        // google.charts.load('current', {packages: ['controls','corechart', 'bar']});
+        // google.charts.setOnLoadCallback(drawChart);
 
 
-       //取得したデータをもとにチャートを作成し、デバイスリストに詰め直す
-       function rePackJson(){
-         //デバイスリストの長さぶん処理を行う。
-         for(var i=0; tmpdeviceList.length > i; i++ ){
-           //地震の履歴リストがある場合のみ行う。
-           if(!!tmpdeviceList[i].earthquakeHistoryList){
-             //チャートオブジェクトをデバイスリストに詰める。
-            //  tmpdeviceList[i].chart = createChart(tmpdeviceList[i].earthquakeHistoryList[0].data);
-
-            // tmpdeviceList[i].chart = ;
-            // drawChart();
-           }}
-           $scope.deviceList = tmpdeviceList;
-         };
 
 
-          google.charts.load('current', {packages: ['controls','corechart', 'bar']});
-          google.charts.setOnLoadCallback(drawChart);
+      //  //取得したデータをもとにチャートを作成し、デバイスリストに詰め直す
+      //  function rePackJson(){
+      //    //デバイスリストの長さぶん処理を行う。
+      //    for(var i=0; tmpdeviceList.length > i; i++ ){
+      //      //地震の履歴リストがある場合のみ行う。
+      //      if(!!tmpdeviceList[i].earthquakeHistoryList){
+      //        //チャートオブジェクトをデバイスリストに詰める。
+      //       //  tmpdeviceList[i].chart = createChart(tmpdeviceList[i].earthquakeHistoryList[0].data);
+       //
+      //       // tmpdeviceList[i].chart = ;
+      //       // drawChart();
+      //      }}
+      //     //  $scope.deviceList = tmpdeviceList;
+      //    };
 
 
-          // function countdate (){
+
+
+
+          // function drawChart() {
           //
-          //   switch scope.selectItem
+          //   // for(var x=0; d.length>x; x++){
+          //
+          //     var data = new google.visualization.DataTable();
+          //     data.addColumn('datetime', 'yyyy/mm/dd hh:mm');
+          //     data.addColumn('number', '震度');
+          //
+          //     var rows = [];
+          //
+          //     for(var i=0; $scope.graphData.length > i; i++){
+          //       var d = res.data[i];
+          //       rows.push([new Date(d.date),d.datas.seismicIntensity]);
+          //                     }
+          //
+          //     data.addRows(rows);
+          //
+          //   //   data.addRows(
+          //   //     [
+          //   //                [new Date(2017,1,1,15,0,0), 3],
+          //   //                [new Date(2017,1,20,18,0,0), 4],
+          //   //                [new Date(2017,2,2,21,0,0), 7],
+          //   //                [new Date(2017,2,11,15,0,0), 3],
+          //   //                [new Date(2017,2,12,18,0,0), 4],
+          //   //   ]
+          //   // );
+          //
+          //     var dt = new Date();
+          //     var min = new Date (dt.setMonth(dt.getMonth() -1));
+          //
+          //     var options = {
+          //       hAxis: {
+          //         title: '日時',
+          //         format: 'yyyy/MM/dd',
+          //         viewWindow: {
+          //             min: min,
+          //             max: new Date()
+          //         }
+          //       },
+          //       vAxis: {
+          //         title: '震度',
+          //         viewWindow : {
+          //             min: 0,
+          //             max: 8
+          //         }
+          //       },
+          //       legend:'none'
+          //     };
+          //
+          //     var id = res.device_id;
+          //     var chart = new google.visualization.ColumnChart(
+          //       document.getElementById(id));
+          //
+          //     chart.draw(data, options);
+          //
+          //   // }
           //
           //
           // }
 
-            function drawChart() {
 
-              for(var x=0; tmpdeviceList.length>x; x++){
-
-                var data = new google.visualization.DataTable();
-                data.addColumn('datetime', 'yyyy/mm/dd hh:mm');
-                data.addColumn('number', '震度');
-
-                data.addRows(
-                  [
-                             [new Date(2017,1,1,15,0,0), 3],
-                             [new Date(2017,1,20,18,0,0), 4],
-                             [new Date(2017,2,2,21,0,0), 7],
-                             [new Date(2017,2,11,15,0,0), 3],
-                             [new Date(2017,2,12,18,0,0), 4],
-                ]
-              );
-
-                var dt = new Date();
-
-                var min = new Date (dt.setMonth(dt.getMonth() -1));
-
-                var options = {
-                  // title: '',
-                  hAxis: {
-                    title: '日時',
-                    format: 'yyyy/MM/dd',
-                    viewWindow: {
-                        min: min,
-                        max: new Date()
-                    }
-                  },
-                  vAxis: {
-                    title: '震度',
-                    viewWindow : {
-                        min: 0,
-                        max: 8
-                    }
-                  },
-                  legend:'none'
-                };
-
-                var id = tmpdeviceList[x].deviceId;
-
-                var chart = new google.visualization.ColumnChart(
-                  document.getElementById(id));
-
-                chart.draw(data, options);
-
-              }
-
-
-            }
+            // function drawChart() {
+            //
+            //   for(var x=0; $scope.graphData.length>x; x++){
+            //
+            //     var data = new google.visualization.DataTable();
+            //     data.addColumn('datetime', 'yyyy/mm/dd hh:mm');
+            //     data.addColumn('number', '震度');
+            //
+            //     data.addRows(
+            //       [
+            //                  [new Date(2017,1,1,15,0,0), 3],
+            //                  [new Date(2017,1,20,18,0,0), 4],
+            //                  [new Date(2017,2,2,21,0,0), 7],
+            //                  [new Date(2017,2,11,15,0,0), 3],
+            //                  [new Date(2017,2,12,18,0,0), 4],
+            //     ]
+            //   );
+            //
+            //     var dt = new Date();
+            //
+            //     var min = new Date (dt.setMonth(dt.getMonth() -1));
+            //
+            //     var options = {
+            //       // title: '',
+            //       hAxis: {
+            //         title: '日時',
+            //         format: 'yyyy/MM/dd',
+            //         viewWindow: {
+            //             min: min,
+            //             max: new Date()
+            //         }
+            //       },
+            //       vAxis: {
+            //         title: '震度',
+            //         viewWindow : {
+            //             min: 0,
+            //             max: 8
+            //         }
+            //       },
+            //       legend:'none'
+            //     };
+            //
+            //     var id = "DEV_"+$scope.graphData[x].deviceId;
+            //
+            //     var chart = new google.visualization.ColumnChart(
+            //       document.getElementById(id));
+            //
+            //     chart.draw(data, options);
+            //
+            //   }
+            //
+            //
+            // }
 
        //画面遷移
        $scope.deviceDetail = function(){

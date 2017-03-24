@@ -39,7 +39,7 @@
       <div layout="row" layout-align="start end">
         <div flex="90" layout="column" >
             <span flex class="md-body-1">住所</span>
-            <span flex class="md-body-3">{{deviceGroupData.deviceName}}</span>
+            <span flex class="md-body-3">{{deviceGroupData.address}}</span>
         </div>
           <md-button class="md-icon-button" aria-label="More" ng-click="addressEdit($event)">
           <md-icon><buttonpen></buttonpen></md-icon>
@@ -51,7 +51,8 @@
       <div layout="row" layout-align="start end">
         <div flex="90" layout="column" >
             <span flex class="md-body-1">緯度・経度</span>
-            <span flex class="md-body-3">{{deviceGroupData.latLon}}</span>
+            <span flex class="md-body-3">緯度 {{deviceGroupData.latitude}}</span>
+            <span flex class="md-body-3">経度 {{deviceGroupData.longitude}}</span>
         </div>
           <md-button class="md-icon-button" aria-label="More" ng-click="latlonEdit($event)">
           <md-icon><buttonpen></buttonpen></md-icon>
@@ -108,7 +109,7 @@
                       <p class="md-body-4">{{item.name}}</p>
                       <p class="md-body-1 mailId">{{item.mailid}}</p>
 
-                      <md-menu>
+                      <md-menu ng-if="!admin_mflg">
                        <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)"  aria-label="More">
                           <i class="material-icons">more_vert</i>
                         </md-button>
@@ -128,7 +129,7 @@
                     </md-list-item>
 
                     <!--ボタン-->
-                <div layout>
+                <div layout ng-if="!admin_mflg">
                   <md-button flex class="md-accent md-button md-ink-ripple md-text-button-1" type="button" ng-click="alertSetting()" ng-transclude="">
                     <div class="md-ripple-container md-ripple-container-1">通知設定</div>
                   </md-button>
@@ -158,10 +159,12 @@
    </md-input-container> -->
    <!--MAP-->
    <div class="map mapEdit">
-     <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" on-click="getpos($event)">
+     <ui-gmap-google-map center="map.center" zoom="map.zoom" events="map.events" draggable="true">
        <ui-gmap-markers models="markers" coords="'self'" icon="'icon'"></ui-gmap-markers>
      </ui-gmap-google-map>
    </div>
+   <div class="md-body-1">緯度 {{latitude}}</div>
+   <div class="md-body-1">経度 {{longitude}}</div>
    </md-dialog-content>
    <md-dialog-actions>
    <button class="md-primary md-cancel-button md-button ng-scope md-default-theme md-ink-ripple" type="button" ng-click="closeDialog()" style="">キャンセル</button>
