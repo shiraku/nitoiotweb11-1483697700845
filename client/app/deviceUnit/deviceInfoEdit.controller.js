@@ -2,7 +2,10 @@
 'use strict';
 
     angular.module('nitoiotweb11App')
-    .controller('DeviceInfoEditCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog) {
+    .controller('DeviceInfoEditCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','SharedService', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog,SharedService) {
+
+
+      $scope.text = SharedService.text.get();
 
       //送信者一覧情報
       $http.get('/api/device_basicinfo/' + $routeParams.DEVICE_ID + '/')
@@ -13,7 +16,7 @@
 
         $scope.deviceGroupData = {
 
-          deviceId        :   obj._id,
+          deviceId  :   obj._id,
           address   :   obj.address,
           deviceName:   obj.deviceName,
           latitude  :   obj.latitude,
@@ -23,6 +26,10 @@
           telNo     :   obj.telNo,
 
         }
+
+            //小画面でも使用できるようにglobalで値を保持しておく
+            SharedService.text.set($scope.deviceGroupData.latitude,$scope.deviceGroupData.longitude);
+
         //ヘッダータイトル
         $scope.navtitle= obj.deviceName;
 
@@ -47,6 +54,15 @@
      $scope.alertSetting = function(){
        $location.path("/user_"+$routeParams.USER_ID+"/device_"+$routeParams.DEVICE_ID+'/alert');
      }
+
+     //緯度経度の値が変更された場合書き換える。
+     $scope.$on('changedText', function() {
+          var obj = SharedService.text.get();
+          $scope.deviceGroupData.latitude = obj.latitude;
+          $scope.deviceGroupData.longitude = obj.longitude;
+          //データバインド
+          // $scope.$apply();
+      });
 
      this.openMenu = function($mdOpenMenu, ev) {
       originatorEv = ev;
@@ -78,10 +94,6 @@
        };
 
        //グループ名編集画面遷移
-      $scope.latlonEdit = function(ev){
-
-      };
-
       $scope.latlonEdit = function(ev) {
         $mdDialog.show({
           controller: DialogController,
@@ -100,48 +112,58 @@
 
       function DialogController($scope, $mdDialog) {
 
+        //緯度経度を取得する
+        var obj = SharedService.text.get();
+        console.log("latitude"+obj.latitude+"longitude"+obj.longitude);
+
+        //地図下部に表示する緯度経度
+        $scope.latitude = obj.latitude;
+        $scope.longitude = obj.longitude;
+
+        //MAP定義
         $scope.map = {
         // マップ初期表示の中心地
         center: {
-          latitude: 35.459923,//34.7019399, // 緯度
-          longitude: 139.635290//135.51002519999997 // 経度
+          latitude: obj.latitude,// 緯度
+          longitude: obj.longitude// 経度
         },
         // マップ初期表示の拡大
-        zoom: 19
+        zoom: 13,
+        events: {
+                    //マップクリック時のイベント
+                   click: function(marker, eventName, args) {
+                        console.log("user defined event: " + marker, eventName, args);
+                        //markerをMAPの中央に表示させる。
+                         $scope.map.center.latitude = args[0].latLng.lat(),
+                         $scope.map.center.longitude = args[0].latLng.lng(),
+
+                         //地図下部に表示する緯度経度
+                         $scope.latitude = args[0].latLng.lat(),
+                         $scope.longitude = args[0].latLng.lng(),
+
+                         //地図上に表示するmarker
+                         $scope.markers = [
+                            {
+                              "id":1,
+                              "latitude":args[0].latLng.lat(),
+                              "longitude":args[0].latLng.lng(),
+                            }
+                          ];
+                          //データバインド
+                          $scope.$apply();
+                   }
+                 }
       };
 
-      // マップ上に表示するマーカーの情報
-      //TODO
+      //マップにマーカーを立てる
       $scope.markers = [
         {
           "id":1,
-          "latitude":35.459923,
-          "longitude":139.635290,
-          "title":"パシフィコ横浜"
-        },
-        {
-          "id":2,
-          "latitude":35.457511,
-          "longitude":139.632704,
-          "title":"みなとみらい駅"
+          "latitude":obj.latitude,
+          "longitude":obj.longitude
         }
       ];
 
-      $scope.getpos = function(event) {
-            console.log(event.latLng);
-        };
-
-        // $scope.hide = function() {
-        //   $mdDialog.hide();
-        // };
-        //
-        // $scope.cancel = function() {
-        //   $mdDialog.cancel();
-        // };
-        //
-        // $scope.answer = function(answer) {
-        //   $mdDialog.hide(answer);
-        // };
 
         //キャンセルボタン押下
         $scope.closeDialog = function() {
@@ -151,31 +173,33 @@
         //登録ボタン押下
         $scope.regist = function() {
           $mdDialog.hide();
-          // if($scope.dialog.telNo == undefined) return false;
-          // if($scope.dialog.telNo.$invalid) return false;
-          // $mdDialog.hide();
+
+          //globalの値を変更する。
+          SharedService.text.set($scope.latitude,$scope.longitude);
+
           //編集内容をpost
-        //   $http({
-        //   method: 'post',
-        //   url: '/api/device_basicinfo/' + $routeParams.DEVICE_ID + '/',
-        //   data: { key: "telNo", value: $scope.dialog.telNo.$modelValue }
-        // })
-        //   .then(
-        //     function successCallback(response){
-        //       console.log(response);
-        //       if(!response.data.error) {
-        //         console.log("success");
-        //         $rootScope.success = response.data.message;
-        //       } else {
-        //         $rootScope.error = response.data.message;
-        //       }
-        //
-        //     },
-        //     function errorCallback(response){
-        //         $rootScope.error = response.data.message;
-        //
-        //     }
-        //   );
+          //TODO　この投げ方で良いか白倉さんに聞く。
+          $http({
+          method: 'post',
+          url: '/api/device_basicinfo/' + $routeParams.DEVICE_ID + '/',
+          data: { key: "latLon", value: {latitude:$scope.latitude,longitude:$scope.longitude}}
+        })
+          .then(
+            function successCallback(response){
+              console.log(response);
+              if(!response.data.error) {
+                console.log("success");
+                $rootScope.success = response.data.message;
+              } else {
+                $rootScope.error = response.data.message;
+              }
+
+            },
+            function errorCallback(response){
+                $rootScope.error = response.data.message;
+
+            }
+          );
         }
 
 
