@@ -14,11 +14,12 @@
 
         var obj = response.data;
 
-        //TODO 白倉さんにグループID/名取得方法について聞く。
-        $scope.groupId = "dev0000"
-        $scope.groupName = "デバイス１";
         //ヘッダータイトル
-        // $scope.navtitle=$scope.deviceGroupData[0].groupName;
+        $scope.navtitle=  obj._id;
+
+        //TODO 白倉さんにグループID/名送っていただく。
+        $scope.groupId = obj._id;
+        $scope.groupName = obj.name;
         $scope.deviceList = obj.device
         $scope.sendto = obj.sendto;
 
