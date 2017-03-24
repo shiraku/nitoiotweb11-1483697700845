@@ -12,6 +12,7 @@ var Auth = require('./components/auth');
 //var cloudantUtil = require('./../../lib/cloudantUtil');
 var deviceList = require('./api/device/deviceList');
 var deviceUnit = require('./api/device/deviceUnit');
+var comment = require('./api/device/comment');
 var user = require('./api/user/user');
 var auth = new Auth();
 
@@ -68,6 +69,13 @@ module.exports = function(app) {
     })(req, res, next);
  });
   
+
+  app.get('/logout',function(req, res) {
+      req.logout();
+      res.redirect('/');
+    });
+  
+  
   app.get('/status', function(req, res) {
     if (!req.isAuthenticated()) {
       return res.status(200).json({
@@ -92,6 +100,7 @@ module.exports = function(app) {
       if(!req.user) res.status(500).json({ error: "ログインされていません" });
       var obj = new Object();
       obj["name"] = req.user.name;
+      obj["admin_mflg"] = req.user.admin_mflg;
       obj["device"] = req.user.device;
       obj["sendto"] = req.user.sendto;
       res.status(200).json(obj);
@@ -175,6 +184,21 @@ module.exports = function(app) {
   //show
   app.get('/api/device_history_:type/:id',function(req, res) {
       deviceUnit.getHistory(req,res);
+    });
+
+    /**
+   * コメント関連のapi
+   * 感知日IDを元にコメントを取得、投稿する
+   * prams:id 感知日ID（yyyymmddhhmmss）
+   * メソッドによりCRADを判断
+   * get:取得
+   * post:追加・更新
+   */
+  app.get('/api/comment/:id',function(req, res) {
+      comment.getComment(req,res);
+    });
+  app.post('/api/comment/:id',function(req, res) {
+      comment.saveComment(req,res);
     });
 
 

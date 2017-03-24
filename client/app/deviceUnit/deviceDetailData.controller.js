@@ -162,7 +162,30 @@
 
         //登録ボタン押下
         $scope.regist = function() {
-        $mdDialog.hide();
+          $mdDialog.hide();
+          //TODO 削除のリクエストを投げる
+            $http({
+              method: 'post',
+              url: '/api/comment/DEV_00000_20170314142134/',
+              data: { comment: this.user.biography, impFlg: this.project.tos }
+            })
+            .then(
+              function successCallback(response){
+                console.log(response);
+                if(!response.data.error) {
+                  console.log("success");
+                  $rootScope.success = response.data.message;
+                } else {
+                  $rootScope.error = response.data.message;
+                }
+
+              },
+              function errorCallback(response){
+                  $rootScope.error = response.data.message;
+
+              }
+            ); 
+          
         }
 
         }]

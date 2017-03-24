@@ -392,11 +392,23 @@ exports.Comment_dataEntitity = {
 //        console.log(res);
       return callback(err,res)
     });
+  },
+  saveComment : function(query, data, callback){
+    connectDoc('comment_data');
+//    console.log("query, data@updateDevice");
+//    console.log(query, data);
+    db.save(query, data , function(err, doc) {
+//    console.log("err@updateUser");
+//    console.log(err);
+//    console.log("doc@updateUser");
+//    console.log(doc);
+      if(err){
+        return callback(err);
+      }
+      return callback(err,doc);
+    });
   }
 };
-function handleError(res, err) {
-    return res.status(500).send(err);
-}
 
 
 
@@ -422,3 +434,9 @@ exports.EqimageEntitity = {
     
   }
 };
+
+
+
+function handleError(res, err) {
+    return res.status(500).send(err);
+}
