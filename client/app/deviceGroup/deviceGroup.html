@@ -24,16 +24,17 @@
 
 
     <md-card-content>
-      <!-- <div layout="colom"> -->
-      <!-- <md-card-title-text> -->
-        <span class="md-body-1">グループ名</span>
-          <!-- <div layout="colom"> -->
-        <p class="md-body-3">{{groupName}}</p>
-        <md-button ng-click="deviceNameEdit($event)">
-          <buttonpen></buttonpen>
-        </md-button>
-      <!-- </md-card-title-text> -->
-    <!-- </div> -->
+
+          <div layout="row" layout-align="start end">
+            <div flex="90" layout="column" >
+                <span flex class="md-body-1">グループ名</span>
+                <span flex class="md-body-3">{{groupName}}</span>
+            </div>
+              <md-button class="md-icon-button" aria-label="More">
+              <md-icon><buttonpen></buttonpen></md-icon>
+              </md-button>
+          </div>
+
     </md-card-content>
 
   </md-card>

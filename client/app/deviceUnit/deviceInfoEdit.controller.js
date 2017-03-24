@@ -9,73 +9,55 @@
       .then(function successCallback(response) {
         console.log("posted successfully");
         console.log(response);
+        var obj = response.data;
+
+        $scope.deviceGroupData = {
+
+          deviceId        :   obj._id,
+          address   :   obj.address,
+          deviceName:   obj.deviceName,
+          latitude  :   obj.latitude,
+          longitude :   obj.longitude,
+          memo      :   obj.memo,
+          responsiblePerson  :   obj.responsiblePerson,
+          telNo     :   obj.telNo,
+
+        }
+        //ヘッダータイトル
+        $scope.navtitle= obj.deviceName;
+
+
       }, function errorCallback(response) {
         console.error("error in posting");
       });
-      
+
       //送信者一覧情報
       $http.get('/api/user/')
       .then(function successCallback(response) {
         console.log("posted successfully");
         console.log(response);
+          var obj = response.data;
+          $scope.sendto = obj.sendto;
       }, function errorCallback(response) {
         console.error("error in posting");
       });
-      
-
-      //デバイスグループデータ
-      //TODO APIで取得するように変更
-      $scope.deviceGroupData = [
-        {
-              'groupId':'grp_0001',
-              'groupName':'日東工業　設備管理',
-              'deviceList':[
-                { 'deviceId':'001',
-                  'deviceName':'デバイス１',
-                },
-                { 'deviceId':'002',
-                  'deviceName':'デバイス２',
-                },
-                { 'deviceId':'003',
-                  'deviceName':'デバイス３',
-                },
-                { 'deviceId':'004',
-                  'deviceName':'デバイス４',
-                },
-                { 'deviceId':'005',
-                  'deviceName':'デバイス５',
-                }
-            ],
-              'alertNotificationList':[
-                { 'name':'山田　修',
-                  'mailAddress':'yamada@nito.co.jp'
-                },
-                { 'name':'小林　武',
-                  'mailAddress':'kobayashi@nito.co.jp'
-                },
-                { 'name':'湯浅　あさみ',
-                  'mailAddress':'yuasa@nito.co.jp'
-                },
-                { 'name':'本田　宗太郎',
-                  'mailAddress':'honda@nito.co.jp'
-                }
-              ]
-            }];
-
-      //ヘッダータイトル
-      $scope.navtitle=$scope.deviceGroupData[0].groupName;
 
       //アラート設定画面遷移
      $scope.alertSetting = function(){
        $location.path("/user_"+$routeParams.USER_ID+"/device_"+$routeParams.DEVICE_ID+'/alert');
      }
 
+     this.openMenu = function($mdOpenMenu, ev) {
+      originatorEv = ev;
+         $mdOpenMenu(ev);
+      };
+
        //グループ名編集画面遷移
       $scope.deviceNameEdit = function(ev){
         var json = {"title":"デバイス名の編集",
                     "placeholder":"デバイス名",
                     "ariaLabel":"",
-                    "initialValue":"",
+                    "initialValue":$scope.deviceGroupData.deviceName,
                     "itemKey":"deviceName",
                     "ok":"登録",
                     "cancel":"キャンセル"}
@@ -87,7 +69,7 @@
            var json = {"title":"住所の編集",
                        "placeholder":"住所",
                        "ariaLabel":"",
-                       "initialValue":"",
+                       "initialValue":$scope.deviceGroupData.address,
                        "itemKey":"address",
                        "ok":"登録",
                        "cancel":"キャンセル"}
@@ -99,12 +81,111 @@
 
       };
 
+      $scope.latlonEdit = function(ev) {
+        $mdDialog.show({
+          controller: DialogController,
+          templateUrl: 'dialog1.tmpl.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose:true,
+          fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+        })
+        .then(function(answer) {
+          $scope.status = 'You said the information was "' + answer + '".';
+        }, function() {
+          $scope.status = 'You cancelled the dialog.';
+        });
+      };
+
+      function DialogController($scope, $mdDialog) {
+
+        $scope.map = {
+        // マップ初期表示の中心地
+        center: {
+          latitude: 35.459923,//34.7019399, // 緯度
+          longitude: 139.635290//135.51002519999997 // 経度
+        },
+        // マップ初期表示の拡大
+        zoom: 19
+      };
+
+      // マップ上に表示するマーカーの情報
+      //TODO
+      $scope.markers = [
+        {
+          "id":1,
+          "latitude":35.459923,
+          "longitude":139.635290,
+          "title":"パシフィコ横浜"
+        },
+        {
+          "id":2,
+          "latitude":35.457511,
+          "longitude":139.632704,
+          "title":"みなとみらい駅"
+        }
+      ];
+
+      $scope.getpos = function(event) {
+            console.log(event.latLng);
+        };
+
+        // $scope.hide = function() {
+        //   $mdDialog.hide();
+        // };
+        //
+        // $scope.cancel = function() {
+        //   $mdDialog.cancel();
+        // };
+        //
+        // $scope.answer = function(answer) {
+        //   $mdDialog.hide(answer);
+        // };
+
+        //キャンセルボタン押下
+        $scope.closeDialog = function() {
+          $mdDialog.hide();
+        }
+
+        //登録ボタン押下
+        $scope.regist = function() {
+          $mdDialog.hide();
+          // if($scope.dialog.telNo == undefined) return false;
+          // if($scope.dialog.telNo.$invalid) return false;
+          // $mdDialog.hide();
+          //編集内容をpost
+        //   $http({
+        //   method: 'post',
+        //   url: '/api/device_basicinfo/' + $routeParams.DEVICE_ID + '/',
+        //   data: { key: "telNo", value: $scope.dialog.telNo.$modelValue }
+        // })
+        //   .then(
+        //     function successCallback(response){
+        //       console.log(response);
+        //       if(!response.data.error) {
+        //         console.log("success");
+        //         $rootScope.success = response.data.message;
+        //       } else {
+        //         $rootScope.error = response.data.message;
+        //       }
+        //
+        //     },
+        //     function errorCallback(response){
+        //         $rootScope.error = response.data.message;
+        //
+        //     }
+        //   );
+        }
+
+
+      }
+
       //メモ編集画面遷移
       $scope.memoEdit = function(ev){
        var json = {"title":"メモの編集",
                    "placeholder":"メモ",
                    "ariaLabel":"",
-                   "initialValue":"",
+                   "initialValue":$scope.deviceGroupData.memo,
                     "itemKey":"memo",
                    "ok":"登録",
                    "cancel":"キャンセル"}
@@ -116,7 +197,7 @@
        var json = {"title":"責任者の編集",
                    "placeholder":"責任者",
                    "ariaLabel":"",
-                   "initialValue":"",
+                   "initialValue":$scope.deviceGroupData.responsiblePerson,
                     "itemKey":"responsiblePerson",
                    "ok":"登録",
                    "cancel":"キャンセル"}
@@ -143,7 +224,7 @@
            '     <p class="ng-binding"></p>'+
            '   </div>'+
            '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme">'+
-           '     <input type="number" ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="telNo" name="telNo" value="" placeholder="連絡先" class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="+this.title+" aria-invalid="false" style="">'+
+           '     <input type="number" ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="telNo" name="telNo" initialValue='+$scope.deviceGroupData.telNo+' placeholder="連絡先" class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="+this.title+" aria-invalid="false" style="">'+
            '     <div ng-messages="telNo.$error"  class="md-errors-spacer" ng-hide="telNo.$valid">'+
              '     <div ng-message="email">半角数字で入力してください</div>'+
              '     </div>'+
@@ -169,7 +250,7 @@
           .targetEvent(ev)
           .ok(param.ok)
           .cancel(param.cancel);
-        
+
         var itemKey = param.itemKey
 
           $mdDialog.show(confirm)
@@ -196,11 +277,11 @@
                     $rootScope.error = response.data.message;
 
                 }
-              ); 
+              );
           });
 
         };
-      
+
       function dialogShowTemp(ev,param){
 
           $mdDialog.show({
@@ -239,7 +320,7 @@
                       $rootScope.error = response.data.message;
 
                   }
-                ); 
+                );
               }
           }]
           });
@@ -260,14 +341,14 @@ function showMailAddressDialog($event,flg){
   if(flg){
   item.title = 'メールアドレスの追加',
   item.placeholder_name = '名前',
-  item.placeholder_mailaddress = 'メールアドレス'
+  item.placeholder_mailid = 'メールアドレス'
 
   }else{
 
   item.title = 'メールアドレスの編集';
   item.placeholder_name = this.item.name;
-  item.placeholder_mailaddress = this.item.mailAddress;
-  item.key = "key='" + item.placeholder_mailaddress + "'"
+  item.placeholder_mailid = this.item.mailid;
+  item.key = "key='" + item.placeholder_mailid + "'"
 
 }
 
@@ -286,8 +367,8 @@ $mdDialog.show({
      '     <div class="md-errors-spacer"></div>'+
      '   </md-input-container>'+
      '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme md-prompt-input-container-2">'+
-     '     <input type="email" ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="mailAddress" name="mailAddress" value='+item.placeholder_mailaddress+' placeholder='+item.placeholder_mailaddress+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
-     '     <input type="hidden" ng-model="key" name="key" placeholder='+item.placeholder_mailaddress+' ng-init="'+item.key+'" class="ng-hide">'+
+     '     <input type="email" ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="mailAddress" name="mailAddress" value='+item.placeholder_mailid+' placeholder='+item.placeholder_mailid+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
+     '     <input type="hidden" ng-model="key" name="key" placeholder='+item.placeholder_mailid+' ng-init="'+item.key+'" class="ng-hide">'+
      '     <div ng-messages="dialog.mailAddress.$error"  class="md-errors-spacer" ng-hide="dialog.mailAddress.$valid">'+
        '     <div ng-message="email">メールアドレスを正しく入力してください</div>'+
        '     </div>'+
@@ -333,7 +414,7 @@ $scope.regist = function() {
         $rootScope.error = response.data.message;
 
     }
-  ); 
+  );
 }
 
 }]
@@ -375,7 +456,7 @@ $scope.mailAddressDelete = function (ev){
               $rootScope.error = response.data.message;
 
           }
-        ); 
+        );
     }
     //キャンセルの場合
     , function() {

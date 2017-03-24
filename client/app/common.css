@@ -328,10 +328,14 @@
   /* ボタン */
   .md-text-button-1{
   border-radius: 2px;
+  max-width: 150px;
+  width: 150px;
   }
   .md-text-button-2{
   background: #D0011B;
   border-radius: 2px;
+  max-width: 150px;
+  width: 150px;
   }
 
   /* ボタンのテキスト　*/
@@ -412,7 +416,9 @@ padding: 50px;
   padding: 70px;
 }
 
-
+.alert{
+  margin-bottom: 0px;
+}
 
 md-menu-content{
   padding : 0;
@@ -420,4 +426,69 @@ md-menu-content{
 
 .mailId{
       text-align: right;
+}
+
+/***Datepicker***************/
+md-datepicker{
+width: 100%;
+display: block;
+padding-right: 0;
+}
+
+
+/*
+.md-datepicker-input-container{
+    display: table-cell;
+}
+
+.md-datepicker-triangle-button{
+    top: 0;
+}
+
+.md-datepicker-triangle-button.md-button.md-icon-button{
+    margin-right: 12px;
+    margin-top: 15px;
+}
+
+.md-datepicker-calendar-icon{
+    margin-left: 0;
+}*/
+
+.md-datepicker-button{
+  margin-left: 0px !important;
+  padding-left: 0px !important;
+  display: table-cell;
+}
+
+/****セレクトボックス****************/
+
+.md-select-icon{
+    color: rgba(0,0,0,0.38);
+}
+
+/****検索ボックス****************/
+
+.searchbox{
+  padding-top: 20px;
+}
+.searchbox md-input-container{
+    width: 100%;
+}
+
+.searchbox md-input-container input{
+  font-family: .HiraKakuInterface-W3;
+  font-size: 20px;
+  color: #FFFFFF;
+  line-height: 28px;
+}
+
+
+/****サイドナビ****************/
+md-sidenav{
+  top: 57px !important;
+  background: #404040;
+}
+
+md-sidenav md-list-item p{
+  color: white !important;
 }

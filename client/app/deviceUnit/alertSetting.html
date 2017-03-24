@@ -2,7 +2,7 @@
 
   <!--ヘッダー読み込み-->
   <navitop></navitop>
-  
+
   <!--エラーメッセージ-->
   <div ng-show="error" class="alert alert-danger">{{error}}</div>
   <div ng-show="success" class="alert alert-success">{{success}}</div>
@@ -116,14 +116,17 @@
 
       </md-card-title-text>
     </md-card-content>
-    <!--キャンセル-->
-  <md-button class="md-accent md-button md-ink-ripple" ng-click="cancel()" type="button" ng-transclude="">
-    <div class="md-ripple-container">キャンセル</div>
-  </md-button>
-  <!--登録ボタン-->
-  <md-button class="md-accent md-button md-ink-ripple" ng-click="regist()" type="button" ng-transclude="">
-    <div class="md-ripple-container">登録</div>
-  </md-button>
+
+  <div layout>
+    <md-button flex class="md-accent md-button md-ink-ripple md-text-button-1" type="button" ng-click="cancel()" ng-transclude="">
+      <div class="md-ripple-container md-ripple-container-1">キャンセル</div>
+    </md-button>
+    <md-button flex class="md-accent md-button md-ink-ripple md-text-button-2" type="button" ng-click="regist($event,true)" ng-transclude="">
+      <div class="md-ripple-container md-ripple-container-2">登録</div>
+    </md-button>
+  </div>
+
+
   </md-card>
 
 </div>
