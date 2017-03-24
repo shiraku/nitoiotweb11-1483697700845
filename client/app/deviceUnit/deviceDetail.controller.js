@@ -14,10 +14,10 @@
         var obj = response.data;
         var obj2;
         if(obj.earthquakeCurrentData.datas){
-        obj2 = obj.earthquakeCurrentData.datas;
-      }else{
-        obj2 = obj.thunderCurrentData.datas
-      }
+          obj2 = obj.earthquakeCurrentData.datas;
+        }else{
+          obj2 = obj.thunderCurrentData.datas
+        }
 
         //ヘッダータイトル
         $scope.navtitle = obj.deviceName;
@@ -78,10 +78,22 @@
         console.log(response);
 
         $scope.earthquakeHistoryList = response.data.data;
-        $scope.thunderHistoryList = response.data.data;
+//        $scope.thunderHistoryList = response.data.data;
 
       }, function errorCallback(response) {
         console.error("error in /api/device_history_eq/00000");
+      });
+      //雷履歴情報
+      $http.get('/api/device_history_fl/00000')
+      .then(function successCallback(response) {
+        console.log("/api/device_history_fl/00000 successfully");
+        console.log(response);
+
+        $scope.thunderHistoryList = response.data.data;
+        console.log($scope.thunderHistoryList);
+
+      }, function errorCallback(response) {
+        console.error("error in /api/device_history_fl/00000");
       });
 
 
@@ -91,13 +103,13 @@
         $scope.nextView = 10; // 地震&雷情報もっと見るをクリックしたときに表示する数
 
         // 地震情報さらに見るクリック時
-        $scope.earthquakeHistoryMoreClick = function () {
+        $scope.earthquakeHistoryMoreClick = function() {
             $scope.moreCount++;
             $scope.earthquakeHistoryViews = $scope.earthquakeHistoryViews + $scope.nextView;
         };
 
         // 雷情報さらに見るクリック時
-        $scope.thunderHistoryMoreClick = function () {
+        $scope.thunderHistoryMoreClick = function() {
             $scope.moreCount++;
             $scope.thunderHistoryViews = $scope.thunderHistoryViews + $scope.nextView;
         };

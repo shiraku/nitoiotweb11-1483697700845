@@ -90,15 +90,18 @@
   <md-card-content>
   <p class="md-body-1">地震履歴</p>
 
-        <md-list-item class="md-3-line" ng-repeat="item in earthquakeHistoryList | limitTo: earthquakeHistoryViews: 0" ng-click="deviceDetailData()" ng-hide="item.datas.type !='EQ'">
+        <md-list-item class="md-3-line" ng-repeat="item in earthquakeHistoryList | limitTo: earthquakeHistoryViews" ng-click="deviceDetailData()" ng-hide="item.datas.type !='EQ'">
             <p class="md-body-1">{{item.date}}</p>
             <span class="md-body-1">{{item.datas.seismicIntensity}}</span>
             <buttondetail></buttondetail>
         </md-list-item>
 
+      <div layout layout-align="center" ng-hide="earthquakeHistoryList">
+        <p>履歴情報がありません。</p>
+      </div>
 
-        <div layout layout-align="center">
-          <md-button class="md-accent md-button md-ink-ripple" type="button" ng-transclude=""　ngclick="earthquakeHistoryMoreClick()" ng-hide="earthquakeHistoryViews >= earthquakeHistoryList.length">
+        <div layout layout-align="center" ng-hide="!earthquakeHistoryList">
+          <md-button class="md-accent md-button md-ink-ripple" type="button" ng-transclude=""　ng-click="earthquakeHistoryMoreClick()" ng-hide="earthquakeHistoryViews >= earthquakeHistoryList.length">
             <div class="md-ripple-container">さらに表示</div>
           </md-button>
         </div>
@@ -176,7 +179,11 @@
           <buttondetail></buttondetail>
       </md-list-item>
 
-      <div layout layout-align="center">
+      <div layout layout-align="center" ng-hide="thunderHistoryList">
+        <p>履歴情報がありません。</p>
+      </div>
+
+      <div layout layout-align="center" ng-hide="!thunderHistoryList">
         <md-button class="md-accent md-button md-ink-ripple" type="button" ng-transclude=""　ngclick="thunderHistoryMoreClick()" ng-hide="thunderHistoryViews >= thunderHistoryList.length">
           <div class="md-ripple-container">さらに表示</div>
         </md-button>
