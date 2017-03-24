@@ -15,10 +15,9 @@
         var obj = response.data;
 
         //ヘッダータイトル
-        $scope.navtitle=  obj._id;
+        $scope.navtitle=  obj.name;
 
-        //TODO 白倉さんにグループID/名送っていただく。
-        $scope.groupId = obj._id;
+        $scope.groupId = $routeParams.USER_ID;
         $scope.groupName = obj.name;
         $scope.deviceList = obj.device
         $scope.sendto = obj.sendto;
