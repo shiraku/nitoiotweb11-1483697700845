@@ -481,3 +481,14 @@ padding-right: 0;
   color: #FFFFFF;
   line-height: 28px;
 }
+
+
+/****サイドナビ****************/
+md-sidenav{
+  top: 57px !important;
+  background: #404040;
+}
+
+md-sidenav md-list-item p{
+  color: white !important;
+}

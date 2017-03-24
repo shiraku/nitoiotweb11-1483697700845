@@ -41,7 +41,13 @@
     <!---メニュー--->
     <section layout="row" flex="">
          <md-sidenav class="md-sidenav-left" md-component-id="left" md-disable-backdrop="" md-whiteframe="4">
-           <md-toolbar ng-click="toggleLeft()"  class="md-theme-indigo">
+           <md-list-item class="md-3-line" ng-repeat="item in menuItem" ng-click=menuItemClick(item.url)>
+             <!-- <md-list-item class="md-3-line" ng-repeat="item in menuItem" ng-click="{{item.click}}"> -->
+             <!-- <div layout> -->
+             <p class="md-body-4">{{item.label}}</p>
+           <!-- </div> -->
+           </md-list-item>
+           <!-- <md-toolbar ng-click="toggleLeft()"  class="md-theme-indigo">
              <h1 class="md-toolbar-tools">デバイス一覧</h1>
            </md-toolbar>
              <md-toolbar ng-click="deviceList()"  class="md-theme-indigo">
@@ -67,6 +73,6 @@
              </md-toolbar>
              <md-toolbar ng-click="alertSettingbyGroup()" 　class="md-theme-indigo">
                <h1 class="md-toolbar-tools">アラート設定byGroup</h1>
-             </md-toolbar>
+             </md-toolbar> -->
          </md-sidenav>
      </section>
