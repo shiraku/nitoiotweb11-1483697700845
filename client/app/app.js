@@ -68,4 +68,39 @@ return {
             +'<polygon id="Shape" fill="#D8001A" points="8.59997559 7.4 9.99997559 6 15.9999756 12 9.99997559 18 8.59997559 16.6 13.1999756 12"></polygon></g>'
             +'</svg>',
 };
-});
+})
+.factory("SharedService", ["$rootScope", function($rootScope) {
+        var latitude = "";
+        var longitude = "";
+        var id = "";
+        var auth = "";
+
+        return {
+            text: {
+                get: function() {
+                  var obj = {latitude:latitude,longitude:longitude};
+                  return obj; },
+                set: function(lat,lon) {
+                    console.log("[enter] text.set");
+                    latitude = lat;
+                    longitude = lon;
+                    $rootScope.$broadcast('changedText');
+                    console.log("[leave] text.set");
+                }
+            },
+
+            user: {
+                get: function() {
+                  var obj = {id:id,auth:auth};
+                  return obj; },
+                set: function(key,value) {
+                  if(key =="id"){
+                    id = value;
+                  }else if(key =="auth"){
+                    auth = value;
+                  }
+                    $rootScope.$broadcast('changedUser');
+                }
+            }
+        };
+    }]);
