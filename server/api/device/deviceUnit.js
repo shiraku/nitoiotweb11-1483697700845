@@ -90,8 +90,8 @@ var deviceUnit = {
     var response = res;
     var option = new Object();
     option[req.body.key] = req.body.value;
-    console.log('userDevice,option@updateDeviceBasicInfo');
-    console.log(userDevice,option);
+//    console.log('userDevice,option@updateDeviceBasicInfo');
+//    console.log(userDevice,option);
     cloudantUtil.M_deviceEntitity.updateDevice(userDevice, option, function(err, dat){
 //    console.log('err@updateDeviceBasicInfo');
 //    console.log(err);
@@ -139,7 +139,7 @@ var deviceUnit = {
     }
     var userDevice = req.params.id;
     
-      console.log(userDevice);
+//      console.log(userDevice);
     var self = this;
     var reqest = req;
     var response = res;

@@ -44,20 +44,24 @@ module.exports = function(app) {
   app.post('/login',function(req, res, next) {
     //IDまたはパスワードいずれかが見入力だった場合
     if(!req.body.userId || !req.body.password){
-      return res.status(302).send({ redirect:'/login', authStat:false,   message: 'ユーザーIDとパスワードを入力してください。'});
+      return res.send({ authStat:false,   message: 'ユーザーIDとパスワードを入力してください。'});
     }
     //認証チェック
     auth.authenticate('local', function(err, user, info) {
+//      console.log("err, user, info@authenticate");
+//      console.log(err, user, info);
       req.logIn(user, function(err) {
+//      console.log("user, err, info@logIn");
+//      console.log(user, err);
         //パスワードが間違っていた場合
         if (!user && !err) {
 //          console.log('dont match password');
-          return res.status(302).send({ redirect:'/login',   authStat:false, message: info.message});
+          return res.send({ authStat:false, message: info.message});
         }
         //cloudantエラーまたは該当ユーザーが見つからない場合
         if (err) { 
 //          console.log('dont match id');
-          return res.status(302).send({ redirect:'/login', authStat:false,   message: 'ユーザーIDが正しくありません。'}); 
+          return res.send({ authStat:false,   message: 'ユーザーIDが正しくありません。'});
         }
         //認証が取れた場合。パラメータのURLにリダイレクト
         //リダイレクト先がない場合はデバイス一覧へ

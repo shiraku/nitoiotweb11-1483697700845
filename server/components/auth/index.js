@@ -17,7 +17,7 @@ var Auth = function(){
 Auth.prototype.init = function(){
 //  cloudantUtil.init();
   app.use(passport.initialize());
-  app.use(passport.session());
+//  app.use(passport.session());
   
   passport.use(new localStrategy(
     {
@@ -31,6 +31,7 @@ Auth.prototype.init = function(){
           return done(null, false, {message:'ユーザーIDが正しくありません。' });
         }
         if(password !== user.password){
+//          return done(null, false, {message:'パスワードが正しくありません。' });
           return done(null, false, {message:'パスワードが正しくありません。' });
         }
         return done(null, user);
@@ -40,14 +41,26 @@ Auth.prototype.init = function(){
   
   //セッションをシリアライズ
   passport.serializeUser(function(user, done){
+//    console.log("serializeUser");
+//    console.log(done);
+//    console.log(user);
     done(null, {userId: user});
   });
   
+  
   //セッションをディシリアライズ
   passport.deserializeUser(function(serializeUser, done){
-    cloudantUtil.M_userEntitity.getUser(serializeUser.userId._id.split('_')[1], function(err, user){
-        done(err, user);
-    });
+//    console.log("deserializeUser");
+//    console.log(done);
+//    console.log(serializeUser);
+    
+    if (serializeUser.userId) {
+      cloudantUtil.M_userEntitity.getUser(serializeUser.userId._id.split("_")[1], function(err, user){
+          done(err, user);
+      });
+    } else {
+      done(null, false, {message:'パスワードが正しくありません。' });
+    }
   });
 };
 

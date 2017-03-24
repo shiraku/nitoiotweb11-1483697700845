@@ -88,7 +88,7 @@ exports.M_userEntitity = {
     connectDoc('m_user');
     db.get('muser_' + query, function(err, doc) {
       if(err){
-        return callback(err,doc);
+        return callback(err);
       }
 //      console.log(doc);
       return callback(err,doc);
@@ -138,7 +138,7 @@ exports.M_deviceEntitity = {
   getDevice : function(query, callback){
     var q;
     if(typeof query == "object" || typeof query == "array"){
-      console.log('query is type of array');
+//      console.log('query is type of array');
       q = [];
       for(var i =0; i < query.length; i++){
         q.push('DEV_' + query[i].id);
@@ -148,15 +148,15 @@ exports.M_deviceEntitity = {
       q = 'DEV_' + query;
 //      console.log(q);
     }
-      console.log('クエリ情報@M_deviceEntitity');
-      console.log(q);
+//      console.log('クエリ情報@M_deviceEntitity');
+//      console.log(q);
     connectDoc('m_device');
     db.get(q, function(err, doc) {
       if(err){
         return callback(err,doc);
       }
-      console.log('デバイス情報@M_deviceEntitity');
-      console.log(doc);
+//      console.log('デバイス情報@M_deviceEntitity');
+//      console.log(doc);
       return callback(err,doc);
     });
   },
