@@ -108,6 +108,7 @@ var deviceList = {
         obj["status"] = (flgSense) ? '感知あり':'感知なし';
         if(flgSense){
           obj["type"] = self.latestEQDate.value.datas.type;
+          obj["date"] = self.latestEQDate.value.data;
 //          console.log("self.latestEQDate.datas");
 //          console.log(self.latestEQDate.value.datas);
           obj["seismicIntensity"] = self.latestEQDate.value.datas.seismicIntensity;
