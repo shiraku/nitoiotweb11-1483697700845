@@ -124,7 +124,17 @@
         }, function errorCallback(response) {
           console.error("error in posting");
         });
-
+      
+      $scope.switchIntensity = function(switchSI){
+        console.log(switchSI);
+        if(switchSI){
+          $scope.dispFlg = true;
+          switchSI.className="md-warn";
+        }else{
+          $scope.dispFlg = false;
+          switchSI.className="md-primary";
+        }
+      }
 
       //キャンセルボタン押下
       //TODO 元の画面に戻る処理を追加

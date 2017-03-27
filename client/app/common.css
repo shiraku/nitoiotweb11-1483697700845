@@ -354,6 +354,21 @@
   buttondetail {
     line-height: 0px;
 }
+  /* スイッチ */
+  .nito-switch-label span {
+    float:left;
+    margin: 16px 16px -16px 16px;
+    line-height: 30px;
+  }
+  .nito-switch-label md-switch {
+    margin: 16px 0 -16px 0;
+  }
+  .nito-switch-label .nito-default .md-bar {
+    background-color: rgb(158,158,158);
+  }
+  .nito-switch-label .nito-default .md-thumb {
+    background-color: #ffffff;
+  }
 
 /**ダイアログ*******************************************************************/
  md-dialog md-dialog-content .md-prompt-input-container{
@@ -468,7 +483,11 @@ padding-right: 0;
 
 .nito-datepicker > md-datepicker .md-datepicker-input-container{
   left: auto;
-  width: calc(100% - 60px);
+  width: calc(100% - 76px);
+}
+
+.nito-datepicker > md-datepicker .md-datepicker-triangle-button{
+  right: 6px;
 }
 
 

@@ -112,7 +112,7 @@
           var deviceName = response.data.device[i].name;
           $http.get('/api/device_history_eq/'+ response.data.device[i].id)
           .then(function successCallback(response) {
-            console.log("posted successfully");
+            console.log("/api/device_history_eq/ successfully");
             console.log(response);
             $scope.graphData.push(response.data);
             $scope.$emit('graphData',response.data);
