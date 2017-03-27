@@ -55,7 +55,7 @@
           <!--デバイスタブ-->
           <md-tab label="デバイス">
               <md-card>
-                  <md-list-item class="md-3-line" ng-repeat="item in deviceList" ng-click="deviceDetail()">
+                  <md-list-item class="md-secondary" ng-repeat="item in deviceList" ng-click="deviceDetail()">
                       <p class="md-body-4">{{item.name}}</p>
                       <buttondetail></buttondetail>
                   </md-list-item>
@@ -66,7 +66,7 @@
           <md-tab label="アラート通知">
               <md-card>
 
-                  <md-list-item class="md-3-line" ng-repeat="item in sendto" ng-click="null">
+                  <md-list-item class="md-secondary" ng-repeat="item in sendto" ng-click="null">
                     <!-- <div layout> -->
                     <p class="md-body-4">{{item.name}}</p>
                     <p class="md-body-1 mailId">{{item.mailid}}</p>

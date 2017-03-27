@@ -460,6 +460,19 @@ padding-right: 0;
   display: table-cell;
 }
 
+
+.nito-datepicker {
+  display: block;
+  margin-right: -18px;
+}
+
+.nito-datepicker > md-datepicker .md-datepicker-input-container{
+  left: auto;
+  width: calc(100% - 60px);
+}
+
+
+
 /****セレクトボックス****************/
 
 .md-select-icon{
