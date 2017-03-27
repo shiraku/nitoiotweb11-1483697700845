@@ -3,9 +3,6 @@
   <!--ヘッダー読み込み-->
   <navitop></navitop>
 
-    <!-- <md-content class="md-padding"> -->
-
-
 <!--地震または雷-->
 <div class="md-toolbar-tools">
   <h3 class="ng-binding ng-isolate-scope">
@@ -29,7 +26,7 @@
   </md-card-content>
 
  <!--デバイスカード　コンテンツ-->
-  <md-card-content>
+    <md-card-content>
       <!--地震の場合-->
       <div layout="row" ng-if="detailData.type == 'EQ'">
         <div flex="25">
@@ -96,42 +93,31 @@
 
           <md-card>
             <md-card-title>
-            <!-- <md-card-title-text> -->
               <span class="md-body-3">合成加速度</span>
-            <!-- </md-card-title-text> -->
-          </md-card-title>
-            <!--TODO NodeJSからバイナリで読み込むように変更-->
+            </md-card-title>
             <img ng-src={{chart_acceleration}}></img>
           </md-card>
 
 
-    <!-- </md-content> -->
-  </div>
+          <!--マップ-->
+                  <div class="md-toolbar-tools">
+                    <h3 class="ng-binding ng-isolate-scope">
+                      <a class="docs-anchor ng-scope" ng-href="#basic-usage" name="basic-usage" href="#basic-usage">マップ</a>
+                    </h3>
+                  </div>
+
+                  <md-card>
+                    <md-content class="md-padding">
+                      <div class="map mapDetail">
+                        <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true">
+                          <ui-gmap-markers models="markers" coords="'self'" icon="'icon'"></ui-gmap-markers>
+                        </ui-gmap-google-map>
+                      </div>
+                      <!-- <ui-gmap-google-map center="center" zoom="zoom" control="control"></ui-gmap-google-map> -->
+                    </md-content>
+                  </md-card>
+
 </div>
-
-<!--マップ-->
-        <div class="md-toolbar-tools">
-          <h3 class="ng-binding ng-isolate-scope">
-            <a class="docs-anchor ng-scope" ng-href="#basic-usage" name="basic-usage" href="#basic-usage">マップ</a>
-          </h3>
-        </div>
-
-        <md-card>
-          <md-content class="md-padding">
-            <!--MAP-->
-            <div class="mapDetail">
-              <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true">
-                <ui-gmap-markers models="markers" coords="'self'" icon="'icon'"></ui-gmap-markers>
-              </ui-gmap-google-map>
-            </div>
-
-          </md-content>
-        </md-card>
-
-
-
-
-
 
 <footer class="footer">
 </footer>

@@ -2,7 +2,7 @@
 'use strict';
 
     angular.module('nitoiotweb11App')
-    .controller('DeviceDetailDataCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog', function ($rootScope,$routeParams,$scope, $http, $location,$mdDialog) {
+    .controller('DeviceDetailDataCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','$window','uiGmapIsReady', function ($rootScope,$routeParams,$scope, $http, $location,$mdDialog,$window,IsReady) {
 
       //ヘッダータイトル
       var str = $routeParams.YYYYMMDDHHMM;
@@ -11,22 +11,21 @@
       var titleDay = str.slice(6,8);
       $scope.navtitle=titleYear+"/"+titleMonth+"/"+titleDay+"詳細データ";
 
-
-      //TODO APIでデータ取得する
-      $scope.graphData = [
-
-      ];
-
-
-
-      ///MAP用データ/////////////////////////////////////////////
+      //MAPを一旦読み込む(これがないとMAPが表示されない)
+       $scope.map = {
+       center: {
+         latitude: 35.6061776,// 緯度
+         longitude: 139.7167039// 経度
+       },
+       zoom: 13
+     }
 
       //グラフイメージ取得
-      var datePrm = $routeParams.YYYYMMDDHHMM.substr(0,4) + '-' + 
-        $routeParams.YYYYMMDDHHMM.substr(4,2) + '-' + 
-        $routeParams.YYYYMMDDHHMM.substr(6,2) + 'T' + 
-        $routeParams.YYYYMMDDHHMM.substr(8,2) + ':' + 
-        $routeParams.YYYYMMDDHHMM.substr(10,2) + ':' + 
+      var datePrm = $routeParams.YYYYMMDDHHMM.substr(0,4) + '-' +
+        $routeParams.YYYYMMDDHHMM.substr(4,2) + '-' +
+        $routeParams.YYYYMMDDHHMM.substr(6,2) + 'T' +
+        $routeParams.YYYYMMDDHHMM.substr(8,2) + ':' +
+        $routeParams.YYYYMMDDHHMM.substr(10,2) + ':' +
         $routeParams.YYYYMMDDHHMM.substr(12,2);
       var id = datePrm + '_' + $routeParams.DEVICE_ID;
       console.log(id);
@@ -103,25 +102,25 @@
                }
        };
 
-       //TODO 地図が出ない問題を解消する
-       $scope.map = {
-       // マップ初期表示の中心地
-       center: {
-         latitude: 35.459923, // 緯度
-         longitude: 139.635290 // 経度
-       },
-       // マップ初期表示の拡大
-       zoom: 19
-     };
+       ///MAP用データ/////////////////////////////////////////////
+                  $scope.map = {
+                  // マップ初期表示の中心地
+                  center: {
+                    latitude: obj.latitude,// 緯度
+                    longitude: obj.longitude// 経度
+                  },
+                  // マップ初期表示の拡大
+                  zoom: 13
+                }
 
-     $scope.markers = [
-       {
-         "id":1,
-         "latitude":obj.latitude,
-         "longitude":obj.longitude,
-         "title":obj.deviceName
-       }
-     ];
+                //マップにマーカーを立てる
+                $scope.markers = [
+                  {
+                    "id":1,
+                    "latitude":obj.latitude,
+                    "longitude":obj.longitude
+                  }
+                ];
 
 
       }, function errorCallback(response) {
@@ -184,8 +183,8 @@
                   $rootScope.error = response.data.message;
 
               }
-            ); 
-          
+            );
+
         }
 
         }]
