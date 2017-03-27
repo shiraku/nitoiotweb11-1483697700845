@@ -14,6 +14,7 @@ var deviceList = require('./api/device/deviceList');
 var deviceUnit = require('./api/device/deviceUnit');
 var comment = require('./api/device/comment');
 var user = require('./api/user/user');
+var dataDownload = require('./api/analysis/data_download');
 var auth = new Auth();
 
 
@@ -28,6 +29,7 @@ module.exports = function(app) {
   app.route('/:url(auth|components|app|bower_components|assets)/*')
    .get(errors[404]);
 
+  
 
 
     /**
@@ -228,6 +230,19 @@ module.exports = function(app) {
     });
   app.post('/api/alert/',function(req, res) {
       user.updateAlert(req,res);
+    });
+
+
+    /**
+   * CSVダウンロードのapi
+   * パメータのtypeに対応したCSVデータを返却
+   * prams:type データ種別
+   * prams:st 開始日
+   * prams:et 終了日
+   */
+  //show
+  app.get('/api/csv/:dev/:type/st_:st/et_:et',function(req, res) {
+      dataDownload.getCSV(req,res);
     });
   
   
