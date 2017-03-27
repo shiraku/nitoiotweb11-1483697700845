@@ -24,6 +24,19 @@
         <md-datepicker ng-model="downloadEndDate"></md-datepicker>
       </md-input-container>
     </md-card-content>
+    <!--デバイスセレクトボックス-->
+    <md-card-content>
+      <md-input-container class="md-block" flex-gt-sm>
+        <label>デバイス</label>
+        <md-select ng-model="deviceList">
+          <md-option ng-repeat="item in deviceList" value="{{item.id}}">
+            {{item.name}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+    </md-card-content>
+    <md-card-content>
+      <!--デバイスセレクトボックス-->
     <!--ダウンロードデータセレクトボックス-->
     <md-card-content>
       <md-input-container class="md-block" flex-gt-sm>
@@ -38,7 +51,7 @@
     <md-card-content>
       <!--ダウンロードボタン-->
       <div layout layout-align="center">
-      <md-button class="md-accent md-button md-ink-ripple" type="button" ng-transclude=""　ngclick="download()">
+      <md-button class="md-accent md-button md-ink-ripple" type="button" ng-click="download()" ng-transclude="">
         <div class="md-ripple-container">ダウンロード</div>
       </md-button>
     </div>

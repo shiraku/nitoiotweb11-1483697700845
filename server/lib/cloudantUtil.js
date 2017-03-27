@@ -437,6 +437,30 @@ exports.EqimageEntitity = {
 
 
 
+/**
+ * 各viewへの中継
+ * viewのアドレスはルーティングで設定し引数で渡す
+ * getCSV：CSVデータを返却する
+ */
+exports.viewRelay = {
+  //デバイスIDから１日以内に起きた最新の感知データをget
+  getCSV : function(doc, key, option, callback){
+
+      console.log('クエリ情報@getCSV');
+      console.log(doc, key, option);
+    connectDoc(doc);
+      db.view(key, option , function (err, res) {
+//        console.log('err object @getLatest');
+//        console.log(err);
+//        console.log('row object @getLatest');
+//        console.log(res);
+        
+      return callback(err,res)
+    });
+  }
+}
+
+
 function handleError(res, err) {
     return res.status(500).send(err);
 }
