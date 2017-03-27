@@ -34,6 +34,70 @@
         //TODO dataに発生日時を追加していただく。（白倉さん）
         var obj = response.data;
         $scope.deviceList = obj.device_list
+
+        //MAP
+
+        //初期値
+        var latitude = 35.459923;//34.7019399, // 緯度
+        var longitude =  139.635290;//135.51002519999997 // 経度
+        var minX = longitude;
+        var minY = latitude;
+        var maxX = longitude;
+        var maxY = latitude;
+
+        $scope.markers =[];
+        angular.forEach($scope.deviceList, function(value, index){
+          console.log(index+' latitude: ' + value.latitude + ' longitude: ' + value.longitude);
+          $scope.markers.push(
+          {
+            "id":index,
+            "latitude":value.latitude,
+            "longitude":value.longitude,
+            "title":value.deviceName
+          }
+        )
+
+        if(index == 0){
+          //一つ目のデバイスを初期値とする
+           latitude = value.latitude;
+           longitude =  value.longitude;
+           minX = longitude;
+           minY = latitude;
+           maxX = longitude;
+           maxY = latitude;
+        }
+
+        var lt = value.latitude;
+        var lg = value.longitude;
+        if (lg <= minX){ minX = lg; }
+        if (lg > maxX){ maxX = lg; }
+        if (lt <= minY){ minY = lt; }
+        if (lt > maxY){ maxY = lt; }
+
+        });
+
+        $scope.map = {
+        //マップ初期表示の中心地
+        center: {
+          latitude:latitude,
+          longitude:longitude
+        },
+        //マップ初期表示の拡大
+        zoom: 19,
+        bounds:{
+          southwest:{
+            latitude:maxY,
+            longitude:minX
+          },
+          northeast:{
+            latitude:minY,
+            longitude:maxX
+          }
+
+
+        }
+      };
+
       }, function errorCallback(response) {
         console.error("error in posting");
       });
