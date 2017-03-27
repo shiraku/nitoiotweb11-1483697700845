@@ -182,7 +182,7 @@
           $http({
           method: 'post',
           url: '/api/device_basicinfo/' + $routeParams.DEVICE_ID + '/',
-          data: { key: "latLon", value: {latitude:$scope.latitude,longitude:$scope.longitude}}
+          data: {latitude:$scope.latitude,longitude:$scope.longitude}
         })
           .then(
             function successCallback(response){
