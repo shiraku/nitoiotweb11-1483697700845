@@ -64,19 +64,19 @@
   　</md-card-content>
     <md-card-content>
         <p class="md-body-1">コメント・連絡事項</p>
-        <div layout="row" layout-wrap>
+        <div layout="row" layout-wrap ng-hide="detailData.commentList == undefined">
           <ul>
             <li ng-repeat="item in detailData.commentList">
-            <p class="md-body-2">{{item.comment}}　{{item.commentDate}}</p>
+              <p class="md-body-2"　ng-if="item.importantFlg">{{item.comment}}　{{item.commentDate}}</p>
+              <p class="md-body-2 importantFlg"　ng-if="!item.importantFlg">{{item.comment}}　{{item.commentDate}}</p>
           </li>
         </ul>
         </div>
-        <!--コメント入力ボタン-->
       <md-button class="md-accent md-button md-ink-ripple" type="button" ng-click="addComment()" ng-transclude="">
         <div class="md-ripple-container">コメント追加</div>
       </md-button>
     </md-card-content>
-    <md-card-content ng-hide="detailData.mediaNewsletter.length == 0">
+    <md-card-content ng-hide="detailData.mediaNewsletter == undefined">
           <div class="md-body-1">メディア速報</div>
           <div class="md-body-2">気象庁公報：震度{{detailData.mediaNewsletter.japanMeteorologicalAgency}}</div>
           <div class="md-body-2">長周期地震動階級：{{detailData.mediaNewsletter.longPeriodSeismicActivityClass}}</div>

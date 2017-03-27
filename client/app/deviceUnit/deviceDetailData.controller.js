@@ -90,17 +90,14 @@
              leakage:obj2.leakage,             //漏電（雷のみ）
              commercialBlackout:obj2.commercialBlackout,
              equipmentAbnormality:obj2.equipmentAbnormality,
-             commentList:[
-               {
-                 comment:'建物に破損あり',
-                 commentDate:'2017/01/15 10:15',
-               }],
-               mediaNewsletter:
-                 {
-                   japanMeteorologicalAgency:'4',      //メディア速報　震度
-                   longPeriodSeismicActivityClass:'3'　//メディア速報長周期地震動階級
-               }
        };
+
+        if(obj.commentList){
+          $scope.detailData.commentList = obj.commentList;
+        }
+        if(obj.mediaNewsletter){
+          $scope.detailData.mediaNewsletter = obj.mediaNewsletter;
+        }
 
        ///MAP用データ/////////////////////////////////////////////
                   $scope.map = {
