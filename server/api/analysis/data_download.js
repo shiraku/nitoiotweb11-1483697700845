@@ -78,8 +78,12 @@ var dataDownload = {
     }
     var st = new Date(req.params.st);
     var et = new Date(req.params.et);
-    option.startkey = [st.toFormat('YYYY/MM/DD'), req.params.dev];
-    option.endkey = [et.toFormat('YYYY/MM/DD'), req.params.dev];
+    if(req.params.type != "6"){
+      option.startkey = [st.toFormat('YYYY/MM/DD'), req.params.dev];
+      option.endkey = [et.toFormat('YYYY/MM/DD'), req.params.dev];
+    } else {
+      option.key = "DEV_" + req.params.dev;
+    }
     var self = this;
     var reqest = req;
     var response = res;
@@ -91,10 +95,12 @@ var dataDownload = {
       }
       var filterData = new Array();
       dat.forEach(function(element){
-        if(element.Did == reqest.params.dev){
+      console.log(element);
+        if(element.Did == reqest.params.dev || element.id == "DEV_" + reqest.params.dev){
           filterData.push(element);
         } 
       });
+      if(!filterData.length) return response.status('200').json({error: "データが存ありません。"});
 //      console.log(filterData);
       var csvData = self.createCSV(filterData);
 //      console.log(csvData);

@@ -60,31 +60,34 @@
 //         })[0].click();
 //         anchor.remove();
          
-         
-         console.log(res);
-         var filename = res.headers('content-disposition').split('=')[1];
-         
-            // Convert text to blob object with Blob API.
-            var blob = new Blob([ res.data ], { "type" : "text/csv" });
+         if(res.data.error){
+           $rootScope.error = res.data.error;
+         }else{
+           console.log(res);
+           var filename = res.headers('content-disposition').split('=')[1];
 
-            // For Internet Expolorer
-            if ($window.navigator.msSaveBlob) { 
-                $window.navigator.msSaveBlob(blob, filename); 
+              // Convert text to blob object with Blob API.
+              var blob = new Blob([ res.data ], { "type" : "text/csv; charset=Shift_JIS" });
 
-            // For other browsers
-            } else {
-                var link = $window.document.getElementById("csv_exporter");
+              // For Internet Expolorer
+              if ($window.navigator.msSaveBlob) { 
+                  $window.navigator.msSaveBlob(blob, filename); 
 
-                if (link == null) { 
-                    link = $window.document.createElement("a");
-                    link.setAttribute("id", "csv_exporter");
-                    link.setAttribute("style", "display:none;");
-                    link.setAttribute("download", filename);
-                }
+              // For other browsers
+              } else {
+                  var link = $window.document.getElementById("csv_exporter");
 
-                link.setAttribute("href", $window.URL.createObjectURL(blob));
-                link.click();
-            }
+                  if (link == null) { 
+                      link = $window.document.createElement("a");
+                      link.setAttribute("id", "csv_exporter");
+                      link.setAttribute("style", "display:none;");
+                      link.setAttribute("download", filename);
+                  }
+
+                  link.setAttribute("href", $window.URL.createObjectURL(blob));
+                  link.click();
+              }
+         }
      });
 
      }
