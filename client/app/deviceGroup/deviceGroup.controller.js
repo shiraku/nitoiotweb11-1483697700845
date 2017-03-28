@@ -22,6 +22,13 @@
         $scope.deviceList = obj.device
         $scope.sendto = obj.sendto;
 
+        var adminFlg = document.cookie.split( '; ' )[ 0 ].split( '=' )[ 1 ];
+        if(adminFlg=="true"){
+          $scope.isAdmin = true;
+        }else{
+          $scope.isAdmin = false;
+        }
+
 
       }, function errorCallback(response) {
         console.error("error in posting");
