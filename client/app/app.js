@@ -9,6 +9,7 @@ angular.module('nitoiotweb11App', [
   'ngAnimate',
   'ngAria',
   'ngMessages',
+  'ngCookies',
   'ui.bootstrap',
   'uiGmapgoogle-maps',
   'googlechart'
