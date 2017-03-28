@@ -49,27 +49,8 @@
                   commercialBlackout:true,
                   deviceAbnormality:true
                 };
-
-
-
-        // //TODO どうにかする
-        ////SI値か震度通知する場合は、どちらか一つのみを選択する。
-        // //震度が”通知する”になった場合SI値は"通知しない"にする。
-        // $scope.$watch('switch.seismicIntensity', function(newValue, oldValue, scope) {
-        //       console.log(newValue);
-        //       if (newValue) {
-        //         $scope.switch.si = false;
-        //       }
-        // });
-        //
-        // //SI値が”通知する”になった場合震度は"通知しない"にする。
-        // $scope.$watch('switch.si', function(newValue, oldValue, scope) {
-        //       console.log(newValue);
-        //       if (newValue) {
-        //         $scope.switch.seismicIntensity = false;
-        //       }
-        // });
-
+                //震度とSI値のswitchは震度をデフォルト表示にする
+                $scope.switchSI = false;
 
 
         //通知闘値データ取得
@@ -86,23 +67,39 @@
           //TODO これで良いかどうかは確認。
           //各設定値が0の場合は設定なしとみなす。0でない場合は、設定有りとみなす。
 
-          //設定ありの場合
-          if(obj.si >0){
+
+          //SI値設定あり　震度設定ありの場合　震度をtrueとする
+          var isSiValue = obj.si >0;
+          var isSeismicIntensityValue = obj.seismicIntensity > 0;
+
+          if( isSiValue　&& isSeismicIntensityValue ){
             $scope.switch.si  = true;
             $scope.slider.si  = parseFloat(obj.si);
-          }else{
-            //設定なしの場合
-            $scope.switch.si  = false;
-          }
-
-          //設定ありの場合
-          if(obj.seismicIntensity > 0){
             $scope.switch.seismicIntensity = true;
             $scope.slider.seismicIntensity  = parseInt(obj.seismicIntensity,10);
-          }else{
-            //設定なしの場合
+            $scope.switchSI = false;
+
+          //SI値設定あり　震度設定なしの場合　SI値をtrueとする
+          }else if(isSiValue　&& !isSeismicIntensityValue ){
+            $scope.switch.si  = true;
+            $scope.slider.si  = parseFloat(obj.si);
             $scope.switch.seismicIntensity = false;
+            $scope.switchSI = true;
+
+          //SI値設定なし　震度設定ありの場合　震度をtrueとする
+          }else if(!isSiValue　&& isSeismicIntensityValue ){
+            $scope.switch.si  = false;
+            $scope.switch.seismicIntensity = true;
+            $scope.slider.seismicIntensity  = parseInt(obj.seismicIntensity,10);
+            $scope.switchSI = false;
+
+          //SI値設定なし　震度設定なしの場合　震度値をtrueとする
+            }else if(!isSiValue　&& !isSeismicIntensityValue ){
+            $scope.switch.si  = false;
+            $scope.switch.seismicIntensity = false;
+            $scope.switchSI = false;
           }
+
 
           //設定ありの場合
           if(obj.lpgm > 0){
@@ -120,30 +117,25 @@
           $scope.switch.deviceAbnormality = obj.deviceAbnormality;
 
 
-
         }, function errorCallback(response) {
           console.error("error in posting");
         });
-      
+
       $scope.switchIntensity = function(switchSI){
         console.log(switchSI);
         if(switchSI){
-          $scope.dispFlg = true;
           switchSI.className="md-warn";
         }else{
-          $scope.dispFlg = false;
           switchSI.className="md-primary";
         }
       }
 
       //キャンセルボタン押下
-      //TODO 元の画面に戻る処理を追加
       $scope.cancel = function() {
         $location.path($scope.backUrl);
       }
 
       //登録ボタン押下
-      //TODO APIに投げる処理を追加
       $scope.regist = function() {
 
         //POSTするURLを生成する。

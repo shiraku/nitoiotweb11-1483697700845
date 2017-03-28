@@ -16,9 +16,9 @@
   <md-card>
         <!--switch-->
         <label class="nito-switch-label"><span>震度</span><md-switch ng-model="switchSI" ng-class="{'nito-default':switchSI==true}" ng-change="switchIntensity(switchSI)" style="float:left;"></md-switch><span class="nito-switch-label">SI値</span></label>
-    <md-card-content ng-hide="dispFlg==false">
+    <md-card-content ng-hide="switchSI">
       <md-card-title-text>
-  
+
         <md-switch ng-model="switch.seismicIntensity" class="md-warn">
           <div ng-if="!!switch.seismicIntensity">通知する</div>
           <div ng-if="!switch.seismicIntensity">通知しない</div>
@@ -34,7 +34,7 @@
 
 
       </md-card-content>
-      <md-card-content ng-hide="dispFlg==true">
+      <md-card-content ng-hide="!switchSI">
 
         <!--switch-->
         <md-switch ng-model="switch.si" class="md-warn">
