@@ -19,26 +19,52 @@ angular.module('nitoiotweb11App')
       buildToggler('left');
     }
 
-    // $rootScope.$on('userInfo', function(event, args) {
-    //         $scope.userId = args[0];
-    //       });
-      // $scope.userId = UserInfo.id;
 
-      //TODO userIdを取得する
+    var adminFlg = document.cookie.split( '; ' )[ 0 ].split( '=' )[ 1 ];
+    var userID = document.cookie.split( '; ' )[ 1 ].split( '=' )[ 1 ];
+
+
+    if(adminFlg=="true"){
+
+      //管理者
+      $scope.menuItem = [
+        {
+          label : "デバイス一覧",
+          url : "/user_"+userID
+        },
+        {
+          label : "デバイス管理",
+          url : "/user_"+userID+"/group"
+        },
+        {
+          label : "CSVダウンロード",
+          url : "/user_"+userID+"/data/download"
+        },
+        {
+          label : "ログアウト",
+          url : "/logout/"
+        }
+      ]
+
+    }else{
+
+      //一般
     $scope.menuItem = [
       {
-        label : "デバイスグループ",
-        url : "/user_u000/group"//"/user_"+$routeParams.USER_ID+"/device_"+this.item.deviceId
-      },
-      {
         label : "デバイス一覧",
-        url : "/user_u000"//"/user_"+$routeParams.USER_ID+"/device_"+this.item.deviceId
+        url : "/user_"+userID
       },
       {
         label : "CSVダウンロード",
-        url : "/user_u000/data/download"//"/user_"+$routeParams.USER_ID+"/device_"+this.item.deviceId
+        url : "/user_"+userID+"/data/download"
+      },
+      {
+        label : "ログアウト",
+        url : "/logout/"
       }
     ]
+
+  }
 
 
   }]);
