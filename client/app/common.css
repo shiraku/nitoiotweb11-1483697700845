@@ -384,6 +384,10 @@
    color: #D0011B;
  }
 
+ .latlonEdit{
+     max-width: 100%;
+   }
+
 /**GoogleMAP*******************************************************************/
  .map .angular-google-map-container {
   height: 600px;
@@ -394,6 +398,7 @@
 
  .mapEdit .angular-google-map-container {
   height: 300px;
+  width:300px;
  }
 
 /**ログイン画面*******************************************************************/
@@ -523,4 +528,9 @@ md-sidenav{
 
 md-sidenav md-list-item p{
   color: white !important;
+}
+
+/***デバイス詳細データ****************************/
+.importantFlg{
+  color: red
 }

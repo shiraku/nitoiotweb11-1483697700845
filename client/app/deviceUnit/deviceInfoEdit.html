@@ -105,7 +105,7 @@
 
             <md-card>
                     <md-list-item class="md-secondary" ng-repeat="item in sendto" ng-click="false">
-                      <!-- <div layout> -->
+
                       <p class="md-body-4">{{item.name}}</p>
                       <p class="md-body-1 mailId">{{item.mailid}}</p>
 
@@ -124,8 +124,6 @@
                        </md-menu-content>
 
                      </md-menu>
-
-                    <!-- </div> -->
                     </md-list-item>
 
                     <!--ボタン-->
@@ -145,18 +143,12 @@
 <script type="text/ng-template" id="dialog1.tmpl.html">
 
   <form name="dialog">
-  <md-dialog>
+  <md-dialog class="latlonEdit">
     <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">
       <h2 class="md-title ng-binding">緯度・経度</h2>
       <div class="md-dialog-content-body ng-scope">
        <p class="ng-binding"></p>
      </div>
-     <!-- <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme">
-       <input type="number" ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="telNo" name="telNo" initialValue=$scope.deviceGroupData.telNo placeholder="連絡先" class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="this.title" aria-invalid="false" style="">
-       <div ng-messages="telNo.$error"  class="md-errors-spacer" ng-hide="telNo.$valid">
-         <div ng-message="email">半角数字で入力してください</div>
-         </div>
-   </md-input-container> -->
    <!--MAP-->
    <div class="map mapEdit">
      <ui-gmap-google-map center="map.center" zoom="map.zoom" events="map.events" draggable="true">
@@ -173,31 +165,4 @@
    </md-dialog>
    </form>
 
-
-  <!-- <md-dialog aria-label="Mango (Fruit)">
-  <form ng-cloak>
-        <h2 class="md-title ng-binding">緯度・経度編集</h2>
-
-    <md-dialog-content>
-      <div class="md-dialog-content">
-
-        <img style="margin: auto; max-width: 100%;" alt="Lush mango tree" src="img/mangues.jpg">
-
-      </div>
-    </md-dialog-content>
-
-    <md-dialog-actions layout="row">
-      <md-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" md-autofocus>
-        More on Wikipedia
-      </md-button>
-      <span flex></span>
-      <md-button ng-click="answer(not useful')">
-       Not Useful
-      </md-button>
-      <md-button ng-click="answer('useful')">
-        Useful
-      </md-button>
-    </md-dialog-actions>
-  </form>
-</md-dialog> -->
 </script>
