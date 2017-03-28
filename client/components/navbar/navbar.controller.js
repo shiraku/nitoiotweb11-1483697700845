@@ -55,8 +55,8 @@ angular.module('nitoiotweb11App')
         url : "/user_"+userID
       },
       {
-        label : "CSVダウンロード",
-        url : "/user_"+userID+"/data/download"
+        label : "デバイス管理",
+        url : "/user_"+userID+"/group"
       },
       {
         label : "ログアウト",
