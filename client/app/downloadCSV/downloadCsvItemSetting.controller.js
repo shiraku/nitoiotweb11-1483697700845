@@ -7,7 +7,7 @@
       //ヘッダータイトル
       $scope.navtitle="データダウンロード";
 
-      //デバイスグループデータ
+      //ダウンロードデータ
       $scope.selectItems = [
                 { 'value':1,
                   'label':'地震発生データ',
@@ -29,16 +29,19 @@
                 }
             ];
       $scope.selectItem = 1;
-      
-      //TODO APIでCSVダウンロードできるように変更
-      $scope.deviceList = new Array();
+
+
+      //デフォルト値設定
+      $scope.downloadStartDate = new Date();
+      $scope.downloadEndDate = new Date();
+
+
       //ダウンロードボタンアクション
      $http.get('/api/user/')
       .then(function successCallback(res){
         //デバイスグループデータ
         $scope.deviceList = res.data.device;
      });
-
 
 
       //TODO APIでCSVダウンロードできるように変更
@@ -59,7 +62,7 @@
 //             target: '_blank'
 //         })[0].click();
 //         anchor.remove();
-         
+
          if(res.data.error){
            $rootScope.error = res.data.error;
          }else{
@@ -70,14 +73,14 @@
               var blob = new Blob([ res.data ], { "type" : "text/csv; charset=Shift_JIS" });
 
               // For Internet Expolorer
-              if ($window.navigator.msSaveBlob) { 
-                  $window.navigator.msSaveBlob(blob, filename); 
+              if ($window.navigator.msSaveBlob) {
+                  $window.navigator.msSaveBlob(blob, filename);
 
               // For other browsers
               } else {
                   var link = $window.document.getElementById("csv_exporter");
 
-                  if (link == null) { 
+                  if (link == null) {
                       link = $window.document.createElement("a");
                       link.setAttribute("id", "csv_exporter");
                       link.setAttribute("style", "display:none;");
@@ -94,4 +97,10 @@
 
 
 
-    }]);
+    }])
+    //DatePickerFormat
+    .config(function($mdDateLocaleProvider) {
+  $mdDateLocaleProvider.formatDate = function(date) {
+    return moment(date).format('YYYY/M/D');
+  };
+});;
