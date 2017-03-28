@@ -207,7 +207,8 @@
 
   /**各ページ情報バー**********************************************************/
   .md-toolbar-tools{
-    background: #526CC9;
+    /*background: #526CC9;*/
+    background: #d0021b;
   }
   /* 基本情報: */
   .md-toolbar-tools h3{
