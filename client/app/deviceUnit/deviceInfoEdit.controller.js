@@ -239,6 +239,9 @@
 //                    "itemKey":"telNo",
 //                   "ok":"登録",
 //                   "cancel":"キャンセル"}
+
+        var tmpTelNo = Number($scope.deviceGroupData.telNo);
+
         var json = {
            "template":
            '<form name="dialog">'+
@@ -249,7 +252,7 @@
            '     <p class="ng-binding"></p>'+
            '   </div>'+
            '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme">'+
-           '     <input type="number" ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="telNo" name="telNo" initialValue='+$scope.deviceGroupData.telNo+' placeholder="連絡先" class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="+this.title+" aria-invalid="false" style="">'+
+           '     <input type="number" ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="telNo" name="telNo" placeholder="連絡先" class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="+this.title+" aria-invalid="false" style="">'+
            '     <div ng-messages="telNo.$error"  class="md-errors-spacer" ng-hide="telNo.$valid">'+
              '     <div ng-message="email">半角数字で入力してください</div>'+
              '     </div>'+
@@ -263,7 +266,7 @@
            ' </form>',
            "targetEvent": ev,
         }
-      dialogShowTemp(ev,json);
+      dialogShowTemp(ev,json,tmpTelNo);
       };
 
       function dialogShow(ev,param){
@@ -307,12 +310,15 @@
 
         };
 
-      function dialogShowTemp(ev,param){
+      function dialogShowTemp(ev,param,tmpTelNo){
 
           $mdDialog.show({
            targetEvent: param.targetEvent,
            template: param.template,
             controller:['$scope', '$route', '$location', function ($scope, $route, $location) {
+
+              //初期値値設定
+              $scope.telNo = tmpTelNo;
 
               //キャンセルボタン押下
               $scope.closeDialog = function() {
