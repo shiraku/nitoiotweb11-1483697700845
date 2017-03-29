@@ -30,7 +30,7 @@
                 <span flex class="md-body-1">グループ名</span>
                 <span flex class="md-body-3">{{groupName}}</span>
             </div>
-              <md-button class="md-icon-button" aria-label="More">
+              <md-button class="md-icon-button" aria-label="More" ng-if="isAdmin">
               <md-icon ng-click="groupNameEdit()"><buttonpen></buttonpen></md-icon>
               </md-button>
           </div>

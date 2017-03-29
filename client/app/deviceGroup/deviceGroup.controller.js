@@ -113,6 +113,11 @@
          ' </form>',
     controller:['$scope', '$route', '$location', function ($scope, $route, $location) {
 
+      if(!flg){
+      $scope.name = item.placeholder_name;
+      $scope.mailAddress = item.placeholder_mailid;
+      }
+
     //キャンセルボタン押下
     $scope.closeDialog = function() {
       $mdDialog.hide();
