@@ -110,7 +110,7 @@
 
 
       <ul>
-        <li ng-repeat="item in deviceList | filter:query">
+        <li ng-repeat="item in deviceList | filter:query" on-finish-render="deviceListFinished">
 
         <md-card>
           <md-list-item class="md-list-item-2" ng-click="deviceDetail()">
@@ -120,12 +120,12 @@
        <!--デバイスカード　コンテンツ-->
         <md-card-content>
           <!--地震データ有りの場合 グラフを表示する-->
-          <div id={{item.deviceId}}  class="google-chart">
+          <div google-chart chart="charts" id={{item.deviceId}}  class="google-chart">
           </div>
           <!--地震データ無しの場合 地震データ無しの文言を表示する-->
-          <!-- <div ng-if="!item.earthquakeHistoryList.length">
+          <div ng-show="noGraphData">
           <p flex class="md-body-1">地震データなし</p>
-          </div> -->
+          </div>
           </md-card-content>
       </md-card>
 
