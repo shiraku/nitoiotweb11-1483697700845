@@ -1,3 +1,6 @@
+body{
+  background-color:#f8f8f8;
+}
 .thing-form {
     margin: 20px 0;
 }
@@ -208,7 +211,7 @@
   /**各ページ情報バー**********************************************************/
   .md-toolbar-tools{
     /*background: #526CC9;*/
-    background: #d0021b;
+    background: #b31326;
   }
   /* 基本情報: */
   .md-toolbar-tools h3{
