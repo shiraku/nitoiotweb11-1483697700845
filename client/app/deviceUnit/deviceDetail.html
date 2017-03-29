@@ -38,19 +38,19 @@
 <md-card>
   <!--現在のステータス-->
 
-      <md-list-item class="md-list-item-2" ng-click="deviceDetailData()" ng-hide="!deviceDetail.earthquakeCurrentData">
+      <md-list-item class="md-list-item-2" ng-click="deviceDetailData()" ng-hide="!earthquakeCurrentData">
       <p class="md-body-5">感知あり</p>
       <buttondetail></buttondetail>
     </md-list-item>
 
-    <md-list-item class="md-list-item-2"ng-hide="deviceDetail.earthquakeCurrentData">
+    <md-list-item class="md-list-item-2"ng-hide="earthquakeCurrentData">
     <p class="md-body-5">感知なし</p>
   </md-list-item>
 
      <!--デバイスカード　コンテンツ-->
-      <md-card-content ng-hide="!deviceDetail.earthquakeCurrentData">
+      <md-card-content ng-hide="!earthquakeCurrentData">
           <!--地震の場合-->
-          <p flex class="md-body-1">発生日時：{{deviceDetail.earthquakeCurrentData.date}}</p>
+          <p flex class="md-body-1">発生日時：{{earthquakeCurrentData.date}}</p>
           <div layout="row" layout-wrap>
             <div flex="25">
               <p flex class="md-body-1">傾き</p>
@@ -58,32 +58,35 @@
               <p flex class="md-body-1">機器異常</p>
             </div>
             <div flex="40">
-              <p flex class="md-body-3">{{deviceDetail.earthquakeCurrentData.datas.slope}}</p>
-              <p flex class="md-body-3">{{deviceDetail.earthquakeCurrentData.datas.commercialBlackout}}</p>
-              <p flex class="md-body-3">{{deviceDetail.earthquakeCurrentData.datas.equipmentAbnormality}}</p>
+              <p flex class="md-body-3" ng-if="earthquakeCurrentData.datas.slope">あり（{{earthquakeCurrentData.datas.slope}}）</p>
+              <p flex class="md-body-3" ng-if="earthquakeCurrentData.datas.slope == 0">なし</p>
+              <p flex class="md-body-3" ng-if="earthquakeCurrentData.datas.commercialBlackout">あり</p>
+              <p flex class="md-body-3" ng-if="!earthquakeCurrentData.datas.commercialBlackout">なし</p>
+              <p flex class="md-body-3" ng-if="earthquakeCurrentData.datas.equipmentAbnormality">あり</p>
+              <p flex class="md-body-3" ng-if="!earthquakeCurrentData.datas.equipmentAbnormality">なし</p>
             </div>
             <div>
             <div flex class="md-body-1">震度</div>
-            <div flex class="md-body-6">{{deviceDetail.earthquakeCurrentData.datas.seismicIntensity}}</div>
+            <div flex class="md-body-6">{{earthquakeCurrentData.datas.seismicIntensity}}</div>
           </div>
           </div>
       　</md-card-content>
-        <md-card-content ng-hide="deviceDetail.earthquakeCurrentData.datas.commentList == undefined">
+        <md-card-content ng-hide="earthquakeCurrentData.datas.commentList == undefined">
         <p class="md-body-1">コメント・連絡事項</p>
         <div layout="row" layout-wrap>
           <ul>
             <!--TODO コメント日時表示させる--->
-            <li ng-repeat="item in deviceDetail.earthquakeCurrentData.datas.commentList">
+            <li ng-repeat="item in earthquakeCurrentData.datas.commentList">
             <p class="md-body-2">{{item.comment}}　{{item.commentDate}}</p>
           </li>
         </ul>
         </div>
       </md-card-content>
       <!--TODO メディア速報表示させる--->
-      <md-card-content ng-hide="deviceDetail.earthquakeCurrentData.datas.mediaNewsletter == undefined">
+      <md-card-content ng-hide="earthquakeCurrentData.datas.mediaNewsletter == undefined">
           　<p class="md-body-1">メディア速報</p>
-            <p class="md-body-2">気象庁公報：震度{{deviceDetail.earthquakeCurrentData.datas.mediaNewsletter[0].japanMeteorologicalAgency}}</p>
-            <p class="md-body-2">長周期地震動階級：{{deviceDetail.earthquakeCurrentData.datas.mediaNewsletter[0].longPeriodSeismicActivityClass}}</p>
+            <p class="md-body-2">気象庁公報：震度{{earthquakeCurrentData.datas.mediaNewsletter[0].japanMeteorologicalAgency}}</p>
+            <p class="md-body-2">長周期地震動階級：{{earthquakeCurrentData.datas.mediaNewsletter[0].longPeriodSeismicActivityClass}}</p>
       </md-card-content>
   <!--地震履歴-->
 
@@ -141,31 +144,34 @@
               <p flex class="md-body-1">機器異常</p>
             </div>
             <div flex="40">
-              <p flex class="md-body-3">{{deviceDetail.thunderCurrentData[0].leakage}}</p>
-              <p flex class="md-body-3">{{deviceDetail.thunderCurrentData[0].commercialBlackout}}</p>
-              <p flex class="md-body-3">{{deviceDetail.thunderCurrentData[0].equipmentAbnormality}}</p>
+              <p flex class="md-body-3" ng-if="thunderCurrentData.datas.leakage">あり</p>
+              <p flex class="md-body-3" ng-if="!thunderCurrentData.datas.leakage">なし</p>
+              <p flex class="md-body-3" ng-if="thunderCurrentData.datas.commercialBlackout">あり</p>
+              <p flex class="md-body-3" ng-if="!thunderCurrentData.datas.commercialBlackout">なし</p>
+              <p flex class="md-body-3" ng-if="thunderCurrentData.datas.equipmentAbnormality">あり</p>
+              <p flex class="md-body-3" ng-if="!thunderCurrentData.datas.equipmentAbnormality">なし</p>
             </div>
             <div>
             <div flex class="md-body-1">雷</div>
-            <div flex class="md-body-6">{{deviceDetail.thunderCurrentData[0].power}}</div>
+            <div flex class="md-body-6">{{thunderCurrentData.power}}</div>
           </div>
           </div>
       　</md-card-content>
-        <md-card-content ng-hide="deviceDetail.thunderCurrentData.datas.commentList == undefined">
+        <md-card-content ng-hide="thunderCurrentData.datas.commentList == undefined">
         <p class="md-body-1">コメント・連絡事項</p>
         <div layout="row" layout-wrap>
           <ul>
-            <li ng-repeat="item in deviceDetail.thunderCurrentData.commentList">
+            <li ng-repeat="item in thunderCurrentData.commentList">
             <p class="md-body-2">{{item.comment}}　{{item.commentDate}}</p>
           </li>
         </ul>
         </div>
       </md-card-content>
-      <md-card-content ng-hide="deviceDetail.thunderCurrentData.datas.mediaNewsletter == undefined">
+      <md-card-content ng-hide="thunderCurrentData.datas.mediaNewsletter == undefined">
         <!-- <div layout="row" layout-wrap> -->
           　<p class="md-body-1">メディア速報</p>
-            <p class="md-body-2">気象庁公報：{{deviceDetail.thunderCurrentData[0].mediaNewsletter[0].japanMeteorologicalAgency}}</p>
-            <p class="md-body-2">長周期地震動階級{{deviceDetail.thunderCurrentData[0].mediaNewsletter[0].longPeriodSeismicActivityClass}}</p>
+            <p class="md-body-2">気象庁公報：{{thunderCurrentData.mediaNewsletter[0].japanMeteorologicalAgency}}</p>
+            <p class="md-body-2">長周期地震動階級{{thunderCurrentData.mediaNewsletter[0].longPeriodSeismicActivityClass}}</p>
         <!-- </div> -->
     </md-card-content>
 

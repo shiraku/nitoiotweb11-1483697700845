@@ -12,39 +12,18 @@
         console.log(response);
 
         var obj = response.data;
-        var obj2;
-        if(obj.earthquakeCurrentData.datas){
-          obj2 = obj.earthquakeCurrentData.datas;
-        }else{
-          obj2 = obj.thunderCurrentData.datas
+
+        //地震の最新データある場合のみObjectにpush
+        if(obj.earthquakeCurrentData){
+          $scope.earthquakeCurrentData = obj.earthquakeCurrentData;
+        }
+        //雷の最新データある場合のみObjectにpush
+        if(obj.thunderCurrentData){
+          $scope.thunderCurrentData = obj.thunderCurrentData;
         }
 
         //ヘッダータイトル
         $scope.navtitle = obj.deviceName;
-
-        if(obj2.commercialBlackout){
-          obj2.commercialBlackout = "あり"
-        }else{
-          obj2.commercialBlackout = "なし"
-        }
-
-        if(obj2.equipmentAbnormality){
-          obj2.equipmentAbnormality = "あり"
-        }else{
-          obj2.equipmentAbnormality = "なし"
-        }
-
-        if(obj2.leakage){
-          obj2.leakage = "あり"
-        }else{
-          obj2.leakage = "なし"
-        }
-
-        if(obj2.slope){
-          obj2.slope = "あり（"+obj2.slope+"°）";
-        }else{
-          obj2.slope = "なし"
-        }
 
         $scope.deviceDetail =
         {
@@ -56,14 +35,6 @@
              memo           :obj.memo
        };
 
-       //地震の最新データある場合のみObjectにpush
-       if(obj.earthquakeCurrentData){
-         $scope.deviceDetail.earthquakeCurrentData = obj.earthquakeCurrentData;
-       }
-       //雷の最新データある場合のみObjectにpush
-       if(obj.thunderCurrentData){
-         $scope.deviceDetail.thunderCurrentData = obj.thunderCurrentData;
-       }
 
 
       }, function errorCallback(response) {
