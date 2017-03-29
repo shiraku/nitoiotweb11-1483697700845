@@ -94,11 +94,11 @@
          '     <p class="ng-binding"></p>'+
          '   </div>'+
          '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme">'+
-         '     <input ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="dialog.name" placeholder='+item.placeholder_name+' initialValue='+item.placeholder_name+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
+         '     <input ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="name" placeholder='+item.placeholder_name+' initialValue='+item.placeholder_name+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
          '     <div class="md-errors-spacer"></div>'+
          '   </md-input-container>'+
          '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme md-prompt-input-container-2">'+
-         '     <input ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="dialog.mailAddress" placeholder='+item.placeholder_mailid+' initialValue='+item.placeholder_mailid+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
+         '     <input ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="mailAddress" placeholder='+item.placeholder_mailid+' initialValue='+item.placeholder_mailid+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
          '     <div class="md-errors-spacer"></div>'+
          '   </md-input-container>'+
          ' </md-dialog-content>'+
@@ -108,6 +108,11 @@
          ' </md-dialog-actions>'+
          ' </md-dialog>',
     controller:['$scope', '$route', '$location', function ($scope, $route, $location) {
+
+      if(!flg){
+      $scope.name = item.placeholder_name;
+      $scope.mailAddress = item.placeholder_mailid;
+      }
 
     //キャンセルボタン押下
     $scope.closeDialog = function() {
@@ -120,15 +125,15 @@
 
       //新規登録の場合
       if(!item.key){
-        item.key = $scope.dialog.mailAddress;
+        item.key = $scope.mailAddress;
       }
-      console.log ("sendto Post name"+$scope.dialog.name+ "key"+item.key+"mailId"+$scope.dialog.mailAddress);
+      console.log ("sendto Post name"+$scope.name+ "key"+item.key+"mailId"+$scope.mailAddress);
 
       //編集内容をpost
       $http({
         method: 'POST',
         url: '/api/user/sendto/',
-        data: { name: $scope.dialog.name, mailid: $scope.dialog.mailAddress, key: item.key }
+        data: { name: $scope.name, mailid: $scope.mailAddress, key: item.key }
       })
       .then(
         function successCallback(response){
