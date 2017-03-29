@@ -6,7 +6,7 @@
 
 
       //デバイス情報
-      $http.get('/api/device_detail/00000')
+      $http.get('/api/device_detail/'+$routeParams.DEVICE_ID)
       .then(function successCallback(response) {
         console.log("/api/device_detail/00000 successfully");
         console.log(response);

@@ -69,36 +69,31 @@
 
 
           //SI値設定あり　震度設定ありの場合　震度をtrueとする
-          var isSiValue = obj.si >0;
-          var isSeismicIntensityValue = obj.seismicIntensity > 0;
+//          var isSiValue = obj.si >0;
+//          var isSeismicIntensityValue = obj.seismicIntensity > 0;
 
-          if( isSiValue　&& isSeismicIntensityValue ){
-            $scope.switch.si  = true;
-            $scope.slider.si  = parseFloat(obj.si);
+          //SI値設定なし　震度設定ありの場合　震度をtrueとする
+          if(!obj.seismicIntensityFlg　&& !obj.siFlg ){
+            $scope.switch.si  = false;
+            $scope.switch.seismicIntensity = false;
+            $scope.switchSI = false;
+          
+          }else if( obj.seismicIntensityFlg ){
+            $scope.switch.si  = false;
+            $scope.slider.si  = parseInt(obj.si);
             $scope.switch.seismicIntensity = true;
             $scope.slider.seismicIntensity  = parseInt(obj.seismicIntensity,10);
             $scope.switchSI = false;
 
           //SI値設定あり　震度設定なしの場合　SI値をtrueとする
-          }else if(isSiValue　&& !isSeismicIntensityValue ){
+          }else if(obj.siFlg ){
             $scope.switch.si  = true;
             $scope.slider.si  = parseFloat(obj.si);
             $scope.switch.seismicIntensity = false;
-            $scope.switchSI = true;
-
-          //SI値設定なし　震度設定ありの場合　震度をtrueとする
-          }else if(!isSiValue　&& isSeismicIntensityValue ){
-            $scope.switch.si  = false;
-            $scope.switch.seismicIntensity = true;
             $scope.slider.seismicIntensity  = parseInt(obj.seismicIntensity,10);
-            $scope.switchSI = false;
-
-          //SI値設定なし　震度設定なしの場合　震度値をtrueとする
-            }else if(!isSiValue　&& !isSeismicIntensityValue ){
-            $scope.switch.si  = false;
-            $scope.switch.seismicIntensity = false;
-            $scope.switchSI = false;
+            $scope.switchSI = true;
           }
+
 
 
           //設定ありの場合
@@ -124,9 +119,9 @@
       $scope.switchIntensity = function(switchSI){
         console.log(switchSI);
         if(switchSI){
-          switchSI.className="md-warn";
+          switchSI=true;
         }else{
-          switchSI.className="md-primary";
+          switchSI=false;
         }
       }
 
@@ -150,7 +145,10 @@
 
 
           //スライダーの値
+          switchSI : $scope.switchSI,
+          seismicIntensityFlg : $scope.switch.seismicIntensity,
           seismicIntensity : $scope.slider.seismicIntensity,
+          siFlg : $scope.switch.si,
           si : $scope.slider.si,
           lpgm : $scope.slider.longPeriodGroundMotion,
           //通知する/通知しない

@@ -558,7 +558,7 @@ angular.module('nitoiotweb11App')
 
     //画面遷移
     $scope.deviceDetail = function () {
-      $location.path("/user_" + $routeParams.USER_ID + "/device_" + this.item.deviceId);
+      $location.path("/user_" + $routeParams.USER_ID + "/device_" + this.item.deviceId.split('_')[1]);
     }
 
 
