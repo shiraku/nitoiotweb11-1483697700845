@@ -169,12 +169,29 @@
             dataTable.addRows(rows);
 
             var dt = new Date();
-            var min = new Date(dt.setMonth(dt.getMonth() - 1));
+            var min;
+            switch($scope.selectItem){
+              case 'day':
+                min = new Date(dt.setDate(dt.getDate() - 1));
+                break;
+              case 'week':
+                min = new Date(dt.setDate(dt.getDate() - 7));
+                break;
+              case 'month':
+                min = new Date(dt.setMonth(dt.getMonth() - 1));
+                break;
+              case 'year':
+                min = new Date(dt.setFullYear(dt.getFullYear() - 1));
+                break;
+              default:
+                min = new Date(dt.setMonth(dt.getMonth() - 1));
+                break;
+            }
 
             var options = {
               hAxis: {
                 title: '日時',
-                format: 'yyyy/MM/dd',
+                format: ($scope.selectItem != 'day') ? 'yyyy/MM/dd' : 'dd hh:mm',
                 viewWindow: {
                   min: min,
                   max: new Date()
@@ -252,6 +269,7 @@
     $scope.$watch('selectItem', function (newValue, oldValue, scope) {
       console.log(newValue);
       $scope.selectItem = newValue;
+      $rootScope.$broadcast('deviceListFinished');
       // rePackJson();
       // google.charts.load('current', {packages: ['controls','corechart', 'bar']});
       // google.charts.setOnLoadCallback(drawChart);
