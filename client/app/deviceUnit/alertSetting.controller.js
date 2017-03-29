@@ -47,7 +47,7 @@
                   slope:true,
                   lightningSurge:true,
                   commercialBlackout:true,
-                  deviceAbnormality:true
+                  equipmentAbnormality:true
                 };
                 //震度とSI値のswitchは震度をデフォルト表示にする
                 $scope.switchSI = false;
@@ -77,7 +77,7 @@
             $scope.switch.si  = false;
             $scope.switch.seismicIntensity = false;
             $scope.switchSI = false;
-          
+
           }else if( obj.seismicIntensityFlg ){
             $scope.switch.si  = false;
             $scope.slider.si  = parseInt(obj.si);
@@ -109,7 +109,7 @@
           $scope.switch.slope  = obj.slope;
           $scope.switch.lightningSurge  = obj.lightningSurge;
           $scope.switch.commercialBlackout  = obj.commercialBlackout;
-          $scope.switch.deviceAbnormality = obj.deviceAbnormality;
+          $scope.switch.equipmentAbnormality = obj.equipmentAbnormality;
 
 
         }, function errorCallback(response) {
@@ -155,7 +155,7 @@
           slope : $scope.switch.slope,
           lightningSurge : $scope.switch.lightningSurge,
           commercialBlackout : $scope.switch.commercialBlackout,
-          equipmentAbnormality: $scope.switch.deviceAbnormality
+          equipmentAbnormality: $scope.switch.equipmentAbnormality
 
         }
 
