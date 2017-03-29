@@ -2,7 +2,7 @@
 'use strict';
 
     angular.module('nitoiotweb11App')
-    .controller('DeviceDetailDataCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','$window','uiGmapIsReady', function ($rootScope,$routeParams,$scope, $http, $location,$mdDialog,$window,IsReady) {
+    .controller('DeviceDetailDataCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','$window', function ($rootScope,$routeParams,$scope, $http, $location,$mdDialog,$window) {
 
       //ヘッダータイトル
       var str = $routeParams.YYYYMMDDHHMM;
@@ -11,14 +11,6 @@
       var titleDay = str.slice(6,8);
       $scope.navtitle=titleYear+"/"+titleMonth+"/"+titleDay+"詳細データ";
 
-      //MAPを一旦読み込む(これがないとMAPが表示されない)
-       $scope.map = {
-       center: {
-         latitude: 35.6061776,// 緯度
-         longitude: 139.7167039// 経度
-       },
-       zoom: 13
-     }
 
       //グラフイメージ取得
       var datePrm = $routeParams.YYYYMMDDHHMM.substr(0,4) + '-' +
@@ -100,25 +92,16 @@
         }
 
        ///MAP用データ/////////////////////////////////////////////
-                  $scope.map = {
-                  // マップ初期表示の中心地
-                  center: {
-                    latitude: obj.latitude,// 緯度
-                    longitude: obj.longitude// 経度
-                  },
-                  // マップ初期表示の拡大
-                  zoom: 13
-                }
 
-                //マップにマーカーを立てる
-                $scope.markers = [
-                  {
-                    "id":1,
-                    "latitude":obj.latitude,
-                    "longitude":obj.longitude
-                  }
-                ];
-
+                var map = new google.maps.Map( document.getElementById( 'map-detailData' ), {
+                	zoom: 13 ,	// ズーム値
+                	center: new google.maps.LatLng( obj.latLon.latitude,obj.latLon.longitude ) ,	// 中心の位置座標
+                } ) ;
+                //マーカー
+                var marker = new google.maps.Marker( {
+                	map: map ,	// 地図
+                	position: new google.maps.LatLng( obj.latLon.latitude,obj.latLon.longitude) ,	// 位置座標
+                } ) ;
 
       }, function errorCallback(response) {
         console.error("error in /api/device_detail/");

@@ -134,8 +134,9 @@
                    click: function(marker, eventName, args) {
                         console.log("user defined event: " + marker, eventName, args);
                         //markerをMAPの中央に表示させる。
-                         $scope.map.center.latitude = args[0].latLng.lat(),
-                         $scope.map.center.longitude = args[0].latLng.lng(),
+                        //markerが移動したかどうかわからなくなるので一旦コメントアウト
+                        //  $scope.map.center.latitude = args[0].latLng.lat(),
+                        //  $scope.map.center.longitude = args[0].latLng.lng(),
 
                          //地図下部に表示する緯度経度
                          $scope.latitude = args[0].latLng.lat(),

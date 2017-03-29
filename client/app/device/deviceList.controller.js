@@ -1,7 +1,15 @@
 'use strict';
 
-angular.module('nitoiotweb11App')
-  .controller('DeviceListCtrl', ['$rootScope', '$routeParams', '$scope', '$http', '$location', function ($rootScope, $routeParams, $scope, $http, $location) {
+    angular.module('nitoiotweb11App')
+    .controller('DeviceListCtrl',['$rootScope','$routeParams','$scope','$http','$location','GoogleChartService','$modal', function ($rootScope,$routeParams,$scope, $http, $location,GoogleChartService,$modal) {
+
+      //モーダル処理
+      $scope.modalInstance = $modal.open({
+        templateUrl:"T_inProgress",
+        backdrop:"static",
+        keyboard:false// ユーザーがクローズできないようにする
+      });
+      $scope.isLoading = true;
 
     //ヘッダータイトル
     $scope.navtitle = 'デバイス一覧';
@@ -47,64 +55,53 @@ angular.module('nitoiotweb11App')
         var maxX = longitude;
         var maxY = latitude;
 
-        $scope.markers = [];
-        angular.forEach($scope.deviceList, function (value, index) {
-          console.log(index + ' latitude: ' + value.latitude + ' longitude: ' + value.longitude);
-          $scope.markers.push({
-            "id": index,
-            "latitude": value.latitude,
-            "longitude": value.longitude,
-            "title": value.deviceName
-          })
 
-          if (index == 0) {
+        //MAPの定義
+        var map = new google.maps.Map( document.getElementById( 'map-deviceList' ), {
+          zoom: 13 ,	// ズーム値
+          center: new google.maps.LatLng( latitude,longitude ) ,	// 中心の位置座標
+        } ) ;
+
+
+        //markerの作成
+          $scope.markers =[];
+          angular.forEach($scope.deviceList, function(value, index){
+            console.log(index+' latitude: ' + value.latitude + ' longitude: ' + value.longitude);
+          //マーカー
+          var marker = new google.maps.Marker( {
+            map: map ,	// 地図
+            position: new google.maps.LatLng( value.latitude,value.longitude) ,	// 位置座標
+            title:value.deviceName
+          } ) ;
+
+          $scope.markers.push(marker);
+
+          if(index == 0){
             //一つ目のデバイスを初期値とする
-            latitude = value.latitude;
-            longitude = value.longitude;
-            minX = longitude;
-            minY = latitude;
-            maxX = longitude;
-            maxY = latitude;
+             latitude = value.latitude;
+             longitude =  value.longitude;
+             minX = longitude;
+             minY = latitude;
+             maxX = longitude;
+             maxY = latitude;
           }
 
           var lt = value.latitude;
           var lg = value.longitude;
-          if (lg <= minX) {
-            minX = lg;
-          }
-          if (lg > maxX) {
-            maxX = lg;
-          }
-          if (lt <= minY) {
-            minY = lt;
-          }
-          if (lt > maxY) {
-            maxY = lt;
-          }
-
-        });
-
-        $scope.map = {
-          //マップ初期表示の中心地
-          center: {
-            latitude: latitude,
-            longitude: longitude
-          },
-          //マップ初期表示の拡大
-          zoom: 19,
-          bounds: {
-            southwest: {
-              latitude: maxY,
-              longitude: minX
-            },
-            northeast: {
-              latitude: minY,
-              longitude: maxX
-            }
+          if (lg <= minX){ minX = lg; }
+          if (lg > maxX){ maxX = lg; }
+          if (lt <= minY){ minY = lt; }
+          if (lt > maxY){ maxY = lt; }
 
 
-          }
-        };
+          });
+
+        //デバイスが全て見える領域を表示する
+        var sw = new google.maps.LatLng( maxY , minX ) ;	// 左下の緯度、経度
+        var ne = new google.maps.LatLng( minY , maxX ) ;	// 右上の緯度、経度
+        var LatLngBounds = new google.maps.LatLngBounds( sw , ne ) ;
+        map.fitBounds(LatLngBounds);
+
 
       }, function errorCallback(response) {
         console.error("error in posting");
@@ -428,8 +425,6 @@ angular.module('nitoiotweb11App')
          }
        ];
 
-
-
     /////グラフタブ用///////////////////////////////////////////////////////////////////////////////////////
 
     // rePackJson();
@@ -581,32 +576,33 @@ angular.module('nitoiotweb11App')
 
 
     /////MAPタブ用///////////////////////////////////////////////////////////////////////////////////////
-    $scope.map = {
-      // マップ初期表示の中心地
-      center: {
-        latitude: 35.459923, //34.7019399, // 緯度
-        longitude: 139.635290 //135.51002519999997 // 経度
-      },
-      // マップ初期表示の拡大
-      zoom: 19
-    };
+    // $scope.map = {
+    //   // マップ初期表示の中心地
+    //   center: {
+    //     latitude: 35.459923, //34.7019399, // 緯度
+    //     longitude: 139.635290 //135.51002519999997 // 経度
+    //   },
+    //   // マップ初期表示の拡大
+    //   zoom: 19
+    // };
+    //
+    // // マップ上に表示するマーカーの情報
+    // //TODO
+    // $scope.markers = [
+    //   {
+    //     "id": 1,
+    //     "latitude": 35.459923,
+    //     "longitude": 139.635290,
+    //     "title": "パシフィコ横浜"
+    //   },
+    //   {
+    //     "id": 2,
+    //     "latitude": 35.457511,
+    //     "longitude": 139.632704,
+    //     "title": "みなとみらい駅"
+    //   }
+    // ];
 
-    // マップ上に表示するマーカーの情報
-    //TODO
-    $scope.markers = [
-      {
-        "id": 1,
-        "latitude": 35.459923,
-        "longitude": 139.635290,
-        "title": "パシフィコ横浜"
-      },
-      {
-        "id": 2,
-        "latitude": 35.457511,
-        "longitude": 139.632704,
-        "title": "みなとみらい駅"
-      }
-    ];
 
     }])
   .directive('onFinishRender', function ($timeout) {
