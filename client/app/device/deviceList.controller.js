@@ -9,7 +9,6 @@
         backdrop:"static",
         keyboard:false// ユーザーがクローズできないようにする
       });
-      $scope.isLoading = true;
 
     //ヘッダータイトル
     $scope.navtitle = 'デバイス一覧';
@@ -210,10 +209,8 @@
             var chart = new google.visualization.ColumnChart(document.getElementById(id));
             chart.draw(dataTable,options);
           });
+          $scope.modalInstance.close();
       });
-
-        $scope.modalInstance.close();
-
     });
 
     // $scope.$on('graphDataElem',(event,data){
