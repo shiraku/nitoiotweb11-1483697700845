@@ -8,7 +8,7 @@
       //デバイス情報
       $http.get('/api/device_detail/'+$routeParams.DEVICE_ID)
       .then(function successCallback(response) {
-        console.log("/api/device_detail/00000 successfully");
+        console.log("/api/device_detail/"+$routeParams.DEVICE_ID+" successfully");
         console.log(response);
 
         var obj = response.data;
@@ -72,9 +72,9 @@
 
 
       //地震履歴情報
-      $http.get('/api/device_history_eq/00000')
+      $http.get('/api/device_history_eq/'+$routeParams.DEVICE_ID)
       .then(function successCallback(response) {
-        console.log("/api/device_history_eq/00000 successfully");
+        console.log("/api/device_history_eq/"+$routeParams.DEVICE_ID+" successfully");
         console.log(response);
 
         var tmpearthquakeHistoryList = [];
@@ -92,19 +92,19 @@
         $scope.thunderHistoryList = tmpthunderHistoryList;
 
       }, function errorCallback(response) {
-        console.error("error in /api/device_history_eq/00000");
+        console.error("error in /api/device_history_eq/"+$routeParams.DEVICE_ID);
       });
       //雷履歴情報
-      $http.get('/api/device_history_fl/00000')
+      $http.get('/api/device_history_fl/'+$routeParams.DEVICE_ID)
       .then(function successCallback(response) {
-        console.log("/api/device_history_fl/00000 successfully");
+        console.log("/api/device_history_fl/"+$routeParams.DEVICE_ID+" successfully");
         console.log(response);
 
         $scope.thunderHistoryList = response.data.data;
         console.log($scope.thunderHistoryList);
 
       }, function errorCallback(response) {
-        console.error("error in /api/device_history_fl/00000");
+        console.error("error in /api/device_history_fl/"+$routeParams.DEVICE_ID);
       });
 
 
