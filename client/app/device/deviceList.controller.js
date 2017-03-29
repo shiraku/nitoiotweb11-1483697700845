@@ -125,8 +125,6 @@
 
               if (hisRes.data.hasOwnProperty('data')) {
                   $scope.graphDatas.push(hisRes.data);
-              }else {
-                $scope.noGraphData = true;
               }
             }, function errorCallback(hisRes) {
               console.error("error in posting");
@@ -207,6 +205,7 @@
               legend: 'none'
             };
             var id = "DEV_" + dat.device_id;
+            document.getElementById(id).innerHTML = '';
             var chart = new google.visualization.ColumnChart(document.getElementById(id));
             chart.draw(dataTable,options);
           });

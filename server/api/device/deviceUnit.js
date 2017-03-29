@@ -89,9 +89,11 @@ var deviceUnit = {
     var reqest = req;
     var response = res;
     var option = new Object();
-    option[req.body.key] = req.body.value;
-//    console.log('userDevice,option@updateDeviceBasicInfo');
-//    console.log(userDevice,option);
+    Object.keys(req.body).forEach(function(key){
+      option[key] = req.body[key];
+    });
+    console.log('userDevice,option@updateDeviceBasicInfo');
+    console.log(userDevice,option);
     cloudantUtil.M_deviceEntitity.updateDevice(userDevice, option, function(err, dat){
 //    console.log('err@updateDeviceBasicInfo');
 //    console.log(err);

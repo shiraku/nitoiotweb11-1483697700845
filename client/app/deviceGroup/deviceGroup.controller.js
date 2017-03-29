@@ -87,6 +87,7 @@
     $mdDialog.show({
          targetEvent: $event,
          template:
+         '<form name="dialog">'+
          '<md-dialog>'+
          '  <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">'+
          '    <h2 class="md-title ng-binding">'+item.title+'</h2>'+
@@ -94,19 +95,22 @@
          '     <p class="ng-binding"></p>'+
          '   </div>'+
          '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme">'+
-         '     <input ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="dialog.name" placeholder='+item.placeholder_name+' initialValue='+item.placeholder_name+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
+         '     <input ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="name" name="name" placeholder='+item.placeholder_name+' initialValue='+item.placeholder_name+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="送信名" id="input_3" aria-invalid="false" style="">'+
          '     <div class="md-errors-spacer"></div>'+
          '   </md-input-container>'+
          '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme md-prompt-input-container-2">'+
-         '     <input ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="dialog.mailAddress" placeholder='+item.placeholder_mailid+' initialValue='+item.placeholder_mailid+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
-         '     <div class="md-errors-spacer"></div>'+
+         '     <input type="email" ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="mailAddress" name="mailAddress" placeholder='+item.placeholder_mailid+' initialValue='+item.placeholder_mailid+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="メールアドレス" id="input_3" aria-invalid="false" style="">'+
+     '     <div ng-messages="dialog.mailAddress.$error"  class="md-errors-spacer" ng-hide="dialog.mailAddress.$valid">'+
+       '     <div ng-message="email">メールアドレスを正しく入力してください</div>'+
+       '     </div>'+
          '   </md-input-container>'+
          ' </md-dialog-content>'+
          ' <md-dialog-actions>'+
          ' <button class="md-primary md-cancel-button md-button ng-scope md-default-theme md-ink-ripple" type="button" ng-click="closeDialog()" style="">キャンセル</button>'+
          ' <button class="md-primary md-confirm-button md-button md-ink-ripple md-default-theme" type="button" ng-click="regist()">登録</button>'+
          ' </md-dialog-actions>'+
-         ' </md-dialog>',
+         ' </md-dialog>'+
+         ' </form>',
     controller:['$scope', '$route', '$location', function ($scope, $route, $location) {
 
     //キャンセルボタン押下
@@ -116,19 +120,21 @@
 
     //登録ボタン押下
     $scope.regist = function() {
+    if($scope.dialog.name == undefined && $scope.dialog.mailAddress == undefined) return false;
+    if($scope.dialog.mailAddress.$invalid) return false;
       $mdDialog.hide();
 
       //新規登録の場合
       if(!item.key){
-        item.key = $scope.dialog.mailAddress;
+        item.key = $scope.dialog.mailAddress.$modelValue;
       }
-      console.log ("sendto Post name"+$scope.dialog.name+ "key"+item.key+"mailId"+$scope.dialog.mailAddress);
+      console.log ("sendto Post name"+$scope.dialog.name.$modelValue+ "key"+item.key+"mailId"+$scope.dialog.mailAddress.$modelValue);
 
       //編集内容をpost
       $http({
         method: 'POST',
         url: '/api/user/sendto/',
-        data: { name: $scope.dialog.name, mailid: $scope.dialog.mailAddress, key: item.key }
+        data: { name: $scope.dialog.name.$modelValue, mailid: $scope.dialog.mailAddress.$modelValue, key: item.key }
       })
       .then(
         function successCallback(response){
@@ -221,14 +227,14 @@ function dialogShow(ev,param){
     .ok(param.ok)
     .cancel(param.cancel);
 
-    $mdDialog.show(confirm).then(function() {
-  //削除の場合
+    $mdDialog.show(confirm)
+      .then(function(val) {
     //TODO 削除のリクエストを投げる
-        console.log("send to groupName"+dialog.groupName);
+//        console.log("send to groupName"+dialog.groupName);
         $http({
           method: 'post',
           url: '/api/user/',
-          data:{name: dialog.groupName}
+          data:{name: val}
         })
         .then(
           function successCallback(response){

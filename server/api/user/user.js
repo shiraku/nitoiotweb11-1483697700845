@@ -28,15 +28,15 @@ var user = {
     
 //    console.log("req.user.sendto@updateSendtoUser");
 //    console.log(req.user.sendto);
-    console.log("req.data@updateSendtoUser");
+    console.log("req.body@updateUser");
     console.log(req.body);
     var prm = req.body;
     var num;
     var reqest = req;
     var response = res;
     var getMail;
-
-    prm.forEach(function(prop){
+    
+    Object.keys(prm).forEach(function(prop){
       if(!req.user.hasOwnProperty(prop)) return response.status('200').send({message:'該当する項目がありません。', error: true});
     });
     
@@ -99,6 +99,7 @@ var user = {
     //更新する送信者情報を取得
     if(prm.key){
       getMail = req.user.sendto.filter(function(element,index){
+      console.log("element.mailid",element.mailid);
         if (element.mailid == prm.key) {
           num = index;
           return element;
@@ -224,7 +225,7 @@ var user = {
         "seismicIntensity": req.body.seismicIntensity,
         "siFlg": (req.body.switchSI) ? req.body.siFlg : false,
         "si": req.body.si,
-        "lightningSurge": req.body.power,
+        "lightningSurge": req.body.lightningSurge,
         "lpgm": req.body.lpgm,
         "slope": req.body.slope,
         "commercialBlackout": req.body.commercialBlackout,

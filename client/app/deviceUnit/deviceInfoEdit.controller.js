@@ -284,12 +284,14 @@
 
           $mdDialog.show(confirm)
             .then(function(val) {
+            var param = {};
+            param[itemKey] = val;
             //登録の場合
             //TODO 削除のリクエストを投げる
               $http({
                 method: 'post',
                 url: '/api/device_basicinfo/' + $routeParams.DEVICE_ID + '/',
-                data: { key: itemKey, value: val }
+                data: param
               })
               .then(
                 function successCallback(response){
@@ -335,7 +337,7 @@
                 $http({
                 method: 'post',
                 url: '/api/device_basicinfo/' + $routeParams.DEVICE_ID + '/',
-                data: { key: "telNo", value: $scope.dialog.telNo.$modelValue }
+                data: { telNo: $scope.dialog.telNo.$modelValue }
               })
                 .then(
                   function successCallback(response){
@@ -380,7 +382,7 @@ function showMailAddressDialog($event,flg){
   item.title = 'メールアドレスの編集';
   item.placeholder_name = this.item.name;
   item.placeholder_mailid = this.item.mailid;
-  item.key = "key='" + item.placeholder_mailid + "'"
+  item.key = this.item.mailid;
 
 }
 
@@ -395,12 +397,11 @@ $mdDialog.show({
      '     <p class="ng-binding"></p>'+
      '   </div>'+
      '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme">'+
-     '     <input ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="name" name="name" value="'+item.placeholder_name+'" placeholder='+item.placeholder_name+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
+     '     <input ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="name" name="name" value="'+item.placeholder_name+'" placeholder='+item.placeholder_name+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="送信者" id="input_3" aria-invalid="false" style="">'+
      '     <div class="md-errors-spacer"></div>'+
      '   </md-input-container>'+
      '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme md-prompt-input-container-2">'+
-     '     <input type="email" ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="mailAddress" name="mailAddress" value='+item.placeholder_mailid+' placeholder='+item.placeholder_mailid+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="デバイス名" id="input_3" aria-invalid="false" style="">'+
-     '     <input type="hidden" ng-model="key" name="key" placeholder='+item.placeholder_mailid+' ng-init="'+item.key+'" class="ng-hide">'+
+     '     <input type="email" ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="mailAddress" name="mailAddress" value='+item.placeholder_mailid+' placeholder='+item.placeholder_mailid+' class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="メールアドレス" id="input_3" aria-invalid="false" style="">'+
      '     <div ng-messages="dialog.mailAddress.$error"  class="md-errors-spacer" ng-hide="dialog.mailAddress.$valid">'+
        '     <div ng-message="email">メールアドレスを正しく入力してください</div>'+
        '     </div>'+
@@ -425,11 +426,16 @@ $scope.regist = function() {
   if($scope.dialog.name == undefined && $scope.dialog.mailAddress == undefined) return false;
   if($scope.dialog.mailAddress.$invalid) return false;
   $mdDialog.hide();
+  
+  //新規登録の場合
+  if(!item.key){
+    item.key = $scope.dialog.mailAddress.$modelValue;
+  }
   //編集内容をpost
   $http({
     method: 'POST',
     url: '/api/user/sendto/',
-    data: { name: $scope.dialog.name.$modelValue, mailid: $scope.dialog.mailAddress.$modelValue, key: $scope.dialog.key.$modelValue }
+    data: { name: $scope.dialog.name.$modelValue, mailid: $scope.dialog.mailAddress.$modelValue, key: item.key }
   })
   .then(
     function successCallback(response){
@@ -456,6 +462,9 @@ $scope.regist = function() {
 
 //アラート通知追加
 $scope.mailAddressDelete = function (ev){
+  
+    //削除するMailIdを詰める。
+    var deleteMailId = this.item.mailid;
 
     // Appending dialog to document.body to cover sidenav in docs app
     var confirm = $mdDialog.confirm()
@@ -471,7 +480,7 @@ $scope.mailAddressDelete = function (ev){
       //TODO 削除のリクエストを投げる
         $http({
           method: 'DELETE',
-          url: '/api/user/sendto/nito_nems02@yahoo.co.jp/'
+          url: '/api/user/sendto/'+deleteMailId+'/'
         })
         .then(
           function successCallback(response){

@@ -211,7 +211,8 @@ body{
   /**各ページ情報バー**********************************************************/
   .md-toolbar-tools{
     /*background: #526CC9;*/
-    background: #b31326;
+/*    background: #b31326;*/
+    background: #bd1b39;
   }
   /* 基本情報: */
   .md-toolbar-tools h3{
