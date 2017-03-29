@@ -220,7 +220,9 @@ var user = {
     var reqest = req;
     var response = res;
     var param = {
+        "seismicIntensityFlg": (!req.body.switchSI) ? req.body.seismicIntensityFlg : false,
         "seismicIntensity": req.body.seismicIntensity,
+        "siFlg": (req.body.switchSI) ? req.body.siFlg : false,
         "si": req.body.si,
         "lightningSurge": req.body.power,
         "lpgm": req.body.lpgm,

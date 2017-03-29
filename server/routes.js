@@ -69,7 +69,7 @@ module.exports = function(app) {
         //リダイレクト先がない場合はデバイス一覧へ
         var adminFlg = user.admin_mflg || false
         res.cookie('admin_mflg', adminFlg);
-        res.cookie('user_id', user._id);
+        res.cookie('user_id', user._id.split('_')[1]);
         if(!req.body.query) return res.status(200).send({ redirect:'/user_' + req.body.userId, authStat:true});
         var url = decodeURIComponent(req.body.query);
 //        console.log(req.body);
