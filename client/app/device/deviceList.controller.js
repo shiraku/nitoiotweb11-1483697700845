@@ -195,6 +195,8 @@
           });
       });
 
+        $scope.modalInstance.close();
+
     });
 
     // $scope.$on('graphDataElem',(event,data){
@@ -555,6 +557,9 @@
     $scope.deviceDetail = function () {
       $location.path("/user_" + $routeParams.USER_ID + "/device_" + this.item.deviceId.split('_')[1]);
     }
+
+
+
 
 
     /////MAPタブ用///////////////////////////////////////////////////////////////////////////////////////
