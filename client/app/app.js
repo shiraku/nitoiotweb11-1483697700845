@@ -88,20 +88,6 @@ return {
                     $rootScope.$broadcast('changedText');
                     console.log("[leave] text.set");
                 }
-            },
-
-            user: {
-                get: function() {
-                  var obj = {id:id,auth:auth};
-                  return obj; },
-                set: function(key,value) {
-                  if(key =="id"){
-                    id = value;
-                  }else if(key =="auth"){
-                    auth = value;
-                  }
-                    $rootScope.$broadcast('changedUser');
-                }
             }
         };
     }]);
