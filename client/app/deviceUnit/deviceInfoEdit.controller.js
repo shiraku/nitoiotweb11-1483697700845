@@ -2,7 +2,7 @@
 'use strict';
 
     angular.module('nitoiotweb11App')
-    .controller('DeviceInfoEditCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','SharedService','$timeout', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog,SharedService,$timeout) {
+    .controller('DeviceInfoEditCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','SharedService','$timeout','filterFilter', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog,SharedService,$timeout,filterFilter) {
       $rootScope.success = false;
       $rootScope.error = false;
 
@@ -59,9 +59,36 @@
           var obj = SharedService.text.get();
           $scope.deviceGroupData.latitude = obj.latitude;
           $scope.deviceGroupData.longitude = obj.longitude;
-          //データバインド
-          // $scope.$apply();
       });
+
+      //連絡先の値が変更された場合書き換える。
+      $scope.$on('changedTelNo', function() {
+           var telNo = SharedService.telNo.get();
+           $scope.deviceGroupData.telNo = telNo;
+       });
+
+       //メールアドレスの値が変更された場合書き換える。
+       $scope.$on('changedAlert', function() {
+            var obj = SharedService.alert.get();
+            //編集の場合
+            if(obj.key){
+            filterFilter($scope.sendto, obj.key)[0].name = obj.name;
+            filterFilter($scope.sendto, obj.key)[0].mailid = obj.mailAddress;
+
+            //追加の場合
+            }else{
+              $scope.sendto.push({mailid:obj.mailAddress,name:obj.name})
+            }
+
+        });
+
+        //メールアドレスの値が削除された場合書き換える。
+        $scope.$on('deletealert', function() {
+             var mailid = SharedService.deletealert.get();
+            //  filterFilter($scope.sendto, mailid) = 0;
+
+         });
+
 
      this.openMenu = function($mdOpenMenu, ev) {
       originatorEv = ev;
@@ -306,6 +333,7 @@
                   if(!response.data.error) {
                     console.log("success");
                     $rootScope.success = response.data.message;
+                    $scope.deviceGroupData[itemKey] = val;
                     $timeout(function (){
                         $rootScope.success = false;
                     },2000);
@@ -361,6 +389,7 @@
                     if(!response.data.error) {
                       console.log("success");
                       $rootScope.success = response.data.message;
+                      SharedService.telNo.set($scope.telNo);
                       $timeout(function (){
                           $rootScope.success = false;
                       },2000);
@@ -472,6 +501,7 @@ $scope.regist = function() {
       if(!response.data.error) {
         console.log("success");
         $rootScope.success = response.data.message;
+        SharedService.alert.set($scope.name,$scope.mailAddress,item.key);
         $timeout(function (){
             $rootScope.success = false;
         },2000);
@@ -526,6 +556,7 @@ $scope.mailAddressDelete = function (ev){
             if(!response.data.error) {
               console.log("success");
               $rootScope.success = response.data.message;
+              SharedService.deletealert.set(deleteMailId);
               $timeout(function (){
                   $rootScope.success = false;
               },2000);
