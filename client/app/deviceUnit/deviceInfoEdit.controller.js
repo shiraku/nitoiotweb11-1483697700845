@@ -249,7 +249,7 @@
 //                   "ok":"登録",
 //                   "cancel":"キャンセル"}
 
-        var tmpTelNo = Number($scope.deviceGroupData.telNo);
+        var tmpTelNo = $scope.deviceGroupData.telNo;
 
         var json = {
            "template":
@@ -455,7 +455,7 @@ $scope.regist = function() {
   if($scope.dialog.name == undefined && $scope.dialog.mailAddress == undefined) return false;
   if($scope.dialog.mailAddress.$invalid) return false;
   $mdDialog.hide();
-  
+
   //新規登録の場合
   if(!item.key){
     item.key = false;
