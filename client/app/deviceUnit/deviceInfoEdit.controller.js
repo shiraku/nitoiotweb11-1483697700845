@@ -261,7 +261,7 @@
            '     <p class="ng-binding"></p>'+
            '   </div>'+
            '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme">'+
-           '     <input type="number" ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="telNo" name="telNo" placeholder="連絡先" class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="+this.title+" aria-invalid="false" style="">'+
+           '     <input type="tel" ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="telNo" name="telNo" placeholder="連絡先" class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="+this.title+" aria-invalid="false" style="">'+
            '     <div ng-messages="telNo.$error"  class="md-errors-spacer" ng-hide="telNo.$valid">'+
              '     <div ng-message="email">半角数字で入力してください</div>'+
              '     </div>'+

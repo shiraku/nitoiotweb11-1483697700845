@@ -37,6 +37,25 @@ var comment= {
       return response.status('200').json(dat);
     });
   },
+  getRelatedComment : function(req,res) {
+//    console.log('セッションユーザー情報@getComment');
+//    console.log(req.user);
+    if(!req.user) {
+      return res.status('200').json({ error: "ログインされていません" });
+    }
+    var key = req.params.id;
+    var self = this;
+    var reqest = req;
+    var response = res;
+    console.log("req.params.id");
+    console.log(req.params.id);
+    cloudantUtil.Comment_dataEntitity.getRelatedComment(key, function(err, dat){
+      if(err) {return response.status('200').json(err);}
+        console.log('getRelatedComment@getRelatedComment');
+        console.log(dat);
+      return response.status('200').json(dat);
+    });
+  },
   
   /**
  * 感知日にコメントを投稿する

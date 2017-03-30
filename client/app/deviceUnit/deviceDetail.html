@@ -71,13 +71,13 @@
           </div>
           </div>
       　</md-card-content>
-        <md-card-content ng-hide="earthquakeCurrentData.datas.commentList == undefined">
+        <md-card-content ng-hide="commentList.length == 0 || commentList == undefined">
         <p class="md-body-1">コメント・連絡事項</p>
         <div layout="row" layout-wrap>
           <ul>
-            <!--TODO コメント日時表示させる--->
-            <li ng-repeat="item in earthquakeCurrentData.datas.commentList">
-            <p class="md-body-2">{{item.comment}}　{{item.commentDate}}</p>
+            <li ng-repeat="item in commentList">
+              <p class="md-body-2" ng-if="item.value.importantFlg">{{item.value.comment}}　{{item.value.timestamp}}</p>
+              <p class="md-body-2 importantFlg" ng-if="!item.value.importantFlg">{{item.value.comment}}　{{item.value.timestamp}}</p>
           </li>
         </ul>
         </div>

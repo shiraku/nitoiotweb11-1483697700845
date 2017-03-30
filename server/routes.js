@@ -203,6 +203,9 @@ module.exports = function(app) {
    * get:取得
    * post:追加・更新
    */
+  app.get('/api/comment/related/:id',function(req, res) {
+      comment.getRelatedComment(req,res);
+    });
   app.get('/api/comment/:id',function(req, res) {
       comment.getComment(req,res);
     });

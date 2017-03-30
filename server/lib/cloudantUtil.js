@@ -393,6 +393,18 @@ exports.Comment_dataEntitity = {
       return callback(err,res)
     });
   },
+  getRelatedComment : function(query, callback){
+//        console.log('query @getComment');
+//        console.log(q);
+    connectDoc('comment_data');
+      db.view('sc001/indexByRelated', {key: query, descending:true} , function (err, res) {
+//        console.log('err object @getLatest');
+//        console.log(err);
+//        console.log('row object @getComment');
+//        console.log(res);
+      return callback(err,res)
+    });
+  },
   saveComment : function(query, data, callback){
     connectDoc('comment_data');
 //    console.log("query, data@updateDevice");

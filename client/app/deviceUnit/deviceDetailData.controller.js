@@ -2,7 +2,7 @@
 'use strict';
 
     angular.module('nitoiotweb11App')
-    .controller('DeviceDetailDataCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','$window', function ($rootScope,$routeParams,$scope, $http, $location,$mdDialog,$window) {
+    .controller('DeviceDetailDataCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','$window','$timeout', function ($rootScope,$routeParams,$scope, $http, $location,$mdDialog,$window,$timeout) {
 
       //ヘッダータイトル
       var str = $routeParams.YYYYMMDDHHMM;
@@ -69,24 +69,33 @@
           }else{
             obj2.slope = "なし"
           }
+          $scope.detailData =
+          {
+               deviceId   :obj._id,
+               deviceName :obj.deviceName,
+               type       :obj2.type,          //地震or雷
+               seismicIntensity:obj2.seismicIntensity,     //震度（地震のみ）
+               power :obj2.power,
+               slope:obj2.slope,               //傾き（地震のみ）
+               leakage:obj2.leakage,             //漏電（雷のみ）
+               commercialBlackout:obj2.commercialBlackout,
+               equipmentAbnormality:obj2.equipmentAbnormality,
+         };
 
           //TODO コメントを取得する
-        $scope.detailData =
-        {
-             deviceId   :obj._id,
-             deviceName :obj.deviceName,
-             type       :obj2.type,          //地震or雷
-             seismicIntensity:obj2.seismicIntensity,     //震度（地震のみ）
-             power :obj2.power,
-             slope:obj2.slope,               //傾き（地震のみ）
-             leakage:obj2.leakage,             //漏電（雷のみ）
-             commercialBlackout:obj2.commercialBlackout,
-             equipmentAbnormality:obj2.equipmentAbnormality,
-       };
-
-        if(obj.commentList){
-          $scope.detailData.commentList = obj.commentList;
-        }
+              console.log('/api/comment/related/DEV_' + $routeParams.DEVICE_ID + '_' + $routeParams.YYYYMMDDHHMM + '/');
+          $http.get('/api/comment/related/DEV_' + $routeParams.DEVICE_ID + '_' + $routeParams.YYYYMMDDHHMM + '/')
+            .then(function successCallback(response) {
+              console.log("/api/comment/related/ successfully");
+              console.log(response);
+              if(response.data){
+                  $scope.detailData["commentList"] = response.data;
+              }
+            });
+//
+//        if(obj.commentList){
+//          $scope.detailData.commentList = obj.commentList;
+//        }
         if(obj.mediaNewsletter){
           $scope.detailData.mediaNewsletter = obj.mediaNewsletter;
         }
@@ -116,6 +125,7 @@
         $mdDialog.show({
            targetEvent: ev,
            template:
+           '<form name="dialog">'+
            '<md-dialog>'+
            '  <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">'+
            '    <h2 class="md-title ng-binding">'+title+'</h2>'+
@@ -123,15 +133,16 @@
            '     <p class="ng-binding"></p>'+
            '   </div>'+
            '<md-input-container class="md-block">'+
-            '<textarea ng-model="user.biography" md-maxlength="150" rows="5" md-select-on-focus=""></textarea>'+
+            '<textarea ng-model="biography" name="biography" md-maxlength="150" rows="5" md-select-on-focus=""></textarea>'+
             '</md-input-container>'+
-           '  <md-checkbox name="tos" ng-model="project.tos" required="">重要なコメントとして登録する</md-checkbox>'+
+           '  <md-checkbox ng-model="tos" name="tos" required="">重要なコメントとして登録する</md-checkbox>'+
            ' </md-dialog-content>'+
            ' <md-dialog-actions>'+
            ' <button class="md-primary md-cancel-button md-button ng-scope md-default-theme md-ink-ripple" type="button" ng-click="closeDialog()" style="">キャンセル</button>'+
            ' <button class="md-primary md-confirm-button md-button md-ink-ripple md-default-theme" type="button" ng-click="regist()">登録</button>'+
            ' </md-dialog-actions>'+
-           ' </md-dialog>',
+           ' </md-dialog>'+
+           ' </form>',
         controller:['$scope', '$route', '$location', function ($scope, $route, $location) {
 
         //キャンセルボタン押下
@@ -142,11 +153,13 @@
         //登録ボタン押下
         $scope.regist = function() {
           $mdDialog.hide();
+          console.log('/api/comment/DEV_' + $routeParams.DEVICE_ID + '_' + $routeParams.YYYYMMDDHHMM + '/');
+          var tos = $scope.dialog.tos.$modelValue || false;
           //TODO 削除のリクエストを投げる
             $http({
               method: 'post',
-              url: '/api/comment/DEV_00000_20170314142134/',
-              data: { comment: this.user.biography, impFlg: this.project.tos }
+              url: '/api/comment/DEV_' + $routeParams.DEVICE_ID + '_' + $routeParams.YYYYMMDDHHMM + '/',
+              data: { comment: $scope.dialog.biography.$modelValue, impFlg: tos }
             })
             .then(
               function successCallback(response){

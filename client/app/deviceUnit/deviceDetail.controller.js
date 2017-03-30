@@ -4,7 +4,6 @@
     angular.module('nitoiotweb11App')
     .controller('DeviceDetailCtrl',['$rootScope','$routeParams','$scope','$http','$location', function ($rootScope,$routeParams,$scope, $http, $location) {
 
-
       //デバイス情報
       $http.get('/api/device_detail/'+$routeParams.DEVICE_ID)
       .then(function successCallback(response) {
@@ -35,6 +34,16 @@
              memo           :obj.memo
        };
 
+        //TODO コメントを取得する
+            console.log('/api/comment/related/DEV_' + $routeParams.DEVICE_ID + '_' + obj.earthquakeCurrentData.date_id + '/');
+        $http.get('/api/comment/related/DEV_' + $routeParams.DEVICE_ID + '_' + obj.earthquakeCurrentData.date_id + '/')
+          .then(function successCallback(response) {
+            console.log("/api/comment/related/ successfully");
+            console.log(response);
+            if(response.data){
+                $scope.commentList = response.data;
+            }
+          });
 
 
       }, function errorCallback(response) {

@@ -2,6 +2,8 @@
 
   <!--ヘッダー読み込み-->
   <navitop></navitop>
+  <div ng-show="error" class="alert alert-danger">{{error}}</div>
+  <div ng-show="success" class="alert alert-success">{{success}}</div>
 
 <!--地震または雷-->
 <div class="md-toolbar-tools">
@@ -67,8 +69,8 @@
         <div layout="row" layout-wrap ng-hide="detailData.commentList == undefined">
           <ul>
             <li ng-repeat="item in detailData.commentList">
-              <p class="md-body-2"　ng-if="item.importantFlg">{{item.comment}}　{{item.commentDate}}</p>
-              <p class="md-body-2 importantFlg"　ng-if="!item.importantFlg">{{item.comment}}　{{item.commentDate}}</p>
+              <p class="md-body-2" ng-if="item.value.importantFlg">{{item.value.comment}}　{{item.value.timestamp}}</p>
+              <p class="md-body-2 importantFlg" ng-if="!item.value.importantFlg">{{item.value.comment}}　{{item.value.timestamp}}</p>
           </li>
         </ul>
         </div>
