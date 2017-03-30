@@ -4,9 +4,6 @@
     angular.module('nitoiotweb11App')
     .controller('DeviceInfoEditCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','SharedService','$timeout', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog,$timeout,SharedService) {
 
-
-      $scope.text = SharedService.text.get();
-
       //送信者一覧情報
       $http.get('/api/device_basicinfo/' + $routeParams.DEVICE_ID + '/')
       .then(function successCallback(response) {
