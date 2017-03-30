@@ -13,7 +13,7 @@ angular.module('nitoiotweb11App')
     //  UC001	デバイス一覧画面				/user_:USER_ID
     .when('/user_:USER_ID', {
       templateUrl: 'app/device/deviceList.html',
-      // controller: 'DeviceListCtrl'
+      controller: 'DeviceListCtrl'
     })
     //  UC002	デバイス詳細					/user_:USER_ID/device_:DEVICE_ID
     .when('/user_:USER_ID/device_:DEVICE_ID', {
