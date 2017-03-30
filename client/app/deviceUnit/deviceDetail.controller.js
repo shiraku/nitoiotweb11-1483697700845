@@ -48,19 +48,8 @@
         console.log("/api/device_history_eq/"+$routeParams.DEVICE_ID+" successfully");
         console.log(response);
 
-        var tmpearthquakeHistoryList = [];
-        var tmpthunderHistoryList = [];
-        angular.forEach(response.data.data, function(value, index, array) {
-          if (value.datas.type=="EQ") {
-            tmpearthquakeHistoryList.push(value);
-          }else if(value.datas.type=="FL"){
-            tmpthunderHistoryList.push(value);
-          }
-          console.log(index + '. ' + value.datas.type);
-        });
-
-        $scope.earthquakeHistoryList = tmpearthquakeHistoryList;
-        $scope.thunderHistoryList = tmpthunderHistoryList;
+        $scope.earthquakeHistoryList = response.data.data;
+        console.log($scope.earthquakeHistoryList);
 
       }, function errorCallback(response) {
         console.error("error in /api/device_history_eq/"+$routeParams.DEVICE_ID);

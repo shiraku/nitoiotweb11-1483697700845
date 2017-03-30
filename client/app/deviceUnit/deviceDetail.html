@@ -96,6 +96,7 @@
         <md-list-item class="md-secondary" ng-repeat="item in earthquakeHistoryList | limitTo: earthquakeHistoryViews: 0" ng-click="deviceDetailData()">
             <p class="md-body-1">{{item.date}}</p>
             <span class="md-body-1">{{item.datas.seismicIntensity}}</span>
+            <span class="md-body-1" ng-if="item.datas.seismicIntensity == undefined">-</span>
             <buttondetail></buttondetail>
         </md-list-item>
         <p flex class="md-body-3" ng-if="earthquakeHistoryList.length == 0">履歴なし</p>
@@ -103,7 +104,7 @@
 
 
         <div layout layout-align="center">
-          <md-button class="md-accent md-button md-ink-ripple" type="button" ng-click="earthquakeHistoryMoreClick()" ng-transclude="" ng-hide="earthquakeHistoryViews >= earthquakeHistoryList.length">
+          <md-button class="md-accent md-button md-ink-ripple" type="button" ng-click="earthquakeHistoryMoreClick()" ng-transclude="" ng-hide="earthquakeHistoryViews >= earthquakeHistoryList.length  || earthquakeHistoryList == undefined">
             <div class="md-ripple-container">さらに表示</div>
           </md-button>
         </div>
@@ -181,12 +182,13 @@
       <md-list-item class="md-3-line" ng-repeat="item in thunderHistoryList | limitTo: thunderHistoryViews: 0" ng-click="deviceDetailData()">
           <p class="md-body-1">{{item.date}}</p>
           <span class="md-body-1">{{item.datas.power}}</span>
+          <span class="md-body-1" ng-if="item.datas.power == undefined">-</span>
           <buttondetail></buttondetail>
       </md-list-item>
       <p flex class="md-body-3" ng-if="thunderHistoryList.length == 0">履歴なし</p>
 
       <div layout layout-align="center">
-        <md-button class="md-accent md-button md-ink-ripple" type="button" ng-click="thunderHistoryMoreClick()" ng-transclude="" ng-hide="thunderHistoryViews >= thunderHistoryList.length">
+        <md-button class="md-accent md-button md-ink-ripple" type="button" ng-click="thunderHistoryMoreClick()" ng-transclude="" ng-hide="thunderHistoryViews >= thunderHistoryList.length || thunderHistoryList == undefined">
           <div class="md-ripple-container">さらに表示</div>
         </md-button>
       </div>
