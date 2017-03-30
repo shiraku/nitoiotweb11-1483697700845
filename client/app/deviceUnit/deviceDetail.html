@@ -76,8 +76,8 @@
         <div layout="row" layout-wrap>
           <ul>
             <li ng-repeat="item in commentList">
-              <p class="md-body-2" ng-if="item.value.importantFlg">{{item.value.comment}}　{{item.value.timestamp}}</p>
-              <p class="md-body-2 importantFlg" ng-if="!item.value.importantFlg">{{item.value.comment}}　{{item.value.timestamp}}</p>
+              <p class="md-body-2" ng-if="!item.value.importantFlg">{{item.value.comment}}　{{item.value.timestamp}}</p>
+              <p class="md-body-2 importantFlg" ng-if="item.value.importantFlg">{{item.value.comment}}　{{item.value.timestamp}}</p>
           </li>
         </ul>
         </div>

@@ -69,8 +69,8 @@
         <div layout="row" layout-wrap ng-hide="detailData.commentList == undefined">
           <ul>
             <li ng-repeat="item in detailData.commentList">
-              <p class="md-body-2" ng-if="item.value.importantFlg">{{item.value.comment}}　{{item.value.timestamp}}</p>
-              <p class="md-body-2 importantFlg" ng-if="!item.value.importantFlg">{{item.value.comment}}　{{item.value.timestamp}}</p>
+              <p class="md-body-2" ng-if="!item.value.importantFlg">{{item.value.comment}}　{{item.value.timestamp}}</p>
+              <p class="md-body-2 importantFlg" ng-if="item.value.importantFlg">{{item.value.comment}}　{{item.value.timestamp}}</p>
           </li>
         </ul>
         </div>
