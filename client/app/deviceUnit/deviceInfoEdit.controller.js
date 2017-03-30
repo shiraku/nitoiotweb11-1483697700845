@@ -2,7 +2,7 @@
 'use strict';
 
     angular.module('nitoiotweb11App')
-    .controller('DeviceInfoEditCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','SharedService','$timeout', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog,$timeout,SharedService) {
+    .controller('DeviceInfoEditCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','SharedService','$timeout', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog,SharedService,$timeout) {
       $rootScope.success = false;
       $rootScope.error = false;
 
