@@ -11,7 +11,7 @@
     <div ng-if="detailData.type == 'EQ'">
     <a class="docs-anchor ng-scope" ng-href="#basic-usage"name="basic-usage" href="#basic-usage">地震</a>
     </div>
-    <div ng-if="detailData.type == 'thunder'">
+    <div ng-if="detailData.type == 'FL'">
     <a class="docs-anchor ng-scope" ng-href="#basic-usage"name="basic-usage" href="#basic-usage">雷</a>
     </div>
   </h3>
@@ -47,7 +47,7 @@
       </div>
       </div>
       <!--雷の場合-->
-      <div layout="row" layout-wrap ng-if="item.type == 'thunder'">
+      <div layout="row" layout-wrap ng-if="item.type == 'FL'">
         <div flex="25">
           <p flex class="md-body-1">漏電</p>
           <p flex class="md-body-1">商用停電</p>
