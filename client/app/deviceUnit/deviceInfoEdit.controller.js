@@ -258,12 +258,11 @@
            '    <div class="md-dialog-content-body ng-scope">'+
            '     <p class="ng-binding"></p>'+
            '   </div>'+
-           '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme">'+
-           '     <input type="number" ng-keypress="dialog.keypress($event)" md-autofocus="" ng-model="telNo" name="telNo" placeholder="連絡先" class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="+this.title+" aria-invalid="false" style="">'+
-           '     <div ng-messages="telNo.$error"  class="md-errors-spacer" ng-hide="telNo.$valid">'+
-             '     <div ng-message="email">半角数字で入力してください</div>'+
-             '     </div>'+
-           ' </md-input-container>'+
+          '   <md-input-container md-no-float="" class="md-prompt-input-container ng-scope md-input-has-placeholder md-default-theme md-prompt-input-container-2">'+
+          '     <input ng-keypress="dialog.keypress($event)" ng-pattern="/^[0-9]{2,5}-[0-9]{1,4}-[0-9]{4}$/" md-autofocus="" ng-model="telNo" name="telNo" placeholder="連絡先" class="ng-pristine ng-valid md-autofocus md-input ng-empty ng-touched" aria-label="連絡先" id="input_3" aria-invalid="false" style="">'+
+          '     <div ng-messages="dialog.telNo.$error"  class="md-errors-spacer" ng-hide="dialog.telNo.$valid">'+
+          '     <div ng-message="pattern">正しい電話番号の形式で入力してください 例：####-####-####</div>'+
+          '     </div>'+
            ' </md-dialog-content>'+
            ' <md-dialog-actions>'+
            ' <button class="md-primary md-cancel-button md-button ng-scope md-default-theme md-ink-ripple" type="button" ng-click="closeDialog()" style="">キャンセル</button>'+
@@ -499,7 +498,7 @@ $scope.regist = function() {
 
 //アラート通知追加
 $scope.mailAddressDelete = function (ev){
-  
+
     //削除するMailIdを詰める。
     var deleteMailId = this.item.mailid;
 
