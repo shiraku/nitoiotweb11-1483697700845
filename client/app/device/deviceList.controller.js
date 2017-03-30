@@ -75,6 +75,27 @@
 
           $scope.markers.push(marker);
 
+          var content = "デバイス名："+value.deviceName+"<br>最新状況："+value.status
+          if(value.type==undefined){
+            //何もしない
+          }
+          else if(value.type=="EQ"){
+            content += "<br>震度："+value.seismicIntensity;
+          }else if(value.type=="FL"){
+            content += "<br>雷："+value.power;
+          }
+          var infowin = new google.maps.InfoWindow({content:content});
+
+          // mouseoverイベントを取得するListenerを追加
+          google.maps.event.addListener(marker, 'mouseover', function(){
+              infowin.open(map, marker);
+            });
+
+          // mouseoutイベントを取得するListenerを追加
+          google.maps.event.addListener(marker, 'mouseout', function(){
+              infowin.close();
+            });
+
           if(index == 0){
             //一つ目のデバイスを初期値とする
              latitude = value.latitude;
@@ -100,6 +121,8 @@
         var ne = new google.maps.LatLng( minY , maxX ) ;	// 右上の緯度、経度
         var LatLngBounds = new google.maps.LatLngBounds( sw , ne ) ;
         map.fitBounds(LatLngBounds);
+
+
 
 
       }, function errorCallback(response) {

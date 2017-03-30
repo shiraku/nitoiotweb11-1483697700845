@@ -19,6 +19,7 @@
         <div flex="90" layout="column" >
             <span flex class="md-body-1">デバイスID</span>
             <span flex class="md-body-3">{{deviceGroupData.deviceId}}</span>
+            <span flex class="md-body-3" ng-if="deviceGroupData.deviceId == undefined">-</span>
         </div>
       </div>
     </md-card-content>
@@ -28,6 +29,7 @@
         <div flex="90" layout="column" >
             <span flex class="md-body-1">デバイス名</span>
             <span flex class="md-body-3">{{deviceGroupData.deviceName}}</span>
+            <span flex class="md-body-3" ng-if="deviceGroupData.deviceName == undefined">-</span>
         </div>
           <md-button class="md-icon-button" aria-label="More" ng-click="deviceNameEdit($event)">
           <md-icon><buttonpen></buttonpen></md-icon>
@@ -40,6 +42,7 @@
         <div flex="90" layout="column" >
             <span flex class="md-body-1">住所</span>
             <span flex class="md-body-3">{{deviceGroupData.address}}</span>
+            <span flex class="md-body-3" ng-if="deviceGroupData.address == undefined">-</span>
         </div>
           <md-button class="md-icon-button" aria-label="More" ng-click="addressEdit($event)">
           <md-icon><buttonpen></buttonpen></md-icon>
@@ -52,7 +55,9 @@
         <div flex="90" layout="column" >
             <span flex class="md-body-1">緯度・経度</span>
             <span flex class="md-body-3">緯度 {{deviceGroupData.latitude}}</span>
+            <span flex class="md-body-3" ng-if="deviceGroupData.latitude == undefined">緯度 -</span>
             <span flex class="md-body-3">経度 {{deviceGroupData.longitude}}</span>
+            <span flex class="md-body-3" ng-if="deviceGroupData.longitude == undefined">経度 -</span>
         </div>
           <md-button class="md-icon-button" aria-label="More" ng-click="latlonEdit($event)">
           <md-icon><buttonpen></buttonpen></md-icon>
@@ -65,6 +70,7 @@
         <div flex="90" layout="column" >
             <span flex class="md-body-1">メモ</span>
             <span flex class="md-body-3">{{deviceGroupData.memo}}</span>
+            <span flex class="md-body-3" ng-if="deviceGroupData.memo == undefined">-</span>
         </div>
           <md-button class="md-icon-button" aria-label="More" ng-click="memoEdit($event)">
           <md-icon><buttonpen></buttonpen></md-icon>
@@ -77,6 +83,7 @@
         <div flex="90" layout="column" >
             <span flex class="md-body-1">責任者</span>
             <span flex class="md-body-3">{{deviceGroupData.responsiblePerson}}</span>
+            <span flex class="md-body-3" ng-if="deviceGroupData.responsiblePerson == undefined">-</span>
         </div>
           <md-button class="md-icon-button" aria-label="More" ng-click="responsiblePersonEdit($event)">
           <md-icon><buttonpen></buttonpen></md-icon>
@@ -89,6 +96,7 @@
         <div flex="90" layout="column" >
             <span flex class="md-body-1">連絡先</span>
             <span flex class="md-body-3">{{deviceGroupData.telNo}}</span>
+            <span flex class="md-body-3" ng-if="deviceGroupData.telNo == undefined">-</span>
         </div>
           <md-button class="md-icon-button" aria-label="More" ng-click="telNoEdit($event)">
           <md-icon><buttonpen></buttonpen></md-icon>

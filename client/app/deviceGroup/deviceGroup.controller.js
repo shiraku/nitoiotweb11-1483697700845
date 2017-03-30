@@ -51,7 +51,7 @@
           "title":"グループ名の編集",
           "placeholder":"グループ名",
           "ariaLabel":"",
-          "initialValue":"",
+          "initialValue":$scope.groupName,
           "ok":"登録",
           "cancel":"キャンセル",
         }
