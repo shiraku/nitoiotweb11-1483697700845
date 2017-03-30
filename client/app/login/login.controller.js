@@ -21,6 +21,8 @@
 //    	alert("$routeParams"+$routeParams.userId)
 
       
+      $rootScope.success = false;
+      $rootScope.error = false;
       
       /**
       ***　処理概要：パラメータを取得してリダイレクト先を返却する
@@ -50,12 +52,18 @@
             } else {
               $scope.error = response.data.message;
               $scope.dataLoading = false;
+              $timeout(function (){
+                  $rootScope.error = false;
+              },2000);
             }
             
           },
           function errorCallback(response){
               $scope.error = response.data.message;
               $scope.dataLoading = false;
+              $timeout(function (){
+                  $rootScope.error = false;
+              },2000);
           }
         ); 
       }

@@ -3,7 +3,8 @@
 
     angular.module('nitoiotweb11App')
     .controller('DeviceGroupCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','$timeout', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog, $timeout) {
-
+      $rootScope.success = false;
+      $rootScope.error = false;
 
 
       //送信者一覧情報
