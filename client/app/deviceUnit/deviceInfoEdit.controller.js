@@ -6,9 +6,6 @@
       $rootScope.success = false;
       $rootScope.error = false;
 
-
-      $scope.text = SharedService.text.get();
-
       //送信者一覧情報
       $http.get('/api/device_basicinfo/' + $routeParams.DEVICE_ID + '/')
       .then(function successCallback(response) {
