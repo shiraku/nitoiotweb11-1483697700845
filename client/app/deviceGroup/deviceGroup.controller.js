@@ -2,7 +2,7 @@
 'use strict';
 
     angular.module('nitoiotweb11App')
-    .controller('DeviceGroupCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog) {
+    .controller('DeviceGroupCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','$timeout', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog, $timeout) {
 
 
 
@@ -131,7 +131,7 @@
 
       //新規登録の場合
       if(!item.key){
-        item.key = $scope.dialog.mailAddress.$modelValue;
+        item.key = false;
       }
       console.log ("sendto Post name"+$scope.dialog.name.$modelValue+ "key"+item.key+"mailId"+$scope.dialog.mailAddress.$modelValue);
 
@@ -147,13 +147,22 @@
           if(!response.data.error) {
             console.log("success");
             $rootScope.success = response.data.message;
+            $timeout(function (){
+                $rootScope.success = false;
+            },2000);
           } else {
             $rootScope.error = response.data.message;
+            $timeout(function (){
+                $rootScope.error = false;
+            },2000);
           }
 
         },
         function errorCallback(response){
             $rootScope.error = response.data.message;
+            $timeout(function (){
+                $rootScope.error = false;
+            },2000);
 
         }
       );
@@ -193,13 +202,22 @@ $scope.mailAddressDelete = function (ev){
             if(!response.data.error) {
               console.log("success");
               $rootScope.success = response.data.message;
+              $timeout(function (){
+                  $rootScope.success = false;
+              },2000);
             } else {
               $rootScope.error = response.data.message;
+              $timeout(function (){
+                  $rootScope.error = false;
+              },2000);
             }
 
           },
           function errorCallback(response){
               $rootScope.error = response.data.message;
+              $timeout(function (){
+                  $rootScope.error = false;
+              },2000);
 
           }
         );
@@ -247,13 +265,22 @@ function dialogShow(ev,param){
             if(!response.data.error) {
               console.log("success");
               $rootScope.success = response.data.message;
+              $timeout(function (){
+                  $rootScope.success = false;
+              },2000);
             } else {
               $rootScope.error = response.data.message;
+              $timeout(function (){
+                  $rootScope.error = false;
+              },2000);
             }
 
           },
           function errorCallback(response){
               $rootScope.error = response.data.message;
+              $timeout(function (){
+                  $rootScope.error = false;
+              },2000);
 
           }
         );

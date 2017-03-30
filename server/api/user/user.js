@@ -111,14 +111,14 @@ var user = {
     var dupMail = req.user.sendto.filter(function(element){
           return (element.mailid == prm.mailid);
       });
-    if(dupMail.length >= 1){
+    if(dupMail.length >= 1 && !prm.key){
       return response.status('200').send({message:'メールアドレスが重複しています。', error: true});
     }
     
     //送信者情報の更新
         console.log("getMail@saveSendtoUser");
         console.log(getMail);
-    if(getMail.length){
+    if(prm.key){
       if(req.body.name) req.user.sendto[num].name = req.body.name;
       if(req.body.mailid) req.user.sendto[num].mailid = req.body.mailid;
         console.log("req.user.sendto@saveSendtoUser");

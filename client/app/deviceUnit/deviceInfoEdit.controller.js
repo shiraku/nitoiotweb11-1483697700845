@@ -2,7 +2,7 @@
 'use strict';
 
     angular.module('nitoiotweb11App')
-    .controller('DeviceInfoEditCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','SharedService', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog,SharedService) {
+    .controller('DeviceInfoEditCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','SharedService','$timeout', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog,$timeout,SharedService) {
 
 
       $scope.text = SharedService.text.get();
@@ -191,13 +191,22 @@
               if(!response.data.error) {
                 console.log("success");
                 $rootScope.success = response.data.message;
+                $timeout(function (){
+                    $rootScope.success = false;
+                },2000);
               } else {
                 $rootScope.error = response.data.message;
+                $timeout(function (){
+                    $rootScope.error = false;
+                },2000);
               }
 
             },
             function errorCallback(response){
                 $rootScope.error = response.data.message;
+                $timeout(function (){
+                    $rootScope.error = false;
+                },2000);
 
             }
           );
@@ -299,13 +308,22 @@
                   if(!response.data.error) {
                     console.log("success");
                     $rootScope.success = response.data.message;
+                    $timeout(function (){
+                        $rootScope.success = false;
+                    },2000);
                   } else {
                     $rootScope.error = response.data.message;
+                    $timeout(function (){
+                        $rootScope.error = false;
+                    },2000);
                   }
 
                 },
                 function errorCallback(response){
                     $rootScope.error = response.data.message;
+                    $timeout(function (){
+                        $rootScope.error = false;
+                    },2000);
 
                 }
               );
@@ -345,13 +363,22 @@
                     if(!response.data.error) {
                       console.log("success");
                       $rootScope.success = response.data.message;
+                      $timeout(function (){
+                          $rootScope.success = false;
+                      },2000);
                     } else {
                       $rootScope.error = response.data.message;
+                      $timeout(function (){
+                          $rootScope.error = false;
+                      },2000);
                     }
 
                   },
                   function errorCallback(response){
                       $rootScope.error = response.data.message;
+                      $timeout(function (){
+                          $rootScope.error = false;
+                      },2000);
 
                   }
                 );
@@ -433,7 +460,7 @@ $scope.regist = function() {
   
   //新規登録の場合
   if(!item.key){
-    item.key = $scope.dialog.mailAddress.$modelValue;
+    item.key = false;
   }
   //編集内容をpost
   $http({
@@ -447,13 +474,22 @@ $scope.regist = function() {
       if(!response.data.error) {
         console.log("success");
         $rootScope.success = response.data.message;
+        $timeout(function (){
+            $rootScope.success = false;
+        },2000);
       } else {
         $rootScope.error = response.data.message;
+        $timeout(function (){
+            $rootScope.error = false;
+        },2000);
       }
 
     },
     function errorCallback(response){
         $rootScope.error = response.data.message;
+        $timeout(function (){
+            $rootScope.error = false;
+        },2000);
 
     }
   );
@@ -492,13 +528,22 @@ $scope.mailAddressDelete = function (ev){
             if(!response.data.error) {
               console.log("success");
               $rootScope.success = response.data.message;
+              $timeout(function (){
+                  $rootScope.success = false;
+              },2000);
             } else {
               $rootScope.error = response.data.message;
+              $timeout(function (){
+                  $rootScope.error = false;
+              },2000);
             }
 
           },
           function errorCallback(response){
               $rootScope.error = response.data.message;
+              $timeout(function (){
+                  $rootScope.error = false;
+              },2000);
 
           }
         );
