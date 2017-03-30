@@ -2,7 +2,8 @@
 'use strict';
 
     angular.module('nitoiotweb11App')
-    .controller('DownloadCsvItemSettingCtrl',['$rootScope','$routeParams','$scope','$http','$location','$window', function ($rootScope,$routeParams,$scope, $http, $location,$window) {
+    .controller('DownloadCsvItemSettingCtrl',['$rootScope','$routeParams','$scope','$http','$location','$window','$timeout', function ($rootScope,$routeParams,$scope, $http, $location,$window,$timeout) {
+      $rootScope.error = false;
 
       //ヘッダータイトル
       $scope.navtitle="データダウンロード";
@@ -65,6 +66,9 @@
 
          if(res.data.error){
            $rootScope.error = res.data.error;
+            $timeout(function (){
+                $rootScope.error = false;
+            },2000);
          }else{
            console.log(res);
            var filename = res.headers('content-disposition').split('=')[1];

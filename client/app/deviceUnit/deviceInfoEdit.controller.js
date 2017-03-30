@@ -3,6 +3,8 @@
 
     angular.module('nitoiotweb11App')
     .controller('DeviceInfoEditCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','SharedService','$timeout', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog,$timeout,SharedService) {
+      $rootScope.success = false;
+      $rootScope.error = false;
 
 
       $scope.text = SharedService.text.get();

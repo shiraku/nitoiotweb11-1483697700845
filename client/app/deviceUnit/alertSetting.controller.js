@@ -3,6 +3,8 @@
 
     angular.module('nitoiotweb11App')
     .controller('AlertSettingCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog) {
+      $rootScope.success = false;
+      $rootScope.error = false;
 
 
 
