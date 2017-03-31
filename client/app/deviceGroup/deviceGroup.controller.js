@@ -2,7 +2,7 @@
 'use strict';
 
     angular.module('nitoiotweb11App')
-    .controller('DeviceGroupCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','$timeout', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog, $timeout) {
+    .controller('DeviceGroupCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','$timeout','SharedService','filterFilter', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog, $timeout,SharedService,filterFilter) {
       $rootScope.success = false;
       $rootScope.error = false;
 
@@ -50,7 +50,7 @@
 
         var json = {
           "title":"グループ名の編集",
-          "placeholder":"グループ名",
+          "placeholder":$scope.groupName,
           "ariaLabel":"",
           "initialValue":$scope.groupName,
           "ok":"登録",
@@ -60,6 +60,22 @@
         dialogShow(ev,json);
 
     };
+
+          //メールアドレスの値が変更された場合書き換える。
+      $scope.$on('changedAlert', function() {
+           var obj = SharedService.alert.get();
+           //編集の場合
+           if(obj.key){
+           filterFilter($scope.sendto, obj.key)[0].name = obj.name;
+           filterFilter($scope.sendto, obj.key)[0].mailid = obj.mailAddress;
+
+           //追加の場合
+           }else{
+             $scope.sendto.push({mailid:obj.mailAddress,name:obj.name})
+           }
+
+       });
+
 
 
     //ボタン押下のアクション
@@ -148,6 +164,7 @@
           if(!response.data.error) {
             console.log("success");
             $rootScope.success = response.data.message;
+            SharedService.alert.set($scope.name,$scope.mailAddress,item.key);
             $timeout(function (){
                 $rootScope.success = false;
             },2000);
@@ -230,17 +247,6 @@ $scope.mailAddressDelete = function (ev){
 );
 };
 
-//グループ名編集画面遷移
-$scope.deviceNameEdit = function($event){
- var json = {"title":"グループ名の編集",
-             "placeholder":this.groupName,
-             "ariaLabel":"",
-             "initialValue":this.groupName,
-             "ok":"登録",
-             "cancel":"キャンセル"}
- dialogShow($event,json);
-};
-
 function dialogShow(ev,param){
   var confirm = $mdDialog.prompt()
     .title(param.title)
@@ -266,6 +272,7 @@ function dialogShow(ev,param){
             if(!response.data.error) {
               console.log("success");
               $rootScope.success = response.data.message;
+              $scope.groupName = val;
               $timeout(function (){
                   $rootScope.success = false;
               },2000);
