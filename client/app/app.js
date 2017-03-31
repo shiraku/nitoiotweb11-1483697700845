@@ -75,6 +75,11 @@ return {
         var longitude = "";
         var id = "";
         var auth = "";
+        var phoneNumber = "";
+        var name = "";
+        var mailAddress = "";
+        var key = "";
+        var deleteMailId = "";
 
         return {
             text: {
@@ -88,6 +93,40 @@ return {
                     $rootScope.$broadcast('changedText');
                     console.log("[leave] text.set");
                 }
+            },
+            telNo: {
+                get: function() {
+                  // var obj = {telNo:telNo};
+                  return phoneNumber; },
+                set: function(d) {
+                    console.log("[enter] telNo.set");
+                    phoneNumber = d;
+                    $rootScope.$broadcast('changedTelNo');
+                    console.log("[leave] telNo.set");
+                }
+            },
+            alert: {
+              get: function() {
+                var obj = {name:name,mailAddress:mailAddress,key:key};
+                return obj; },
+              set: function(n,m,k) {
+                  console.log("[enter] alert.set");
+                  name = n;
+                  mailAddress = m;
+                  key = k
+                  $rootScope.$broadcast('changedAlert');
+                  console.log("[leave] alert.set");
+              }
+            },
+            deletealert: {
+              get: function() {
+                return deleteMailId; },
+              set: function(d) {
+                  console.log("[enter] deletealert.set");
+                  deleteMailId = d;
+                  $rootScope.$broadcast('deletealert');
+                  console.log("[leave] deletealert.set");
+              }
             }
         };
     }]);
