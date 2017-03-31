@@ -34,7 +34,7 @@
                     <div class="md-contentPaddingBottom">
                         <div class="md-body-1">職場責任者：{{item.responsiblePerson}}</div>
                         <div class="md-body-1">連絡先：{{item.telNo}}</div>
-                        <div class="md-body-1">発生日時：{{item.date}}</div>
+                        <div class="md-body-1" ng-if="item.status=='感知あり'">発生日時：{{item.date}}</div>
                     </div>
 
                     <!--感知あり/なし-->
