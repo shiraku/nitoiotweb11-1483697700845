@@ -529,6 +529,9 @@ padding-right: 0;
   color: #FFFFFF;
   line-height: 28px;
 }
+.searchbox md-input-container:not(.md-input-invalid).md-input-focused .md-input{
+  border-color:rgba(256,256,256,0.5); 
+}
 
 
 /****サイドナビ****************/
