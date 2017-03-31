@@ -85,7 +85,13 @@
         //メールアドレスの値が削除された場合書き換える。
         $scope.$on('deletealert', function() {
              var mailid = SharedService.deletealert.get();
-            //  filterFilter($scope.sendto, mailid) = 0;
+             var list = [];
+            angular.forEach($scope.sendto,function(value, index, array){
+               if(value.mailid != mailid){
+                 list.push(value);
+               }
+            });
+            $scope.sendto = list;
 
          });
 

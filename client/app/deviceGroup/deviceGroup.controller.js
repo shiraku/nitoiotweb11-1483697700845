@@ -76,6 +76,19 @@
 
        });
 
+       //メールアドレスの値が削除された場合書き換える。
+       $scope.$on('deletealert', function() {
+            var mailid = SharedService.deletealert.get();
+            var list = [];
+           angular.forEach($scope.sendto,function(value, index, array){
+              if(value.mailid != mailid){
+                list.push(value);
+              }
+           });
+           $scope.sendto = list;
+
+        });
+
 
 
     //ボタン押下のアクション
@@ -220,6 +233,7 @@ $scope.mailAddressDelete = function (ev){
             if(!response.data.error) {
               console.log("success");
               $rootScope.success = response.data.message;
+              SharedService.deletealert.set(deleteMailId);
               $timeout(function (){
                   $rootScope.success = false;
               },2000);
