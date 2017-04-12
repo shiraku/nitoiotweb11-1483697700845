@@ -5,6 +5,7 @@
 
 var config = require('../config/environment/development');
 var cradle = require('cradle');
+var Cloudant = require('cloudant');
 var fs = require('fs');
 //var dbName = config.ROOT_DB,
 var chost = config.CHOST,
@@ -14,62 +15,70 @@ var chost = config.CHOST,
     curl = config.CURL;
 var rootDoc = config.ROOT_DOC;
 var db;
+var cloudant;
 
+/**
+ * cradleとnodejs-cloudant双方でDB接続可能
+ * 追加でquery indexによる検索が必要になったためnodejs-cloudantを後から追加した
+ * db = cradle
+ * cloudant = nodejs-cloudant
+ */
 function connectDoc(dbName) {
-    if (process.env.VCAP_SERVICES) {
-        var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
-        if (vcapServices.cloudantNoSQLDB) {
-            chost = vcapServices.cloudantNoSQLDB[0].credentials.host;
-            cport = vcapServices.cloudantNoSQLDB[0].credentials.port;
-            cuser = vcapServices.cloudantNoSQLDB[0].credentials.username;
-            cpassword = vcapServices.cloudantNoSQLDB[0].credentials.password;
-            curl = vcapServices.cloudantNoSQLDB[0].credentials.url;
-        }
-        console.log('VCAP Services: ' + JSON.stringify(process.env.VCAP_SERVICES));
-    }
+  if (process.env.VCAP_SERVICES) {
+      var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
+      if (vcapServices.cloudantNoSQLDB) {
+          chost = vcapServices.cloudantNoSQLDB[0].credentials.host;
+          cport = vcapServices.cloudantNoSQLDB[0].credentials.port;
+          cuser = vcapServices.cloudantNoSQLDB[0].credentials.username;
+          cpassword = vcapServices.cloudantNoSQLDB[0].credentials.password;
+          curl = vcapServices.cloudantNoSQLDB[0].credentials.url;
+      }
+      console.log('VCAP Services: ' + JSON.stringify(process.env.VCAP_SERVICES));
+  }
 
-    var con = new (cradle.Connection)(chost, cport, {
-        secure: true,
-        auth: {username: cuser, password: cpassword}
-    });
+  var con = new (cradle.Connection)(chost, cport, {
+      secure: true,
+      auth: {username: cuser, password: cpassword}
+  });
 
 
-    /* cradle code */
-    db = con.database(dbName);
-    db.exists(function (err, exists) {
-        if (err) {
-            console.log(err);
-        }
-        else if (exists) {
-            console.log("#### Database " + dbName + " already exists.");
-        }
-        else {
-            // if (config.seedDB) {
-            //     console.log("#### Seeding DB: Creating database. " + dbName + "...");
-            //     db.create(function (err) {
-            //         if (err) {
-            //             console.log(err);
-            //         }
-            //         console.log("#### Seeding DB: Inserting root document.");
-            //         fs.readFile(__dirname + '/seed.json', 'utf8', function (err, data) {
-            //             if (err) {
-            //                 return console.log(err);
-            //             }
-            //             var docs = JSON.parse(data);
-            //             db.save(rootDoc, docs, function (err) {
-            //                 if (err) {
-            //                     return console.log(err);
-            //                 }
-            //                 return console.log("Insertion completion");
-            //             })
-            //         })
-            //     })
-            // }
-        }
-    })
+  /* cradle code */
+  db = con.database(dbName);
+  db.exists(function (err, exists) {
+      if (err) {
+          console.log(err);
+      }
+      else if (exists) {
+          console.log("#### Database " + dbName + " already exists.");
+      }
+      else {
+          // if (config.seedDB) {
+          //     console.log("#### Seeding DB: Creating database. " + dbName + "...");
+          //     db.create(function (err) {
+          //         if (err) {
+          //             console.log(err);
+          //         }
+          //         console.log("#### Seeding DB: Inserting root document.");
+          //         fs.readFile(__dirname + '/seed.json', 'utf8', function (err, data) {
+          //             if (err) {
+          //                 return console.log(err);
+          //             }
+          //             var docs = JSON.parse(data);
+          //             db.save(rootDoc, docs, function (err) {
+          //                 if (err) {
+          //                     return console.log(err);
+          //                 }
+          //                 return console.log("Insertion completion");
+          //             })
+          //         })
+          //     })
+          // }
+      }
+  });
+  
+  var cloudantCon = Cloudant({account:cuser, password:cpassword});
+  cloudant = cloudantCon.db.use(dbName);
 };
-
-
 
 /**
  * m_userへのアクセス
@@ -97,7 +106,7 @@ exports.M_userEntitity = {
   
   /**
  * 渡された値をアップデートまたは追加登録する
- * prams:query DEV_U+数字５桁の文字列
+ * prams:query muser_U+数字５桁の文字列
  * prams:data アップデートするデータ（Objecrt）
  * prams:callback コールバック
  */
@@ -117,6 +126,28 @@ exports.M_userEntitity = {
       return callback(err,doc);
     });
   },
+  
+  /**
+ * 渡された値をアップデートまたは追加登録する
+ * prams:query 数字５桁の文字列
+ * prams:callback コールバック
+ */
+  getSenderList : function(query, callback){
+    connectDoc('m_user');
+//    console.log("query, data@updateUser");
+//    console.log(query, data);
+    cloudant.search("search_m_user", "search_devices_mails", {q:'device:'+query +'<string>'}, function(err, doc) {
+//    console.log("err@getSenderList");
+//    console.log(err);
+//    console.log("doc@getSenderList");
+//    console.log(doc);
+      if(err){
+        return callback(err,doc);
+      }
+//      console.log(doc);
+      return callback(err,doc);
+    });
+  }
   
 
 };
@@ -239,7 +270,7 @@ exports.Eq_dEntitity = {
 //    
 //    var sd = new Date(d.getFullYear() - 1,d.getMonth(),d.getDate());
     
-    option = {startkey: [query, today], endkey:[query, sd],  descending:true};
+    option = {startkey: [query, today], endkey:[query, sd], limit:2000,  descending:true};
 //    console.log("query@getLatest");
 //    console.log(option);
     connectDoc('eq_d');
@@ -311,9 +342,9 @@ exports.Fl_dEntitity = {
       for(var i =0; i < query.length; i++){
         q.push(query[i].id);
       }
-      option = {startkey: [q, sd],  descending:true};
+      option = {startkey: [q, sd], limit:2000,  descending:true};
     }else{
-      option = {startkey: [query, sd],  descending:true};
+      option = {startkey: [query, sd], limit:2000,  descending:true};
     }
     
 //    console.log("query@getLatest");
@@ -424,6 +455,8 @@ exports.Comment_dataEntitity = {
 
 
 
+
+
 /**
  * eqimageへのアクセス
  * グラフイメージ情報に関するデータベース
@@ -476,3 +509,5 @@ exports.viewRelay = {
 function handleError(res, err) {
     return res.status(500).send(err);
 }
+
+

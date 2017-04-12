@@ -130,11 +130,15 @@ module.exports = function(app) {
       user.getSendtoUser(req,res);
     });
   //追加・更新
+  app.post('/api/user/sendto/check/',function(req, res) {
+      user.checkSendtoUser(req,res);
+    });
+  //追加・更新
   app.post('/api/user/sendto/',function(req, res) {
       user.saveSendtoUser(req,res);
     });
   //削除
-  app.delete('/api/user/sendto/:mailid',function(req, res) {
+  app.delete('/api/user/sendto/:key',function(req, res) {
       user.deleteSendtoUser(req,res);
     });
   
@@ -195,6 +199,18 @@ module.exports = function(app) {
       deviceUnit.getHistory(req,res);
     });
 
+  
+  
+    /**
+   * デバイスのの登録されているメールアドレスapi
+   * デバイスに紐づいているすべてのメールアドレスを返却する
+   * prams:id デバイスID（５桁の数字）
+   */
+  app.get('/api/device_sender_list/:id',function(req, res) {
+      deviceUnit.getSenderList(req,res);
+    });
+  
+  
     /**
    * コメント関連のapi
    * 感知日IDを元にコメントを取得、投稿する

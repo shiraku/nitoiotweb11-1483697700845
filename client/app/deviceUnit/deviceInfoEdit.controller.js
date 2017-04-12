@@ -2,7 +2,7 @@
 'use strict';
 
     angular.module('nitoiotweb11App')
-    .controller('DeviceInfoEditCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','SharedService','$timeout','filterFilter', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog,SharedService,$timeout,filterFilter) {
+    .controller('DeviceInfoEditCtrl',['$rootScope','$routeParams','$scope','$http','$location','$mdDialog','SharedService','$timeout','filterFilter','uiGmapIsReady', function ($rootScope,$routeParams,$scope, $http, $location, $mdDialog,SharedService,$timeout,filterFilter,uiGmapIsReady) {
       $rootScope.success = false;
       $rootScope.error = false;
 
@@ -27,7 +27,7 @@
         }
 
             //小画面でも使用できるようにglobalで値を保持しておく
-            SharedService.text.set($scope.deviceGroupData.latitude,$scope.deviceGroupData.longitude);
+        SharedService.text.set($scope.deviceGroupData.latitude,$scope.deviceGroupData.longitude,$scope.deviceGroupData.address);
 
         //ヘッダータイトル
         $scope.navtitle= obj.deviceName;
@@ -36,18 +36,36 @@
       }, function errorCallback(response) {
         console.error("error in posting");
       });
-
-      //送信者一覧情報
-      $http.get('/api/user/')
-      .then(function successCallback(response) {
-        console.log("posted successfully");
-        console.log(response);
-          var obj = response.data;
-          $scope.sendto = obj.sendto;
-          $scope.admin_mflg = obj.admin_mflg;
-      }, function errorCallback(response) {
-        console.error("error in posting");
-      });
+      
+      
+      var adminFlg = document.cookie.split( '; ' )[ 0 ].split( '=' )[ 1 ];
+        if(adminFlg=="true"){
+          //一般ユーザーはアカウントDBから送信者一覧情報を取得
+          $http.get('/api/device_sender_list/' + $routeParams.DEVICE_ID + '/')
+          .then(function successCallback(response) {
+            console.log("posted successfully");
+            console.log(response);
+              var obj = response.data;
+              $scope.sendto = obj.sendto;
+//              $scope.admin_mflg = obj.admin_mflg;
+          }, function errorCallback(response) {
+            console.error("error in posting");
+          });
+        }else{
+          //一般ユーザーはアカウントDBから送信者一覧情報を取得
+          $http.get('/api/user/')
+          .then(function successCallback(response) {
+            console.log("posted successfully");
+            console.log(response);
+              var obj = response.data;
+              $scope.sendto = obj.sendto;
+//              $scope.admin_mflg = obj.admin_mflg;
+          }, function errorCallback(response) {
+            console.error("error in posting");
+          });
+        }
+      
+      
 
       //アラート設定画面遷移
      $scope.alertSetting = function(){
@@ -59,6 +77,7 @@
           var obj = SharedService.text.get();
           $scope.deviceGroupData.latitude = obj.latitude;
           $scope.deviceGroupData.longitude = obj.longitude;
+          $scope.deviceGroupData.address = obj.address;
       });
 
       //連絡先の値が変更された場合書き換える。
@@ -144,49 +163,73 @@
 
       function DialogController($scope, $mdDialog) {
 
+        
         //緯度経度を取得する
         var obj = SharedService.text.get();
-        console.log("latitude"+obj.latitude+"longitude"+obj.longitude);
+        console.log("latitude"+obj.latitude+"longitude"+obj.longitude+"address"+obj.address);
 
-        //地図下部に表示する緯度経度
+        if(obj.latitude == undefined){
+          obj.latitude = 34.4506112;
+          obj.longitude = 125.3561481;
+        }
+
+//        //地図下部に表示する緯度経度
         $scope.latitude = obj.latitude;
         $scope.longitude = obj.longitude;
+        
+//          MAP定義
+          $scope.map = {
+          // マップ初期表示の中心地
+          center: {
+            latitude: obj.latitude,
+            longitude: obj.longitude
+          },
+          // マップ初期表示の拡大
+          zoom: 13,
+          control : {},
+          markers:{},
+          events: {
+                //マップクリック時のイベント
+               click: function(marker, eventName, args) {
+                    console.log("user defined event: " + marker, eventName, args);
+                    //markerをMAPの中央に表示させる。
+                    //markerが移動したかどうかわからなくなるので一旦コメントアウト
+                    //  $scope.map.center.latitude = args[0].latLng.lat(),
+                    //  $scope.map.center.longitude = args[0].latLng.lng(),
 
-        //MAP定義
-        $scope.map = {
-        // マップ初期表示の中心地
-        center: {
-          latitude: obj.latitude,// 緯度
-          longitude: obj.longitude// 経度
-        },
-        // マップ初期表示の拡大
-        zoom: 13,
-        events: {
-                    //マップクリック時のイベント
-                   click: function(marker, eventName, args) {
-                        console.log("user defined event: " + marker, eventName, args);
-                        //markerをMAPの中央に表示させる。
-                        //markerが移動したかどうかわからなくなるので一旦コメントアウト
-                        //  $scope.map.center.latitude = args[0].latLng.lat(),
-                        //  $scope.map.center.longitude = args[0].latLng.lng(),
+                     //地図下部に表示する緯度経度
+                     $scope.latitude = args[0].latLng.lat(),
+                     $scope.longitude = args[0].latLng.lng(),
 
-                         //地図下部に表示する緯度経度
-                         $scope.latitude = args[0].latLng.lat(),
-                         $scope.longitude = args[0].latLng.lng(),
-
-                         //地図上に表示するmarker
-                         $scope.markers = [
-                            {
-                              "id":1,
-                              "latitude":args[0].latLng.lat(),
-                              "longitude":args[0].latLng.lng(),
-                            }
-                          ];
-                          //データバインド
-                          $scope.$apply();
-                   }
-                 }
-      };
+                     //地図上に表示するmarker
+                     $scope.markers = [
+                        {
+                          "id":1,
+                          "latitude":args[0].latLng.lat(),
+                          "longitude":args[0].latLng.lng(),
+                        }
+                      ];
+                      //データバインド
+                      $scope.$apply();
+               }
+             }
+          }
+        uiGmapIsReady.promise().then(function (maps){
+          // google.maps.Geocoder()コンストラクタのインスタンスを生成
+          if(obj.address){
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode( { 'address': obj.address}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {   
+                $scope.map.control.getGMap().setCenter(results[0].geometry.location);
+//                $scope.map.markers.latitude = results[0].geometry.location.lat();
+//                $scope.map.markers.longitude = results[0].geometry.location.lng();
+                } else {
+                    console.log("Geocode was not successful for the following reason: " + status);
+                }
+            });
+          }
+        });
+        
 
       //マップにマーカーを立てる
       $scope.markers = [
@@ -340,6 +383,7 @@
                     console.log("success");
                     $rootScope.success = response.data.message;
                     $scope.deviceGroupData[itemKey] = val;
+                    if(itemKey == 'address') SharedService.text.setAddress(val);
                     $timeout(function (){
                         $rootScope.success = false;
                     },2000);
@@ -442,7 +486,7 @@ function showMailAddressDialog($event,flg){
   item.title = 'メールアドレスの編集';
   item.placeholder_name = this.item.name;
   item.placeholder_mailid = this.item.mailid;
-  item.key = this.item.mailid;
+  item.placeholder_key = this.item.id;
 
 }
 
@@ -469,7 +513,7 @@ $mdDialog.show({
      ' </md-dialog-content>'+
      ' <md-dialog-actions>'+
      ' <button class="md-primary md-cancel-button md-button ng-scope md-default-theme md-ink-ripple" type="button" ng-click="closeDialog()" style="">キャンセル</button>'+
-     ' <button class="md-primary md-confirm-button md-button md-ink-ripple md-default-theme" type="button" ng-click="regist()">登録</button>'+
+     ' <button class="md-primary md-confirm-button md-button md-ink-ripple md-default-theme" type="button" ng-click="checkRegi()">登録</button>'+
      ' </md-dialog-actions>'+
      ' </md-dialog>'+
      ' </form>',
@@ -485,29 +529,32 @@ $scope.closeDialog = function() {
   $mdDialog.hide();
 }
 
-//登録ボタン押下
-$scope.regist = function() {
+//登録ボタン押下（重複チェックここではデータ登録は行わない
+$scope.checkRegi = function(){
   if($scope.dialog.name == undefined && $scope.dialog.mailAddress == undefined) return false;
   if($scope.dialog.mailAddress.$invalid) return false;
   $mdDialog.hide();
-
   //新規登録の場合
-  if(!item.key){
-    item.key = false;
+  if(!item.placeholder_key){
+    item.placeholder_key = false;
   }
+  var adminFlg = document.cookie.split( '; ' )[ 0 ].split( '=' )[ 1 ];
+  var flg　= (adminFlg == 'true') ? true:false;
+  
   //編集内容をpost
   $http({
     method: 'POST',
-    url: '/api/user/sendto/',
-    data: { name: $scope.dialog.name.$modelValue, mailid: $scope.dialog.mailAddress.$modelValue, key: item.key }
+    url: '/api/user/sendto/check/',
+    data: { name: $scope.dialog.name.$modelValue, mailid: $scope.dialog.mailAddress.$modelValue, key: item.placeholder_key, adminFlg:flg }
   })
   .then(
     function successCallback(response){
+      if(response.data.dupFlag) return $scope.showConfirm(response.data.postDat);
       console.log(response);
       if(!response.data.error) {
         console.log("success");
         $rootScope.success = response.data.message;
-        SharedService.alert.set($scope.name,$scope.mailAddress,item.key);
+        SharedService.alert.set($scope.name,$scope.mailAddress,item.placeholder_key);
         $timeout(function (){
             $rootScope.success = false;
         },2000);
@@ -529,6 +576,83 @@ $scope.regist = function() {
   );
 }
 
+
+//データ登録
+$scope.regist = function(dat) {
+  var argName = dat.name||$scope.dialog.name.$modelValue
+  var argMailid = dat.mailid||$scope.dialog.mailAddress.$modelValue
+  var argKey = dat.key||item.key
+  if(argName == undefined && argMailid == undefined) return false;
+  $mdDialog.hide();
+  var data = {
+    name: argName,
+    mailid: argMailid,
+    key: argKey
+  }
+
+  //新規登録の場合
+  if(!argKey){
+    argKey = false;
+  }
+  
+  var adminFlg = document.cookie.split( '; ' )[ 0 ].split( '=' )[ 1 ];
+  data['adminFlg'] = (adminFlg == 'true') ? true : false;
+  
+  console.log("data@regist");
+  console.log(data);
+  
+  //編集内容をpost
+  $http({
+    method: 'POST',
+    url: '/api/user/sendto/',
+    data: data
+  })
+  .then(
+    function successCallback(response){
+      console.log(response);
+      if(!response.data.error) {
+        console.log("success");
+        $rootScope.success = response.data.message;
+        SharedService.alert.set(argName,argMailid,argKey);
+        $timeout(function (){
+            $rootScope.success = false;
+        },2000);
+      } else {
+        $rootScope.error = response.data.message;
+        $timeout(function (){
+            $rootScope.error = false;
+        },2000);
+      }
+
+    },
+    function errorCallback(response){
+        $rootScope.error = response.data.message;
+        $timeout(function (){
+            $rootScope.error = false;
+        },2000);
+
+    }
+  );
+}
+
+
+$scope.showConfirm = function(dat,ev) {
+  // Appending dialog to document.body to cover sidenav in docs app
+  var confirm = $mdDialog.confirm()
+        .title('入力されたメールアドレスがすでに登録されています。')
+        .textContent('通知があった場合そのメールアドレスに複数通知が送信されますがよろしいですか？')
+        .ariaLabel('duplication mail address')
+        .targetEvent(ev)
+        .ok('はい')
+        .cancel('キャンセル');
+
+  $mdDialog.show(confirm).then(function() {
+    $scope.regist(dat);
+  }, function() {
+    $mdDialog.hide();
+  });
+};
+
 }]
 });
 };
@@ -538,7 +662,7 @@ $scope.regist = function() {
 $scope.mailAddressDelete = function (ev){
 
     //削除するMailIdを詰める。
-    var deleteMailId = this.item.mailid;
+    var deleteKey = this.item.id;
 
     // Appending dialog to document.body to cover sidenav in docs app
     var confirm = $mdDialog.confirm()
@@ -554,7 +678,7 @@ $scope.mailAddressDelete = function (ev){
       //TODO 削除のリクエストを投げる
         $http({
           method: 'DELETE',
-          url: '/api/user/sendto/'+deleteMailId+'/'
+          url: '/api/user/sendto/'+deleteKey+'/'
         })
         .then(
           function successCallback(response){
@@ -562,7 +686,7 @@ $scope.mailAddressDelete = function (ev){
             if(!response.data.error) {
               console.log("success");
               $rootScope.success = response.data.message;
-              SharedService.deletealert.set(deleteMailId);
+              SharedService.deletealert.set(deleteKey);
               $timeout(function (){
                   $rootScope.success = false;
               },2000);
@@ -589,7 +713,6 @@ $scope.mailAddressDelete = function (ev){
     }
   );
 };
-
 
 
 
