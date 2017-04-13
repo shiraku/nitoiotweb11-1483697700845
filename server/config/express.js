@@ -28,7 +28,7 @@ module.exports = function(app) {
   app.use(bodyParser.json());
   app.use(methodOverride());
   app.use(cookieParser());
-  app.use(expressSession({secret: 'nito'}));
+  app.use(expressSession({secret: 'nito', resave: true, saveUninitialized: true}));
   
   
   if ('production' === env) {
