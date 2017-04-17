@@ -129,6 +129,7 @@
 
                      </md-menu>
                     </md-list-item>
+                    
 
                     <!--ボタン-->
                 <div layout ng-if="!admin_mflg">
@@ -155,7 +156,7 @@
      </div>
    <!--MAP-->
    <div class="map mapEdit">
-     <ui-gmap-google-map center="map.center" zoom="map.zoom" events="map.events" draggable="true">
+     <ui-gmap-google-map center="map.center" zoom="map.zoom" events="map.events" draggable="true" bounds="map.bounds" control="map.control">
        <ui-gmap-markers models="markers" coords="'self'" icon="'icon'"></ui-gmap-markers>
      </ui-gmap-google-map>
    </div>

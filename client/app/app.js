@@ -73,6 +73,7 @@ return {
 .factory("SharedService", ["$rootScope", function($rootScope) {
         var latitude = "";
         var longitude = "";
+        var address = "";
         var id = "";
         var auth = "";
         var phoneNumber = "";
@@ -84,12 +85,19 @@ return {
         return {
             text: {
                 get: function() {
-                  var obj = {latitude:latitude,longitude:longitude};
+                  var obj = {latitude:latitude,longitude:longitude,address:address};
                   return obj; },
-                set: function(lat,lon) {
+                set: function(lat,lon,adr) {
                     console.log("[enter] text.set");
                     latitude = lat;
                     longitude = lon;
+                    if(adr) address = adr;
+                    $rootScope.$broadcast('changedText');
+                    console.log("[leave] text.set");
+                },
+                setAddress: function(adr) {
+                    console.log("[enter] text.set");
+                    address = adr;
                     $rootScope.$broadcast('changedText');
                     console.log("[leave] text.set");
                 }

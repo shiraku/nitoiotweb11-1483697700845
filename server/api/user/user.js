@@ -77,6 +77,33 @@ var user = {
     });
   },
   /**
+ * メール送信アドレスの重複チェックapi file
+ * prams:req express requestオブジェクト
+ * prams:res express responseオブジェクト
+ */
+  checkSendtoUser : function(req,res){
+    if(!req.user) {
+      return res.status('200').json({ error: "ログインされていません" });
+    }
+    var prm = req.body;
+    var num;
+    var getMail;
+    
+    
+    //メールアドレスの重複チェック
+    var dupMail = req.user.sendto.filter(function(element){
+          return (element.mailid == prm.mailid);
+      });
+//    console.log("dupMail");
+//    console.log(dupMail);
+    if(dupMail.length >= 1){
+      return res.status('200').send({dupFlag:true, postDat:req.body});
+    } else {
+      this.saveSendtoUser(req,res);
+    }
+    
+  },
+  /**
  * メール送信先の更新と追加api file
  * prams:req express requestオブジェクト
  * prams:res express responseオブジェクト
@@ -88,8 +115,8 @@ var user = {
     
 //    console.log("req.user.sendto@updateSendtoUser");
 //    console.log(req.user.sendto);
-    console.log("req.data@updateSendtoUser");
-    console.log(req.body);
+//    console.log("req.data@updateSendtoUser");
+//    console.log(req.body);
     var prm = req.body;
     var num;
     var reqest = req;
@@ -97,32 +124,35 @@ var user = {
     var getMail;
     
     //更新する送信者情報を取得
+//    if(prm.key){
+//      getMail = req.user.sendto.filter(function(element,index){
+//      console.log("element.mailid",element.mailid);
+//        if (element.mailid == prm.key) {
+//          num = index;
+//          return element;
+//        }
+//      });
+//    }
     if(prm.key){
       getMail = req.user.sendto.filter(function(element,index){
-      console.log("element.mailid",element.mailid);
-        if (element.mailid == prm.key) {
+        console.log("req.user.sendto.filter");
+        console.log(element.id, prm.key);
+        if (element.id == prm.key) {
           num = index;
           return element;
         }
       });
     }
     
-    //メールアドレスの重複チェック
-    var dupMail = req.user.sendto.filter(function(element){
-          return (element.mailid == prm.mailid);
-      });
-    if(dupMail.length >= 1 && !prm.key){
-      return response.status('200').send({message:'メールアドレスが重複しています。', error: true});
-    }
-    
     //送信者情報の更新
-        console.log("getMail@saveSendtoUser");
-        console.log(getMail);
+//        console.log("getMail@saveSendtoUser");
+//        console.log(getMail);
+//        console.log(num);
     if(prm.key){
       if(req.body.name) req.user.sendto[num].name = req.body.name;
       if(req.body.mailid) req.user.sendto[num].mailid = req.body.mailid;
-        console.log("req.user.sendto@saveSendtoUser");
-        console.log(req.user.sendto);
+//        console.log("req.user.sendto@saveSendtoUser");
+//        console.log(req.user.sendto);
       cloudantUtil.M_userEntitity.updateUser(req.user._id, {"sendto" : req.user.sendto} , function(err, res){
   //      console.log("dat@saveSendtoUser");
   //      console.log(res);
@@ -134,6 +164,7 @@ var user = {
       //必須項目のバリデーションチェック
       if(req.body.name && req.body.mailid){
         var sendto = {
+          "id" : req.user._id + "_sendto" + (req.user.sendto.length + 1),
           "name" : req.body.name,
           "mailid" : req.body.mailid,
           "alert" : req.user.sendto[0].alert
@@ -169,15 +200,21 @@ var user = {
     var reqest = req;
     var response = res;
     var deleteNum = undefined;
+    console.log("key@req.user.sendto.filter");
+    console.log(prm.key);
     req.user.sendto.filter(function(element,index){
-      if (element.mailid == prm.mailid) {
+    console.log(element.id);
+      if (element.id == prm.key) {
           deleteNum = index;
       }
     });
-//    console.log("deleteNum@deleteSendtoUser");
-//    console.log(deleteNum);
+    console.log("deleteNum@deleteSendtoUser");
+    console.log(deleteNum);
     if(deleteNum != undefined){
       req.user.sendto.splice(deleteNum, 1);
+      req.user.sendto.forEach(function(elm,index){
+        elm.id = req.user._id + "_sendto" + index;
+      });
         console.log("dat@saveSendtoUser");
         console.log(req.user.sendto);
       cloudantUtil.M_userEntitity.updateUser(req.user._id, {"sendto" : req.user.sendto} , function(err, res){

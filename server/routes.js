@@ -130,11 +130,15 @@ module.exports = function(app) {
       user.getSendtoUser(req,res);
     });
   //追加・更新
+  app.post('/api/user/sendto/check/',function(req, res) {
+      user.checkSendtoUser(req,res);
+    });
+  //追加・更新
   app.post('/api/user/sendto/',function(req, res) {
       user.saveSendtoUser(req,res);
     });
   //削除
-  app.delete('/api/user/sendto/:mailid',function(req, res) {
+  app.delete('/api/user/sendto/:key',function(req, res) {
       user.deleteSendtoUser(req,res);
     });
   

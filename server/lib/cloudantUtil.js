@@ -16,57 +16,57 @@ var rootDoc = config.ROOT_DOC;
 var db;
 
 function connectDoc(dbName) {
-    if (process.env.VCAP_SERVICES) {
-        var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
-        if (vcapServices.cloudantNoSQLDB) {
-            chost = vcapServices.cloudantNoSQLDB[0].credentials.host;
-            cport = vcapServices.cloudantNoSQLDB[0].credentials.port;
-            cuser = vcapServices.cloudantNoSQLDB[0].credentials.username;
-            cpassword = vcapServices.cloudantNoSQLDB[0].credentials.password;
-            curl = vcapServices.cloudantNoSQLDB[0].credentials.url;
-        }
-        console.log('VCAP Services: ' + JSON.stringify(process.env.VCAP_SERVICES));
-    }
+  if (process.env.VCAP_SERVICES) {
+      var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
+      if (vcapServices.cloudantNoSQLDB) {
+          chost = vcapServices.cloudantNoSQLDB[0].credentials.host;
+          cport = vcapServices.cloudantNoSQLDB[0].credentials.port;
+          cuser = vcapServices.cloudantNoSQLDB[0].credentials.username;
+          cpassword = vcapServices.cloudantNoSQLDB[0].credentials.password;
+          curl = vcapServices.cloudantNoSQLDB[0].credentials.url;
+      }
+      console.log('VCAP Services: ' + JSON.stringify(process.env.VCAP_SERVICES));
+  }
 
-    var con = new (cradle.Connection)(chost, cport, {
-        secure: true,
-        auth: {username: cuser, password: cpassword}
-    });
+  var con = new (cradle.Connection)(chost, cport, {
+      secure: true,
+      auth: {username: cuser, password: cpassword}
+  });
 
 
-    /* cradle code */
-    db = con.database(dbName);
-    db.exists(function (err, exists) {
-        if (err) {
-            console.log(err);
-        }
-        else if (exists) {
-            console.log("#### Database " + dbName + " already exists.");
-        }
-        else {
-            // if (config.seedDB) {
-            //     console.log("#### Seeding DB: Creating database. " + dbName + "...");
-            //     db.create(function (err) {
-            //         if (err) {
-            //             console.log(err);
-            //         }
-            //         console.log("#### Seeding DB: Inserting root document.");
-            //         fs.readFile(__dirname + '/seed.json', 'utf8', function (err, data) {
-            //             if (err) {
-            //                 return console.log(err);
-            //             }
-            //             var docs = JSON.parse(data);
-            //             db.save(rootDoc, docs, function (err) {
-            //                 if (err) {
-            //                     return console.log(err);
-            //                 }
-            //                 return console.log("Insertion completion");
-            //             })
-            //         })
-            //     })
-            // }
-        }
-    })
+  /* cradle code */
+  db = con.database(dbName);
+  db.exists(function (err, exists) {
+      if (err) {
+          console.log(err);
+      }
+      else if (exists) {
+          console.log("#### Database " + dbName + " already exists.");
+      }
+      else {
+          // if (config.seedDB) {
+          //     console.log("#### Seeding DB: Creating database. " + dbName + "...");
+          //     db.create(function (err) {
+          //         if (err) {
+          //             console.log(err);
+          //         }
+          //         console.log("#### Seeding DB: Inserting root document.");
+          //         fs.readFile(__dirname + '/seed.json', 'utf8', function (err, data) {
+          //             if (err) {
+          //                 return console.log(err);
+          //             }
+          //             var docs = JSON.parse(data);
+          //             db.save(rootDoc, docs, function (err) {
+          //                 if (err) {
+          //                     return console.log(err);
+          //                 }
+          //                 return console.log("Insertion completion");
+          //             })
+          //         })
+          //     })
+          // }
+      }
+  });
 };
 
 
@@ -239,7 +239,7 @@ exports.Eq_dEntitity = {
 //    
 //    var sd = new Date(d.getFullYear() - 1,d.getMonth(),d.getDate());
     
-    option = {startkey: [query, today], endkey:[query, sd],  descending:true};
+    option = {startkey: [query, today], endkey:[query, sd], limit:2000,  descending:true};
 //    console.log("query@getLatest");
 //    console.log(option);
     connectDoc('eq_d');
@@ -311,9 +311,9 @@ exports.Fl_dEntitity = {
       for(var i =0; i < query.length; i++){
         q.push(query[i].id);
       }
-      option = {startkey: [q, sd],  descending:true};
+      option = {startkey: [q, sd], limit:2000,  descending:true};
     }else{
-      option = {startkey: [query, sd],  descending:true};
+      option = {startkey: [query, sd], limit:2000,  descending:true};
     }
     
 //    console.log("query@getLatest");

@@ -41,21 +41,24 @@ Auth.prototype.init = function(){
   
   //セッションをシリアライズ
   passport.serializeUser(function(user, done){
-//    console.log("serializeUser");
-//    console.log(done);
-//    console.log(user);
-    done(null, {userId: user});
+    console.log("serializeUser");
+    console.log(done);
+    console.log(user);
+    done(null, user);
   });
   
   
   //セッションをディシリアライズ
   passport.deserializeUser(function(serializeUser, done){
-//    console.log("deserializeUser");
-//    console.log(done);
-//    console.log(serializeUser);
+    console.log("deserializeUser");
+    console.log(done);
+    console.log(serializeUser);
     
     if (serializeUser.userId) {
       cloudantUtil.M_userEntitity.getUser(serializeUser.userId._id.split("_")[1], function(err, user){
+    console.log("cloudantUtil.M_userEntitity.getUser");
+    console.log(err);
+    console.log(user);
           done(err, user);
       });
     } else {
@@ -66,6 +69,11 @@ Auth.prototype.init = function(){
 
 //ログイン済みか検証
 Auth.prototype.isLogined = function(req, res){
+
+  console.log("req.user@Auth.prototype.isLogined");
+  console.log(req.user);
+  console.log(req.isAuthenticated());
+  
   if(req.isAuthenticated()) {　//ログイン済み
     return true;
   } else {　//見ログイン

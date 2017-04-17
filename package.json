@@ -13,6 +13,7 @@
     "cloudant": "1.4.x",
     "composable-middleware": "^0.3.0",
     "compression": "~1.0.1",
+    "connect-cloudant": "^1.0.6",
     "connect-flash": "^0.1.1",
     "connect-multiparty": "2.0.x",
     "cookie-parser": "~1.0.1",
