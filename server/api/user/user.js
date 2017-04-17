@@ -88,19 +88,40 @@ var user = {
     var prm = req.body;
     var num;
     var getMail;
+    var self = this;
     
     
-    //メールアドレスの重複チェック
-    var dupMail = req.user.sendto.filter(function(element){
-          return (element.mailid == prm.mailid);
+    if(prm.adminFlg && prm.key){
+      prm.key.split('_');
+//    console.log("prm.key@saveSendtoUser");
+//    console.log(prm.key);
+      cloudantUtil.M_userEntitity.getUser(prm.key.split('_')[1], function(err, dat){
+        //メールアドレスの重複チェック
+        var dupMail = dat.sendto.filter(function(element){
+              return (element.mailid == prm.mailid);
+          });
+    //    console.log("dupMail");
+    //    console.log(dupMail);
+        if(dupMail.length >= 1){
+          return res.status('200').send({dupFlag:true, postDat:req.body});
+        } else {
+          self.saveSendtoUser(req,res);
+        }
       });
-//    console.log("dupMail");
-//    console.log(dupMail);
-    if(dupMail.length >= 1){
-      return res.status('200').send({dupFlag:true, postDat:req.body});
     } else {
-      this.saveSendtoUser(req,res);
+      //メールアドレスの重複チェック
+      var dupMail = req.user.sendto.filter(function(element){
+            return (element.mailid == prm.mailid);
+        });
+  //    console.log("dupMail");
+  //    console.log(dupMail);
+      if(dupMail.length >= 1){
+        return res.status('200').send({dupFlag:true, postDat:req.body});
+      } else {
+        self.saveSendtoUser(req,res);
+      }
     }
+    
     
   },
   /**
@@ -118,10 +139,9 @@ var user = {
 //    console.log("req.data@updateSendtoUser");
 //    console.log(req.body);
     var prm = req.body;
-    var num;
     var reqest = req;
     var response = res;
-    var getMail;
+    var self  = this;
     
     //更新する送信者情報を取得
 //    if(prm.key){
@@ -133,10 +153,31 @@ var user = {
 //        }
 //      });
 //    }
+    console.log("adminFlg@saveSendtoUser");
+    console.log(prm.adminFlg);
+    if(prm.adminFlg && prm.key){
+      prm.key.split('_');
+    console.log("prm.key@saveSendtoUser");
+    console.log(prm.key);
+      cloudantUtil.M_userEntitity.getUser(prm.key.split('_')[1], function(err, res){
+        self.saveSendtoUserExe(res, prm, response);
+      });
+    } else {
+      self.saveSendtoUserExe(req.user, prm, response);
+    }
+  },
+  
+  saveSendtoUserExe : function(userDat, prm, response){
+    var getMail;
+    var num;
+    console.log("userDat@saveSendtoUserExe");
+    console.log(userDat);
+    console.log("prm@saveSendtoUserExe");
+    console.log(prm);
     if(prm.key){
-      getMail = req.user.sendto.filter(function(element,index){
-        console.log("req.user.sendto.filter");
-        console.log(element.id, prm.key);
+      getMail = userDat.sendto.filter(function(element,index){
+//        console.log("userDat.sendto.filter");
+//        console.log(element.id, prm.key);
         if (element.id == prm.key) {
           num = index;
           return element;
@@ -145,15 +186,15 @@ var user = {
     }
     
     //送信者情報の更新
-//        console.log("getMail@saveSendtoUser");
-//        console.log(getMail);
-//        console.log(num);
+        console.log("getMail@saveSendtoUser");
+        console.log(getMail);
+        console.log(num);
     if(prm.key){
-      if(req.body.name) req.user.sendto[num].name = req.body.name;
-      if(req.body.mailid) req.user.sendto[num].mailid = req.body.mailid;
-//        console.log("req.user.sendto@saveSendtoUser");
-//        console.log(req.user.sendto);
-      cloudantUtil.M_userEntitity.updateUser(req.user._id, {"sendto" : req.user.sendto} , function(err, res){
+      if(prm.name) userDat.sendto[num].name = prm.name;
+      if(prm.mailid) userDat.sendto[num].mailid = prm.mailid;
+//        console.log("userDat.sendto@saveSendtoUser");
+//        console.log(userDat.sendto);
+      cloudantUtil.M_userEntitity.updateUser(userDat._id, {"sendto" : userDat.sendto} , function(err, res){
   //      console.log("dat@saveSendtoUser");
   //      console.log(res);
         if(err) {return response.status('200').send({message:'登録に失敗しました。', error: true});}
@@ -162,15 +203,15 @@ var user = {
     } else {
       //送信者情報の追加登録
       //必須項目のバリデーションチェック
-      if(req.body.name && req.body.mailid){
+      if(prm.name && prm.mailid){
         var sendto = {
-          "id" : req.user._id + "_sendto" + (req.user.sendto.length + 1),
-          "name" : req.body.name,
-          "mailid" : req.body.mailid,
-          "alert" : req.user.sendto[0].alert
+          "id" : userDat._id + "_sendto" + (userDat.sendto.length + 1),
+          "name" : prm.name,
+          "mailid" : prm.mailid,
+          "alert" : userDat.sendto[0].alert
         }
-        req.user.sendto.push(sendto);
-        cloudantUtil.M_userEntitity.updateUser(req.user._id, {"sendto" : req.user.sendto} , function(err, res){
+        userDat.sendto.push(sendto);
+        cloudantUtil.M_userEntitity.updateUser(userDat._id, {"sendto" : userDat.sendto} , function(err, res){
     //      console.log("dat@saveSendtoUser");
     //      console.log(res);
           if(err) {return response.status('200').send({message:'登録に失敗しました。', error: true});}

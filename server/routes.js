@@ -199,6 +199,18 @@ module.exports = function(app) {
       deviceUnit.getHistory(req,res);
     });
 
+  
+  
+    /**
+   * デバイスのの登録されているメールアドレスapi
+   * デバイスに紐づいているすべてのメールアドレスを返却する
+   * prams:id デバイスID（５桁の数字）
+   */
+  app.get('/api/device_sender_list/:id',function(req, res) {
+      deviceUnit.getSenderList(req,res);
+    });
+  
+  
     /**
    * コメント関連のapi
    * 感知日IDを元にコメントを取得、投稿する

@@ -36,18 +36,36 @@
       }, function errorCallback(response) {
         console.error("error in posting");
       });
-
-      //送信者一覧情報
-      $http.get('/api/user/')
-      .then(function successCallback(response) {
-        console.log("posted successfully");
-        console.log(response);
-          var obj = response.data;
-          $scope.sendto = obj.sendto;
-          $scope.admin_mflg = obj.admin_mflg;
-      }, function errorCallback(response) {
-        console.error("error in posting");
-      });
+      
+      
+      var adminFlg = document.cookie.split( '; ' )[ 0 ].split( '=' )[ 1 ];
+        if(adminFlg=="true"){
+          //一般ユーザーはアカウントDBから送信者一覧情報を取得
+          $http.get('/api/device_sender_list/' + $routeParams.DEVICE_ID + '/')
+          .then(function successCallback(response) {
+            console.log("posted successfully");
+            console.log(response);
+              var obj = response.data;
+              $scope.sendto = obj.sendto;
+//              $scope.admin_mflg = obj.admin_mflg;
+          }, function errorCallback(response) {
+            console.error("error in posting");
+          });
+        }else{
+          //一般ユーザーはアカウントDBから送信者一覧情報を取得
+          $http.get('/api/user/')
+          .then(function successCallback(response) {
+            console.log("posted successfully");
+            console.log(response);
+              var obj = response.data;
+              $scope.sendto = obj.sendto;
+//              $scope.admin_mflg = obj.admin_mflg;
+          }, function errorCallback(response) {
+            console.error("error in posting");
+          });
+        }
+      
+      
 
       //アラート設定画面遷移
      $scope.alertSetting = function(){
@@ -520,11 +538,14 @@ $scope.checkRegi = function(){
   if(!item.placeholder_key){
     item.placeholder_key = false;
   }
+  var adminFlg = document.cookie.split( '; ' )[ 0 ].split( '=' )[ 1 ];
+  var flg　= (adminFlg == 'true') ? true:false;
+  
   //編集内容をpost
   $http({
     method: 'POST',
     url: '/api/user/sendto/check/',
-    data: { name: $scope.dialog.name.$modelValue, mailid: $scope.dialog.mailAddress.$modelValue, key: item.placeholder_key }
+    data: { name: $scope.dialog.name.$modelValue, mailid: $scope.dialog.mailAddress.$modelValue, key: item.placeholder_key, adminFlg:flg }
   })
   .then(
     function successCallback(response){
@@ -573,11 +594,18 @@ $scope.regist = function(dat) {
   if(!argKey){
     argKey = false;
   }
+  
+  var adminFlg = document.cookie.split( '; ' )[ 0 ].split( '=' )[ 1 ];
+  data['adminFlg'] = (adminFlg == 'true') ? true : false;
+  
+  console.log("data@regist");
+  console.log(data);
+  
   //編集内容をpost
   $http({
     method: 'POST',
     url: '/api/user/sendto/',
-    data: { name: argName, mailid: argMailid, key: argKey }
+    data: data
   })
   .then(
     function successCallback(response){

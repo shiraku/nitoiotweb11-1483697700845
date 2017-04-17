@@ -111,7 +111,7 @@
       item.title = 'メールアドレスの編集';
       item.placeholder_name = this.item.name;
       item.placeholder_mailid = this.item.mailid;
-      item.key = this.item.mailid;
+      item.placeholder_key = this.item.id;
     }
 
     $mdDialog.show({
@@ -137,7 +137,7 @@
          ' </md-dialog-content>'+
          ' <md-dialog-actions>'+
          ' <button class="md-primary md-cancel-button md-button ng-scope md-default-theme md-ink-ripple" type="button" ng-click="closeDialog()" style="">キャンセル</button>'+
-         ' <button class="md-primary md-confirm-button md-button md-ink-ripple md-default-theme" type="button" ng-click="regist()">登録</button>'+
+         ' <button class="md-primary md-confirm-button md-button md-ink-ripple md-default-theme" type="button" ng-click="checkRegi()">登録</button>'+
          ' </md-dialog-actions>'+
          ' </md-dialog>'+
          ' </form>',
@@ -153,31 +153,29 @@
       $mdDialog.hide();
     }
 
-    //登録ボタン押下
-    $scope.regist = function() {
-    if($scope.dialog.name == undefined && $scope.dialog.mailAddress == undefined) return false;
-    if($scope.dialog.mailAddress.$invalid) return false;
+    //登録ボタン押下（重複チェックここではデータ登録は行わない
+    $scope.checkRegi = function(){
+      if($scope.dialog.name == undefined && $scope.dialog.mailAddress == undefined) return false;
+      if($scope.dialog.mailAddress.$invalid) return false;
       $mdDialog.hide();
-
       //新規登録の場合
-      if(!item.key){
-        item.key = false;
+      if(!item.placeholder_key){
+        item.placeholder_key = false;
       }
-      console.log ("sendto Post name"+$scope.dialog.name.$modelValue+ "key"+item.key+"mailId"+$scope.dialog.mailAddress.$modelValue);
-
       //編集内容をpost
       $http({
         method: 'POST',
-        url: '/api/user/sendto/',
-        data: { name: $scope.dialog.name.$modelValue, mailid: $scope.dialog.mailAddress.$modelValue, key: item.key }
+        url: '/api/user/sendto/check/',
+        data: { name: $scope.dialog.name.$modelValue, mailid: $scope.dialog.mailAddress.$modelValue, key: item.placeholder_key }
       })
       .then(
         function successCallback(response){
+          if(response.data.dupFlag) return $scope.showConfirm(response.data.postDat);
           console.log(response);
           if(!response.data.error) {
             console.log("success");
             $rootScope.success = response.data.message;
-            SharedService.alert.set($scope.name,$scope.mailAddress,item.key);
+            SharedService.alert.set($scope.name,$scope.mailAddress,item.placeholder_key);
             $timeout(function (){
                 $rootScope.success = false;
             },2000);
@@ -199,6 +197,75 @@
       );
     }
 
+
+    //データ登録
+    $scope.regist = function(dat) {
+      var argName = dat.name||$scope.dialog.name.$modelValue
+      var argMailid = dat.mailid||$scope.dialog.mailAddress.$modelValue
+      var argKey = dat.key||item.key
+      if(argName == undefined && argMailid == undefined) return false;
+      $mdDialog.hide();
+      var data = {
+        name: argName,
+        mailid: argMailid,
+        key: argKey
+      }
+
+      //新規登録の場合
+      if(!argKey){
+        argKey = false;
+      }
+      //編集内容をpost
+      $http({
+        method: 'POST',
+        url: '/api/user/sendto/',
+        data: { name: argName, mailid: argMailid, key: argKey }
+      })
+      .then(
+        function successCallback(response){
+          console.log(response);
+          if(!response.data.error) {
+            console.log("success");
+            $rootScope.success = response.data.message;
+            SharedService.alert.set(argName,argMailid,argKey);
+            $timeout(function (){
+                $rootScope.success = false;
+            },2000);
+          } else {
+            $rootScope.error = response.data.message;
+            $timeout(function (){
+                $rootScope.error = false;
+            },2000);
+          }
+
+        },
+        function errorCallback(response){
+            $rootScope.error = response.data.message;
+            $timeout(function (){
+                $rootScope.error = false;
+            },2000);
+
+        }
+      );
+    }
+
+    $scope.showConfirm = function(dat,ev) {
+      // Appending dialog to document.body to cover sidenav in docs app
+      var confirm = $mdDialog.confirm()
+            .title('入力されたメールアドレスがすでに登録されています。')
+            .textContent('通知があった場合そのメールアドレスに複数通知が送信されますがよろしいですか？')
+            .ariaLabel('duplication mail address')
+            .targetEvent(ev)
+            .ok('はい')
+            .cancel('キャンセル');
+
+      $mdDialog.show(confirm).then(function() {
+        $scope.regist(dat);
+      }, function() {
+        $mdDialog.hide();
+      });
+    };
+      
     }]
     });
     };
@@ -208,7 +275,7 @@
 $scope.mailAddressDelete = function (ev){
 
   //削除するMailIdを詰める。
-  var deleteMailId = this.item.mailid;
+    var deleteKey = this.item.id;
 
   // Appending dialog to document.body to cover sidenav in docs app
   var confirm = $mdDialog.confirm()
@@ -222,10 +289,10 @@ $scope.mailAddressDelete = function (ev){
   $mdDialog.show(confirm).then(function() {
   //削除の場合
     //TODO 削除のリクエストを投げる
-        console.log("send to deleteMailId"+deleteMailId);
+        console.log("send to deleteMailId"+deleteKey);
         $http({
           method: 'DELETE',
-          url: '/api/user/sendto/'+deleteMailId+'/'
+          url: '/api/user/sendto/'+deleteKey+'/'
         })
         .then(
           function successCallback(response){
@@ -233,7 +300,7 @@ $scope.mailAddressDelete = function (ev){
             if(!response.data.error) {
               console.log("success");
               $rootScope.success = response.data.message;
-              SharedService.deletealert.set(deleteMailId);
+              SharedService.deletealert.set(deleteKey);
               $timeout(function (){
                   $rootScope.success = false;
               },2000);

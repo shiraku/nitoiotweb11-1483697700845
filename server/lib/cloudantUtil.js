@@ -5,6 +5,7 @@
 
 var config = require('../config/environment/development');
 var cradle = require('cradle');
+var Cloudant = require('cloudant');
 var fs = require('fs');
 //var dbName = config.ROOT_DB,
 var chost = config.CHOST,
@@ -14,7 +15,14 @@ var chost = config.CHOST,
     curl = config.CURL;
 var rootDoc = config.ROOT_DOC;
 var db;
+var cloudant;
 
+/**
+ * cradleとnodejs-cloudant双方でDB接続可能
+ * 追加でquery indexによる検索が必要になったためnodejs-cloudantを後から追加した
+ * db = cradle
+ * cloudant = nodejs-cloudant
+ */
 function connectDoc(dbName) {
   if (process.env.VCAP_SERVICES) {
       var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
@@ -67,9 +75,10 @@ function connectDoc(dbName) {
           // }
       }
   });
+  
+  var cloudantCon = Cloudant({account:cuser, password:cpassword});
+  cloudant = cloudantCon.db.use(dbName);
 };
-
-
 
 /**
  * m_userへのアクセス
@@ -97,7 +106,7 @@ exports.M_userEntitity = {
   
   /**
  * 渡された値をアップデートまたは追加登録する
- * prams:query DEV_U+数字５桁の文字列
+ * prams:query muser_U+数字５桁の文字列
  * prams:data アップデートするデータ（Objecrt）
  * prams:callback コールバック
  */
@@ -117,6 +126,28 @@ exports.M_userEntitity = {
       return callback(err,doc);
     });
   },
+  
+  /**
+ * 渡された値をアップデートまたは追加登録する
+ * prams:query 数字５桁の文字列
+ * prams:callback コールバック
+ */
+  getSenderList : function(query, callback){
+    connectDoc('m_user');
+//    console.log("query, data@updateUser");
+//    console.log(query, data);
+    cloudant.search("search_m_user", "search_devices_mails", {q:'device:'+query +'<string>'}, function(err, doc) {
+//    console.log("err@getSenderList");
+//    console.log(err);
+//    console.log("doc@getSenderList");
+//    console.log(doc);
+      if(err){
+        return callback(err,doc);
+      }
+//      console.log(doc);
+      return callback(err,doc);
+    });
+  }
   
 
 };
@@ -424,6 +455,8 @@ exports.Comment_dataEntitity = {
 
 
 
+
+
 /**
  * eqimageへのアクセス
  * グラフイメージ情報に関するデータベース
@@ -476,3 +509,5 @@ exports.viewRelay = {
 function handleError(res, err) {
     return res.status(500).send(err);
 }
+
+

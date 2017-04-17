@@ -104,6 +104,68 @@ var deviceUnit = {
     });
   },
   
+  
+  /**
+ * デイバスに紐づいたすべてのメールアドレス
+ * prams:req express requestオブジェクト
+ * prams:res express responseオブジェクト
+ */
+  getSenderList : function(req,res) {
+//    console.log('セッションユーザー情報@deviceListクラス');
+//    console.log(req.user);
+    if(!req.user) {
+      return res.status('200').json({ error: "ログインされていません" });
+    }
+    var deviceId = req.params.id;
+    var reqest = req;
+    var response = res;
+//    console.log('deviceId@getSenderList');
+//    console.log(deviceId);
+    cloudantUtil.M_userEntitity.getSenderList(deviceId, function(err, dat){
+//    console.log('err@getSenderList');
+//    console.log(err);
+//    console.log('dat@getSenderList');
+//    console.log(dat);
+        if(err) {return response.status('200').json(err);}
+        var resDat = [], id=[], name=[], mailid=[];
+      //レスポンスからメールアドレス情報を抽出
+        dat.rows.forEach(function(elme){
+//          Array.prototype.push.apply(id, elme.fields.mail_id);
+//          Array.prototype.push.apply(name, elme.fields.name);
+//          Array.prototype.push.apply(mailid, elme.fields.mail);
+          id = id.concat(elme.fields.mail_id);
+          name = name.concat(elme.fields.name);
+          mailid = mailid.concat(elme.fields.mail);
+        });
+    console.log('obj@getSenderList');
+    console.log(id);
+    console.log(name);
+    console.log(mailid);
+      //メールアドレス情報をレスポンスデータ用に整形
+        if(Array.isArray(id)){
+          id.forEach(function(i){
+            resDat.push({id:i});
+          });
+          name.forEach(function(n,index){
+            resDat[index]['name'] = n;
+          });
+          mailid.forEach(function(m,index){
+            resDat[index]['mailid'] = m;
+          });
+        } else {
+            resDat.push({
+              id:id,
+              name:name,
+              mailid:mailid
+            });
+        }
+
+      console.log('resDat@getSenderList');
+      console.log(resDat);
+        return response.status('200').json({"sendto":resDat});
+    });
+  },
+  
   /**
  * デイバスの履歴データのみ
  * prams:req express requestオブジェクト

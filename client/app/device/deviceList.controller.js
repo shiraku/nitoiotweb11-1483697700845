@@ -7,7 +7,7 @@
       $scope.modalInstance = $modal.open({
         templateUrl:"T_inProgress",
         backdrop:"static",
-        keyboard:false// ユーザーがクローズできないようにする
+        keyboard:false// ユーザーがクローズできないようにする,
       });
 
     //ヘッダータイトル
@@ -148,6 +148,7 @@
               if (hisRes.data.hasOwnProperty('data')) {
                   $scope.graphDatas.push(hisRes.data);
               }
+                  
             }, function errorCallback(hisRes) {
               console.error("error in posting");
             });
@@ -158,10 +159,16 @@
         // google.charts.load('current', {packages: ['controls','corechart', 'bar']});
         // google.charts.setOnLoadCallback(drawChart);
 
+         
       }, function errorCallback(response) {
         console.error("error in posting");
       });
     // });
+      
+    $scope.$on('deviceInfoFinished', function(event){
+      console.log("deviceInfoFinished");
+       $scope.modalInstance.close();
+    });
 
     $scope.$on('deviceListFinished', function (event) {
       $scope.graphDatas.forEach(function (dat) {
@@ -231,7 +238,6 @@
             var chart = new google.visualization.ColumnChart(document.getElementById(id));
             chart.draw(dataTable,options);
           });
-          $scope.modalInstance.close();
       });
     });
 
