@@ -19,30 +19,21 @@ var all = {
   root: path.normalize(__dirname + '/../../..'),
 
   // Server port
-  port: process.env.PORT || 9000,
+  port: process.env.VCAP_APP_PORT || 9000,
 
   // Server IP
-  ip: process.env.IP || '0.0.0.0',
+  ip: process.env.VCAP_APP_HOST || '0.0.0.0',
 
   // Should we populate the DB with sample data
-  seedDB: false, //this is replaced by seedDB in development.js
+//  seedDB: false, //this is replaced by seedDB in development.js
 
   // Secret for session, you will want to change this and make it an environment variable
   secrets: {
-    session: 'nitoiotweb11-secret'
+    session: 'sessions'
   },
 
   // List of user roles
-  userRoles: ['guest', 'user', 'admin'],
-
-  // MongoDB connection options
-  mongo: {
-    options: {
-      db: {
-        safe: true
-      }
-    }
-  },
+  userRoles: ['guest', 'user', 'admin']
 
 };
 
