@@ -3,13 +3,15 @@
  */
 
 'use strict';
-var express = require('express');
+//var express = require('express');
 var passport = require('passport');
 var localStrategy = require('passport-local').Strategy;
+var flash = require('connect-flash');
 var cloudantUtil = require('./../../lib/cloudantUtil');
-var app = express();
+var app;
 
-var Auth = function(){
+var Auth = function(ap){
+  app = ap;
   this.init();
 };
 
@@ -17,7 +19,8 @@ var Auth = function(){
 Auth.prototype.init = function(){
 //  cloudantUtil.init();
   app.use(passport.initialize());
-//  app.use(passport.session());
+  app.use(passport.session());
+  app.use(flash());
   
   passport.use(new localStrategy(
     {
@@ -53,17 +56,13 @@ Auth.prototype.init = function(){
     console.log("deserializeUser");
     console.log(done);
     console.log(serializeUser);
-    
-    if (serializeUser.userId) {
-      cloudantUtil.M_userEntitity.getUser(serializeUser.userId._id.split("_")[1], function(err, user){
-    console.log("cloudantUtil.M_userEntitity.getUser");
-    console.log(err);
-    console.log(user);
-          done(err, user);
-      });
-    } else {
-      done(null, false, {message:'パスワードが正しくありません。' });
-    }
+    done(null, serializeUser);
+//      cloudantUtil.M_userEntitity.getUser(serializeUser._id.split("_")[1], function(err, user){
+//          console.log("cloudantUtil.M_userEntitity.getUser");
+//          console.log(err);
+//          console.log(user);
+//          done(err, user);
+//      });
   });
 };
 

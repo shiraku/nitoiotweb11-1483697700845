@@ -15,14 +15,13 @@ var deviceUnit = require('./api/device/deviceUnit');
 var comment = require('./api/device/comment');
 var user = require('./api/user/user');
 var dataDownload = require('./api/analysis/data_download');
-var auth = new Auth();
+var auth;
 
 
 module.exports = function(app) {
   
-  app.use(passport.initialize());
-  app.use(passport.session());
-  app.use(flash());
+  
+  auth = new Auth(app);
   
 
   // All undefined asset or api routes should return a 404

@@ -13,7 +13,8 @@ var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
 var errorHandler = require('errorhandler');
 var expressSession = require('express-session');
-var CloudantStore = require('connect-cloudant')(expressSession);
+//var CloudantStore = require('connect-cloudant')(expressSession);
+var CloudantStore = require('sessionstore-cloudant');
 var path = require('path');
 var config = require('./environment');
 
@@ -29,13 +30,23 @@ module.exports = function(app) {
   var env = app.get('env');
   
   
-var cloudantStore = new CloudantStore({
-     url: curl,
-     databaseName: 'sessions',
-     prefix: 'sess',             //optional
-     serializer:'parse',
-     operationTimeout:2000,      //optional
-     connectionTimeout:2000      //optional
+//var cloudantStore = new CloudantStore({
+//     url: curl,
+//     databaseName: 'sessions'
+//});
+  
+  var cloudantStore = CloudantStore.createSessionStore({
+        type: 'couchdb',
+        host: 'https://' + chost,
+        port: cport,
+        dbName: 'sessions',
+        options: {
+		auth: {
+			username: cuser,
+			password: cpassword
+		},
+		cache: false
+	}
 });
 
   app.set('views', config.root + '/server/views');
@@ -48,11 +59,18 @@ var cloudantStore = new CloudantStore({
   app.use(cookieParser());
 //  app.use(expressSession({secret: 'nito'}));
   
-  app.use(expressSession({
-      store: cloudantStore,
-      secret: 'nito',
-      cookie: {maxAge:24*60*60*1000} //stay open for 1 day of inactivity
-  }));
+//  cloudantStore.on('connect', function() {
+//    app.use(expressSession({
+//        secret: 'nito',
+//       // store: cloudantStore,
+//        cookie: {maxAge:24*60*60*1000}
+//    }));
+//  });
+    app.use(expressSession({
+        secret: 'nito',
+        store: cloudantStore,
+        cookie: {maxAge:24*60*60*1000}
+    }));
 
   
   if ('production' === env) {
