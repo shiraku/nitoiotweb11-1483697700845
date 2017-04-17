@@ -20,6 +20,8 @@ var port = (process.env.VCAP_APP_PORT || 9000);
 
 if (host !== 'localhost') app.set('env', 'production');
 
+
+
 require('./config/express')(app);
 require('./routes')(app);
  
@@ -123,6 +125,10 @@ require('./routes')(app);
 // Start server
 app.listen(port, host);
 console.log('App started on port ' + port);
+console.log("ENV");
+console.log(config);
+console.log(app.get('env'));
+console.log(process.env.VCAP_APP_HOST);
 
 // Expose app
 exports = module.exports = app;
