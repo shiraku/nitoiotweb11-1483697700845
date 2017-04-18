@@ -5,6 +5,7 @@ applications:
   host: nitoiotweb11
   name: nitoiotweb11
   path: .
+  command: node_modules/.bin/grunt serve
   domain: mybluemix.net
   instances: 1
   memory: 1024M
