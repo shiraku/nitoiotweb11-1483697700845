@@ -4,7 +4,6 @@ applications:
   disk_quota: 1024M 
   host: nitoiotweb11
   name: nitoiotweb11
-  command: node server/app.js
   path: .
   domain: mybluemix.net
   instances: 1
