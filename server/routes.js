@@ -25,7 +25,7 @@ module.exports = function(app) {
   
 
   // All undefined asset or api routes should return a 404
-  app.route('/:url(auth|components|app|bower_components|assets)/*')
+  app.route('/:url(auth|components|app|bower_components|public|assets)/*')
    .get(errors[404]);
 
   

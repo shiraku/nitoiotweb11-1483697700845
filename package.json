@@ -93,7 +93,7 @@
     "npm": ">=1.2.10"
   },
   "scripts": {
-    "start": "node server/app.js",
+    "start": "node_modules/.bin/grunt serve",
     "test": "grunt test",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
   },
