@@ -29,6 +29,9 @@ Auth.prototype.init = function(){
     },
     function(userId, password, done) {
       cloudantUtil.M_userEntitity.getUser(userId, function(err, user){
+//          console.log("cloudantUtil.M_userEntitity.getUser");
+//          console.log(err);
+//          console.log(user);
         if(err) {return done(err);}
         if(!user) {
           return done(null, false, {message:'ユーザーIDが正しくありません。' });
@@ -44,18 +47,18 @@ Auth.prototype.init = function(){
   
   //セッションをシリアライズ
   passport.serializeUser(function(user, done){
-    console.log("serializeUser");
-    console.log(done);
-    console.log(user);
+//    console.log("serializeUser");
+//    console.log(done);
+//    console.log(user);
     done(null, user);
   });
   
   
   //セッションをディシリアライズ
   passport.deserializeUser(function(serializeUser, done){
-    console.log("deserializeUser");
-    console.log(done);
-    console.log(serializeUser);
+//    console.log("deserializeUser");
+//    console.log(done);
+//    console.log(serializeUser);
     done(null, serializeUser);
 //      cloudantUtil.M_userEntitity.getUser(serializeUser._id.split("_")[1], function(err, user){
 //          console.log("cloudantUtil.M_userEntitity.getUser");
@@ -69,9 +72,9 @@ Auth.prototype.init = function(){
 //ログイン済みか検証
 Auth.prototype.isLogined = function(req, res){
 
-  console.log("req.user@Auth.prototype.isLogined");
-  console.log(req.user);
-  console.log(req.isAuthenticated());
+//  console.log("req.user@Auth.prototype.isLogined");
+//  console.log(req.user);
+//  console.log(req.isAuthenticated());
   
   if(req.isAuthenticated()) {　//ログイン済み
     return true;

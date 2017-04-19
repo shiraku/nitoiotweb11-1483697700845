@@ -3,7 +3,10 @@
  */
 'use restrict'
 
-var config = require('../config/environment/development');
+// Set default node environment to development; Bluemix runtime is production
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
+var config = require('../config/environment')
 var cradle = require('cradle');
 var Cloudant = require('cloudant');
 var fs = require('fs');
