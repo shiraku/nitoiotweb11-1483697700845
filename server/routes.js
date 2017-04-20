@@ -107,7 +107,7 @@ module.exports = function(app) {
   app.get('/api/user/',function(req, res) {
       if(!req.user) res.status(500).json({ error: "ログインされていません" });
       var obj = new Object();
-      console.log(req.user);
+//      console.log(req.user);
       obj["name"] = req.user.name;
       obj["admin_mflg"] = req.user.admin_mflg;
       obj["device"] = req.user.device;

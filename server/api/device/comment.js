@@ -47,12 +47,12 @@ var comment= {
     var self = this;
     var reqest = req;
     var response = res;
-    console.log("req.params.id");
-    console.log(req.params.id);
+//    console.log("req.params.id");
+//    console.log(req.params.id);
     cloudantUtil.Comment_dataEntitity.getRelatedComment(key, function(err, dat){
       if(err) {return response.status('200').json(err);}
-        console.log('getRelatedComment@getRelatedComment');
-        console.log(dat);
+//        console.log('getRelatedComment@getRelatedComment');
+//        console.log(dat);
       return response.status('200').json(dat);
     });
   },
@@ -75,8 +75,8 @@ var comment= {
     var d = moment(Date.now()).tz("Asia/Tokyo").format("YYYYMMDDhhmmss");
     var ts = moment(Date.now()).tz("Asia/Tokyo").format("YYYY/MM/DD hh:mm:ss");
     var id = "DEV_" + relatedIdArr[1] + "_" + d
-    console.log('d@postComment');
-    console.log(d);
+//    console.log('d@postComment');
+//    console.log(d);
     var option = {
       "related_id": relatedId,
       "device_id": "DEV_" + relatedIdArr[1],
@@ -85,8 +85,8 @@ var comment= {
       "user": req.user._id,
       "comment": req.body.comment
     }
-    console.log('option@saveComment');
-    console.log(option);
+//    console.log('option@saveComment');
+//    console.log(option);
     cloudantUtil.Comment_dataEntitity.saveComment(id, option, function(err, dat){
 //    console.log('err@updateDeviceBasicInfo');
 //    console.log(err);

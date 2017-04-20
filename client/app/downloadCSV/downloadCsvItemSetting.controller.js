@@ -70,7 +70,7 @@
                 $rootScope.error = false;
             },2000);
          }else{
-           console.log(res);
+//           console.log(res);
            var filename = res.headers('content-disposition').split('=')[1];
 
               // Convert text to blob object with Blob API.

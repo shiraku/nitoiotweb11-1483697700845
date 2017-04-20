@@ -9,8 +9,8 @@
       //送信者一覧情報
       $http.get('/api/device_basicinfo/' + $routeParams.DEVICE_ID + '/')
       .then(function successCallback(response) {
-        console.log("posted successfully");
-        console.log(response);
+//        console.log("posted successfully");
+//        console.log(response);
         var obj = response.data;
 
         $scope.deviceGroupData = {
@@ -43,8 +43,8 @@
           //一般ユーザーはアカウントDBから送信者一覧情報を取得
           $http.get('/api/device_sender_list/' + $routeParams.DEVICE_ID + '/')
           .then(function successCallback(response) {
-            console.log("posted successfully");
-            console.log(response);
+//            console.log("posted successfully");
+//            console.log(response);
               var obj = response.data;
               $scope.sendto = obj.sendto;
 //              $scope.admin_mflg = obj.admin_mflg;
@@ -55,8 +55,8 @@
           //一般ユーザーはアカウントDBから送信者一覧情報を取得
           $http.get('/api/user/')
           .then(function successCallback(response) {
-            console.log("posted successfully");
-            console.log(response);
+//            console.log("posted successfully");
+//            console.log(response);
               var obj = response.data;
               $scope.sendto = obj.sendto;
 //              $scope.admin_mflg = obj.admin_mflg;
@@ -166,7 +166,7 @@
         
         //緯度経度を取得する
         var obj = SharedService.text.get();
-        console.log("latitude"+obj.latitude+"longitude"+obj.longitude+"address"+obj.address);
+//        console.log("latitude"+obj.latitude+"longitude"+obj.longitude+"address"+obj.address);
 
         if(obj.latitude == undefined){
           obj.latitude = 34.4506112;
@@ -191,7 +191,7 @@
           events: {
                 //マップクリック時のイベント
                click: function(marker, eventName, args) {
-                    console.log("user defined event: " + marker, eventName, args);
+//                    console.log("user defined event: " + marker, eventName, args);
                     //markerをMAPの中央に表示させる。
                     //markerが移動したかどうかわからなくなるので一旦コメントアウト
                     //  $scope.map.center.latitude = args[0].latLng.lat(),
@@ -224,7 +224,7 @@
 //                $scope.map.markers.latitude = results[0].geometry.location.lat();
 //                $scope.map.markers.longitude = results[0].geometry.location.lng();
                 } else {
-                    console.log("Geocode was not successful for the following reason: " + status);
+//                    console.log("Geocode was not successful for the following reason: " + status);
                 }
             });
           }
@@ -262,9 +262,9 @@
         })
           .then(
             function successCallback(response){
-              console.log(response);
+//              console.log(response);
               if(!response.data.error) {
-                console.log("success");
+//                console.log("success");
                 $rootScope.success = response.data.message;
                 $timeout(function (){
                     $rootScope.success = false;
@@ -378,9 +378,9 @@
               })
               .then(
                 function successCallback(response){
-                  console.log(response);
+//                  console.log(response);
                   if(!response.data.error) {
-                    console.log("success");
+//                    console.log("success");
                     $rootScope.success = response.data.message;
                     $scope.deviceGroupData[itemKey] = val;
                     if(itemKey == 'address') SharedService.text.setAddress(val);
@@ -435,9 +435,9 @@
               })
                 .then(
                   function successCallback(response){
-                    console.log(response);
+//                    console.log(response);
                     if(!response.data.error) {
-                      console.log("success");
+//                      console.log("success");
                       $rootScope.success = response.data.message;
                       SharedService.telNo.set($scope.telNo);
                       $timeout(function (){
@@ -550,9 +550,9 @@ $scope.checkRegi = function(){
   .then(
     function successCallback(response){
       if(response.data.dupFlag) return $scope.showConfirm(response.data.postDat);
-      console.log(response);
+//      console.log(response);
       if(!response.data.error) {
-        console.log("success");
+//        console.log("success");
         $rootScope.success = response.data.message;
         SharedService.alert.set($scope.name,$scope.mailAddress,item.placeholder_key);
         $timeout(function (){
@@ -598,8 +598,8 @@ $scope.regist = function(dat) {
   var adminFlg = document.cookie.split( '; ' )[ 0 ].split( '=' )[ 1 ];
   data['adminFlg'] = (adminFlg == 'true') ? true : false;
   
-  console.log("data@regist");
-  console.log(data);
+//  console.log("data@regist");
+//  console.log(data);
   
   //編集内容をpost
   $http({
@@ -609,9 +609,9 @@ $scope.regist = function(dat) {
   })
   .then(
     function successCallback(response){
-      console.log(response);
+//      console.log(response);
       if(!response.data.error) {
-        console.log("success");
+//        console.log("success");
         $rootScope.success = response.data.message;
         SharedService.alert.set(argName,argMailid,argKey);
         $timeout(function (){
@@ -682,9 +682,9 @@ $scope.mailAddressDelete = function (ev){
         })
         .then(
           function successCallback(response){
-            console.log(response);
+//            console.log(response);
             if(!response.data.error) {
-              console.log("success");
+//              console.log("success");
               $rootScope.success = response.data.message;
               SharedService.deletealert.set(deleteKey);
               $timeout(function (){

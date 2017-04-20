@@ -20,11 +20,11 @@
         $routeParams.YYYYMMDDHHMM.substr(10,2) + ':' +
         $routeParams.YYYYMMDDHHMM.substr(12,2);
       var id = datePrm + '_' + $routeParams.DEVICE_ID;
-      console.log(id);
+//      console.log(id);
       $http.get('/api/chart_acceleration/' + id)
       .then(function successCallback(response) {
-        console.log("/api/chart_acceleration/ successfully");
-        console.log(response);
+//        console.log("/api/chart_acceleration/ successfully");
+//        console.log(response);
         $scope.chart_acceleration = 'data:image/jpg;base64,' + response.data.toString('base64');
       }, function errorCallback(response) {
         console.error("error in /api/chart_acceleration/");
@@ -34,8 +34,8 @@
       ///デバイス情報取得/////////////////////////////////////////////
       $http.get('/api/device_detail/' + $routeParams.DEVICE_ID)
       .then(function successCallback(response) {
-        console.log("/api/device_detail/ successfully");
-        console.log(response);
+//        console.log("/api/device_detail/ successfully");
+//        console.log(response);
 
           var obj = response.data;
           var obj2;
@@ -83,11 +83,11 @@
          };
 
           //TODO コメントを取得する
-              console.log('/api/comment/related/DEV_' + $routeParams.DEVICE_ID + '_' + $routeParams.YYYYMMDDHHMM + '/');
+//              console.log('/api/comment/related/DEV_' + $routeParams.DEVICE_ID + '_' + $routeParams.YYYYMMDDHHMM + '/');
           $http.get('/api/comment/related/DEV_' + $routeParams.DEVICE_ID + '_' + $routeParams.YYYYMMDDHHMM + '/')
             .then(function successCallback(response) {
-              console.log("/api/comment/related/ successfully");
-              console.log(response);
+//              console.log("/api/comment/related/ successfully");
+//              console.log(response);
               if(response.data){
                   $scope.detailData["commentList"] = response.data;
               }
@@ -176,7 +176,7 @@
         //登録ボタン押下
         $scope.regist = function() {
           $mdDialog.hide();
-          console.log('/api/comment/DEV_' + $routeParams.DEVICE_ID + '_' + $routeParams.YYYYMMDDHHMM + '/');
+//          console.log('/api/comment/DEV_' + $routeParams.DEVICE_ID + '_' + $routeParams.YYYYMMDDHHMM + '/');
           var tos = $scope.dialog.tos.$modelValue || false;
           //TODO 削除のリクエストを投げる
             $http({
@@ -186,9 +186,9 @@
             })
             .then(
               function successCallback(response){
-                console.log(response);
+//                console.log(response);
                 if(!response.data.error) {
-                  console.log("success");
+//                  console.log("success");
                   $rootScope.success = response.data.message;
                 } else {
                   $rootScope.error = response.data.message;

@@ -65,7 +65,7 @@
         //markerの作成
           $scope.markers =[];
           angular.forEach($scope.deviceList, function(value, index){
-            console.log(index+' latitude: ' + value.latitude + ' longitude: ' + value.longitude);
+//            console.log(index+' latitude: ' + value.latitude + ' longitude: ' + value.longitude);
           //マーカー
           var marker = new google.maps.Marker( {
             map: map ,	// 地図
@@ -292,7 +292,7 @@
 
     //グラフの表示期間が変更された時、グラフを再描画する。
     $scope.$watch('selectItem', function (newValue, oldValue, scope) {
-      console.log(newValue);
+//      console.log(newValue);
       $scope.selectItem = newValue;
       $rootScope.$broadcast('deviceListFinished');
       // rePackJson();

@@ -95,7 +95,7 @@ var dataDownload = {
       }
       var filterData = new Array();
       dat.forEach(function(element){
-      console.log(element);
+//      console.log(element);
         if(element.Did == reqest.params.dev || element.id == "DEV_" + reqest.params.dev){
           filterData.push(element);
         } 

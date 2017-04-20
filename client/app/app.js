@@ -88,18 +88,18 @@ return {
                   var obj = {latitude:latitude,longitude:longitude,address:address};
                   return obj; },
                 set: function(lat,lon,adr) {
-                    console.log("[enter] text.set");
+//                    console.log("[enter] text.set");
                     latitude = lat;
                     longitude = lon;
                     if(adr) address = adr;
                     $rootScope.$broadcast('changedText');
-                    console.log("[leave] text.set");
+//                    console.log("[leave] text.set");
                 },
                 setAddress: function(adr) {
-                    console.log("[enter] text.set");
+//                    console.log("[enter] text.set");
                     address = adr;
                     $rootScope.$broadcast('changedText');
-                    console.log("[leave] text.set");
+//                    console.log("[leave] text.set");
                 }
             },
             telNo: {
@@ -107,10 +107,10 @@ return {
                   // var obj = {telNo:telNo};
                   return phoneNumber; },
                 set: function(d) {
-                    console.log("[enter] telNo.set");
+//                    console.log("[enter] telNo.set");
                     phoneNumber = d;
                     $rootScope.$broadcast('changedTelNo');
-                    console.log("[leave] telNo.set");
+//                    console.log("[leave] telNo.set");
                 }
             },
             alert: {
@@ -118,22 +118,22 @@ return {
                 var obj = {name:name,mailAddress:mailAddress,key:key};
                 return obj; },
               set: function(n,m,k) {
-                  console.log("[enter] alert.set");
+//                  console.log("[enter] alert.set");
                   name = n;
                   mailAddress = m;
                   key = k
                   $rootScope.$broadcast('changedAlert');
-                  console.log("[leave] alert.set");
+//                  console.log("[leave] alert.set");
               }
             },
             deletealert: {
               get: function() {
                 return deleteMailId; },
               set: function(d) {
-                  console.log("[enter] deletealert.set");
+//                  console.log("[enter] deletealert.set");
                   deleteMailId = d;
                   $rootScope.$broadcast('deletealert');
-                  console.log("[leave] deletealert.set");
+//                  console.log("[leave] deletealert.set");
               }
             }
         };

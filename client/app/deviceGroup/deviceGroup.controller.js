@@ -10,8 +10,8 @@
       //送信者一覧情報
       $http.get('/api/user/')
       .then(function successCallback(response) {
-        console.log("posted successfully");
-        console.log(response);
+//        console.log("posted successfully");
+//        console.log(response);
 
         var obj = response.data;
 
@@ -171,9 +171,9 @@
       .then(
         function successCallback(response){
           if(response.data.dupFlag) return $scope.showConfirm(response.data.postDat);
-          console.log(response);
+//          console.log(response);
           if(!response.data.error) {
-            console.log("success");
+//            console.log("success");
             $rootScope.success = response.data.message;
             SharedService.alert.set($scope.name,$scope.mailAddress,item.placeholder_key);
             $timeout(function (){
@@ -223,9 +223,9 @@
       })
       .then(
         function successCallback(response){
-          console.log(response);
+//          console.log(response);
           if(!response.data.error) {
-            console.log("success");
+//            console.log("success");
             $rootScope.success = response.data.message;
             SharedService.alert.set(argName,argMailid,argKey);
             $timeout(function (){
@@ -289,16 +289,16 @@ $scope.mailAddressDelete = function (ev){
   $mdDialog.show(confirm).then(function() {
   //削除の場合
     //TODO 削除のリクエストを投げる
-        console.log("send to deleteMailId"+deleteKey);
+//        console.log("send to deleteMailId"+deleteKey);
         $http({
           method: 'DELETE',
           url: '/api/user/sendto/'+deleteKey+'/'
         })
         .then(
           function successCallback(response){
-            console.log(response);
+//            console.log(response);
             if(!response.data.error) {
-              console.log("success");
+//              console.log("success");
               $rootScope.success = response.data.message;
               SharedService.deletealert.set(deleteKey);
               $timeout(function (){
@@ -349,9 +349,9 @@ function dialogShow(ev,param){
         })
         .then(
           function successCallback(response){
-            console.log(response);
+//            console.log(response);
             if(!response.data.error) {
-              console.log("success");
+//              console.log("success");
               $rootScope.success = response.data.message;
               $scope.groupName = val;
               $timeout(function (){

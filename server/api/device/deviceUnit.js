@@ -92,8 +92,8 @@ var deviceUnit = {
     Object.keys(req.body).forEach(function(key){
       option[key] = req.body[key];
     });
-    console.log('userDevice,option@updateDeviceBasicInfo');
-    console.log(userDevice,option);
+//    console.log('userDevice,option@updateDeviceBasicInfo');
+//    console.log(userDevice,option);
     cloudantUtil.M_deviceEntitity.updateDevice(userDevice, option, function(err, dat){
 //    console.log('err@updateDeviceBasicInfo');
 //    console.log(err);
@@ -137,10 +137,10 @@ var deviceUnit = {
           name = name.concat(elme.fields.name);
           mailid = mailid.concat(elme.fields.mail);
         });
-    console.log('obj@getSenderList');
-    console.log(id);
-    console.log(name);
-    console.log(mailid);
+//    console.log('obj@getSenderList');
+//    console.log(id);
+//    console.log(name);
+//    console.log(mailid);
       //メールアドレス情報をレスポンスデータ用に整形
         if(Array.isArray(id)){
           id.forEach(function(i){
@@ -160,8 +160,8 @@ var deviceUnit = {
             });
         }
 
-      console.log('resDat@getSenderList');
-      console.log(resDat);
+//      console.log('resDat@getSenderList');
+//      console.log(resDat);
         return response.status('200').json({"sendto":resDat});
     });
   },

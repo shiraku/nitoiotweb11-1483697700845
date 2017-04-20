@@ -7,8 +7,8 @@
       //デバイス情報
       $http.get('/api/device_detail/'+$routeParams.DEVICE_ID)
       .then(function successCallback(response) {
-        console.log("/api/device_detail/"+$routeParams.DEVICE_ID+" successfully");
-        console.log(response);
+//        console.log("/api/device_detail/"+$routeParams.DEVICE_ID+" successfully");
+//        console.log(response);
 
         var obj = response.data;
 
@@ -35,11 +35,11 @@
        };
 
         //TODO コメントを取得する
-            console.log('/api/comment/related/DEV_' + $routeParams.DEVICE_ID + '_' + obj.earthquakeCurrentData.date_id + '/');
+//            console.log('/api/comment/related/DEV_' + $routeParams.DEVICE_ID + '_' + obj.earthquakeCurrentData.date_id + '/');
         $http.get('/api/comment/related/DEV_' + $routeParams.DEVICE_ID + '_' + obj.earthquakeCurrentData.date_id + '/')
           .then(function successCallback(response) {
-            console.log("/api/comment/related/ successfully");
-            console.log(response);
+//            console.log("/api/comment/related/ successfully");
+//            console.log(response);
             if(response.data){
                 $scope.commentList = response.data;
             }
@@ -54,11 +54,11 @@
       //地震履歴情報
       $http.get('/api/device_history_eq/'+$routeParams.DEVICE_ID)
       .then(function successCallback(response) {
-        console.log("/api/device_history_eq/"+$routeParams.DEVICE_ID+" successfully");
-        console.log(response);
+//        console.log("/api/device_history_eq/"+$routeParams.DEVICE_ID+" successfully");
+//        console.log(response);
 
         $scope.earthquakeHistoryList = response.data.data;
-        console.log($scope.earthquakeHistoryList);
+//        console.log($scope.earthquakeHistoryList);
 
       }, function errorCallback(response) {
         console.error("error in /api/device_history_eq/"+$routeParams.DEVICE_ID);
@@ -66,11 +66,11 @@
       //雷履歴情報
       $http.get('/api/device_history_fl/'+$routeParams.DEVICE_ID)
       .then(function successCallback(response) {
-        console.log("/api/device_history_fl/"+$routeParams.DEVICE_ID+" successfully");
-        console.log(response);
+//        console.log("/api/device_history_fl/"+$routeParams.DEVICE_ID+" successfully");
+//        console.log(response);
 
         $scope.thunderHistoryList = response.data.data;
-        console.log($scope.thunderHistoryList);
+//        console.log($scope.thunderHistoryList);
 
       }, function errorCallback(response) {
         console.error("error in /api/device_history_fl/"+$routeParams.DEVICE_ID);

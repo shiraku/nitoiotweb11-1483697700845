@@ -28,8 +28,8 @@ var user = {
     
 //    console.log("req.user.sendto@updateSendtoUser");
 //    console.log(req.user.sendto);
-    console.log("req.body@updateUser");
-    console.log(req.body);
+//    console.log("req.body@updateUser");
+//    console.log(req.body);
     var prm = req.body;
     var num;
     var reqest = req;
@@ -42,8 +42,8 @@ var user = {
     
     
     //送信者情報の更新
-    console.log("prm@updateUser");
-    console.log(prm);
+//    console.log("prm@updateUser");
+//    console.log(prm);
     cloudantUtil.M_userEntitity.updateUser(req.user._id, prm , function(err, res){
 //      console.log("dat@saveSendtoUser");
 //      console.log(res);
@@ -153,12 +153,12 @@ var user = {
 //        }
 //      });
 //    }
-    console.log("adminFlg@saveSendtoUser");
-    console.log(prm.adminFlg);
+//    console.log("adminFlg@saveSendtoUser");
+//    console.log(prm.adminFlg);
     if(prm.adminFlg && prm.key){
       prm.key.split('_');
-    console.log("prm.key@saveSendtoUser");
-    console.log(prm.key);
+//    console.log("prm.key@saveSendtoUser");
+//    console.log(prm.key);
       cloudantUtil.M_userEntitity.getUser(prm.key.split('_')[1], function(err, res){
         self.saveSendtoUserExe(res, prm, response);
       });
@@ -170,10 +170,10 @@ var user = {
   saveSendtoUserExe : function(userDat, prm, response){
     var getMail;
     var num;
-    console.log("userDat@saveSendtoUserExe");
-    console.log(userDat);
-    console.log("prm@saveSendtoUserExe");
-    console.log(prm);
+//    console.log("userDat@saveSendtoUserExe");
+//    console.log(userDat);
+//    console.log("prm@saveSendtoUserExe");
+//    console.log(prm);
     if(prm.key){
       getMail = userDat.sendto.filter(function(element,index){
 //        console.log("userDat.sendto.filter");
@@ -186,9 +186,9 @@ var user = {
     }
     
     //送信者情報の更新
-        console.log("getMail@saveSendtoUser");
-        console.log(getMail);
-        console.log(num);
+//        console.log("getMail@saveSendtoUser");
+//        console.log(getMail);
+//        console.log(num);
     if(prm.key){
       if(prm.name) userDat.sendto[num].name = prm.name;
       if(prm.mailid) userDat.sendto[num].mailid = prm.mailid;
@@ -241,23 +241,23 @@ var user = {
     var reqest = req;
     var response = res;
     var deleteNum = undefined;
-    console.log("key@req.user.sendto.filter");
-    console.log(prm.key);
+//    console.log("key@req.user.sendto.filter");
+//    console.log(prm.key);
     req.user.sendto.filter(function(element,index){
-    console.log(element.id);
+//    console.log(element.id);
       if (element.id == prm.key) {
           deleteNum = index;
       }
     });
-    console.log("deleteNum@deleteSendtoUser");
-    console.log(deleteNum);
+//    console.log("deleteNum@deleteSendtoUser");
+//    console.log(deleteNum);
     if(deleteNum != undefined){
       req.user.sendto.splice(deleteNum, 1);
       req.user.sendto.forEach(function(elm,index){
         elm.id = req.user._id + "_sendto" + index;
       });
-        console.log("dat@saveSendtoUser");
-        console.log(req.user.sendto);
+//        console.log("dat@saveSendtoUser");
+//        console.log(req.user.sendto);
       cloudantUtil.M_userEntitity.updateUser(req.user._id, {"sendto" : req.user.sendto} , function(err, res){
         if(err) {return response.status('200').send({message:'削除できませんした。', error: true});}
         return response.status('200').send({message:'削除しました。'});
@@ -276,12 +276,12 @@ var user = {
       return res.status('200').json({ error: "ログインされていません" });
     }
     
-      console.log(req.user._id);
+//      console.log(req.user._id);
     var reqest = req;
     var response = res;
     cloudantUtil.M_userEntitity.getUser(req.user._id.split('_')[1], function(err, dat){
-      console.log("dat@getAlert");
-      console.log(dat);
+//      console.log("dat@getAlert");
+//      console.log(dat);
       if(err) {return response.status('200').json(err);}
       return response.status('200').json(dat.sendto[0].alert);
     });

@@ -60,8 +60,8 @@
         //アラート情報
         $http.get('/api/alert/')
         .then(function successCallback(response) {
-          console.log("posted successfully");
-          console.log(response);
+//          console.log("posted successfully");
+//          console.log(response);
 
           //詰め直す
           var obj = response.data;
@@ -119,7 +119,7 @@
         });
 
       $scope.switchIntensity = function(switchSI){
-        console.log(switchSI);
+//        console.log(switchSI);
         if(switchSI){
           switchSI=true;
         }else{
@@ -168,8 +168,8 @@
           data: postData
         })
         .then(function successCallback(response) {
-          console.log("posted successfully");
-          console.log(response);
+//          console.log("posted successfully");
+//          console.log(response);
           $location.path($scope.backUrl);
         }, function errorCallback(response) {
           console.error("error in posting");
