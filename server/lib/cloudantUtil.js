@@ -108,8 +108,8 @@ exports.M_userEntitity = {
 //    console.log("query, data@updateUser");
 //    console.log(query, data);
     db.merge(query, data , function(err, doc) {
-//    console.log("err@updateUser");
-//    console.log(err);
+    console.log("err@updateUser");
+    console.log(err);
 //    console.log("doc@updateUser");
 //    console.log(doc);
       if(err){
@@ -130,8 +130,8 @@ exports.M_userEntitity = {
 //    console.log("query, data@updateUser");
 //    console.log(query, data);
     cloudant.search("search_m_user", "search_devices_mails", {q:'device:'+query +'<string>'}, function(err, doc) {
-//    console.log("err@getSenderList");
-//    console.log(err);
+    console.log("err@getSenderList");
+    console.log(err);
 //    console.log("doc@getSenderList");
 //    console.log(doc);
       if(err){
@@ -190,8 +190,8 @@ exports.M_deviceEntitity = {
 //    console.log("query, data@updateDevice");
 //    console.log(query, data);
     db.merge(query, data , function(err, doc) {
-//    console.log("err@updateUser");
-//    console.log(err);
+    console.log("err@updateUser");
+    console.log(err);
 //    console.log("doc@updateUser");
 //    console.log(doc);
       if(err){
@@ -232,8 +232,8 @@ exports.Eq_dEntitity = {
 //      console.log(option);
     connectDoc('eq_d');
       db.view('sc003/latest', option , function (err, res) {
-//        console.log('err object @getLatest');
-//        console.log(err);
+        console.log('err object @getLatest');
+        console.log(err);
 //        console.log('row object @getLatest');
 //        console.log(res);
 //        
@@ -269,8 +269,8 @@ exports.Eq_dEntitity = {
     connectDoc('eq_d');
     
       db.view('sc001/dlist', option , function (err, res) {
-//        console.log('err object @getHistory');
-//        console.log(err);
+        console.log('err object @getHistory');
+        console.log(err);
 //        console.log('row object @getHistory');
 //        console.log(res);
         if(!res) return callback({error:"データが取得できませんでした。"});
@@ -342,8 +342,8 @@ exports.Fl_dEntitity = {
 //      console.log(option);
     connectDoc('fl_d');
       db.view('sc003/latest', option , function (err, res) {
-//        console.log('err object @getLatest');
-//        console.log(err);
+        console.log('err object @getLatest');
+        console.log(err);
 //        console.log('row object @getLatest');
 //        console.log(res);
         
@@ -371,8 +371,8 @@ exports.Fl_dEntitity = {
 //    console.log(option);
     connectDoc('fl_d');
       db.view('sc001/dlist', option , function (err, res) {
-//        console.log('err object @getHistory');
-//        console.log(err);
+        console.log('err object @getHistory');
+        console.log(err);
 //        console.log('row object @getHistory');
 //        console.log(res);
         if(!res) return callback({error:"データが取得できませんでした。"});
@@ -437,8 +437,8 @@ exports.Comment_dataEntitity = {
 //        console.log(q);
     connectDoc('comment_data');
       db.view('sc001/indexByDevice', {keys: q, descending:true} , function (err, res) {
-//        console.log('err object @getLatest');
-//        console.log(err);
+        console.log('err object @getLatest');
+        console.log(err);
 //        console.log('row object @getComment');
 //        console.log(res);
       return callback(err,res)
@@ -449,8 +449,8 @@ exports.Comment_dataEntitity = {
 //        console.log(q);
     connectDoc('comment_data');
       db.view('sc001/indexByRelated', {key: query, descending:true} , function (err, res) {
-//        console.log('err object @getLatest');
-//        console.log(err);
+        console.log('err object @getLatest');
+        console.log(err);
 //        console.log('row object @getComment');
 //        console.log(res);
       return callback(err,res)
@@ -461,8 +461,8 @@ exports.Comment_dataEntitity = {
 //    console.log("query, data@updateDevice");
 //    console.log(query, data);
     db.save(query, data , function(err, doc) {
-//    console.log("err@updateUser");
-//    console.log(err);
+    console.log("err@updateUser");
+    console.log(err);
 //    console.log("doc@updateUser");
 //    console.log(doc);
       if(err){
@@ -515,8 +515,8 @@ exports.viewRelay = {
       console.log(doc, key, option);
     connectDoc(doc);
       db.view(key, option , function (err, res) {
-//        console.log('err object @getLatest');
-//        console.log(err);
+        console.log('err object @getLatest');
+        console.log(err);
 //        console.log('row object @getLatest');
 //        console.log(res);
         
