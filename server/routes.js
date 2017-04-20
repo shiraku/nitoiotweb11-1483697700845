@@ -140,7 +140,7 @@ module.exports = function(app) {
   //削除
   app.delete('/api/user/sendto/:key',function(req, res) {
       user.deleteSendtoUser(req,res);
-    });
+    }); 
   
   
     /**
@@ -151,6 +151,9 @@ module.exports = function(app) {
   //show
   app.get('/api/device_list',function(req, res) {
       deviceList.getList(req,res);
+    });
+  app.get('/api/device_list/logdate/:id/:date',function(req, res) {
+      deviceList.getListLogDate(req,res);
     });
   
 //  

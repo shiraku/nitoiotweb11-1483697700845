@@ -83,6 +83,31 @@ var deviceList = {
 //    });
 //  },
   
+  /**
+ * 過去の地震情報のリスト
+ * prams:req express requestオブジェクト
+ * prams:res express responseオブジェクト
+ */
+  getListLogDate : function(req,res) {
+//    console.log('セッションユーザー情報@deviceListクラス');
+//    console.log(req.user);
+    if(!req.user) {
+      return res.status('200').json({ error: "ログインされていません" });
+    }
+    var userDevice = req.params.id;
+    var logdate = req.params.date;
+    var reqest = req;
+    var response = res;
+//      console.log("logdate@getListLogDate");
+//      console.log(logdate);
+    cloudantUtil.Eq_dEntitity.getLogDate(logdate, function(err, dat){
+      if(err) {return response.status('200').json(err);}
+//      console.log("dat@getLogDate");
+//      console.log(dat);
+      return response.status('200').json(dat);
+    });
+  },
+  
   
   /**
  * 所有デイバス情報のリストJSONの作成

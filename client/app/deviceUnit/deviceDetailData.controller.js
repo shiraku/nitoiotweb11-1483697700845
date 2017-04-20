@@ -102,15 +102,38 @@
 
        ///MAP用データ/////////////////////////////////////////////
 
+          $http.get('/api/device_list/logdate/' + $routeParams.DEVICE_ID + '/' + $routeParams.YYYYMMDDHHMM + '/')
+          .then(function successCallback(response) {
+            $scope.deviceList = response.data;
                 var map = new google.maps.Map( document.getElementById( 'map-detailData' ), {
                 	zoom: 13 ,	// ズーム値
-                	center: new google.maps.LatLng( obj.latLon.latitude,obj.latLon.longitude ) ,	// 中心の位置座標
+                	center: new google.maps.LatLng( obj.latitude,obj.longitude ) ,	// 中心の位置座標
                 } ) ;
                 //マーカー
-                var marker = new google.maps.Marker( {
-                	map: map ,	// 地図
-                	position: new google.maps.LatLng( obj.latLon.latitude,obj.latLon.longitude) ,	// 位置座標
-                } ) ;
+                var icon; 
+                $scope.markers =[];
+                for(var i = 0; i < response.data.length; i++){
+                  //アイコンを今のデータを以前のデータで分ける
+                  if($routeParams.DEVICE_ID == response.data[i].value.did) {
+                      icon = '/assets/images/markerNow' + response.data[i].value.s + '.png'
+                  }else{
+                      icon = '/assets/images/marker' + response.data[i].value.s + '.png'
+                  }
+                  var image = {
+                      url : icon,
+                      scaledSize : new google.maps.Size(20, 34)
+                  }
+
+                  //アイコンを地図にセット
+                  var marker  = new google.maps.Marker({
+                      map: map ,
+                      position: new google.maps.LatLng( response.data[i].value.lon,response.data[i].value.lat ) ,
+                      icon: image
+                  }); 
+                  $scope.markers.push(marker);
+                marker.setMap(map);
+                }
+            });
 
       }, function errorCallback(response) {
         console.error("error in /api/device_detail/");

@@ -10,6 +10,7 @@ var config = require('../config/environment')
 var cradle = require('cradle');
 var Cloudant = require('cloudant');
 var fs = require('fs');
+require('date-utils');
 //var dbName = config.ROOT_DB,
 var chost = config.CHOST,
     cport = config.CPORT,
@@ -284,6 +285,33 @@ exports.Eq_dEntitity = {
           obj.data.push(res[i].value);
         }
       return callback(err,obj)
+    });
+  },
+  
+  getLogDate : function(query, callback){
+    //リクエスト時間の計算
+    var dt = new Date();
+    dt.setFullYear(query.substr(0,4));
+    dt.setMonth(parseInt(query.substr(4,2)) - 1);
+    dt.setDate(query.substr(6,2));
+    dt.setHours(query.substr(8,2));
+    dt.setMinutes(query.substr(10,2));
+    dt.setSeconds(query.substr(12,2));
+    var sd = new Date(dt.clone().setSeconds(dt.getSeconds() - 150));
+    var ed = new Date(dt.clone().setSeconds(dt.getSeconds() + 150));
+    var startDate = sd.toFormat('YYYYMMDDHH24MISS');
+    var endDate = ed.toFormat('YYYYMMDDHH24MISS');
+    
+    
+    
+    option = {startkey: startDate, endkey:endDate, limit:1000};
+//    console.log("option@getLogDate");
+//    console.log(option);
+    connectDoc('eq_d');
+    db.view('sc002/wlist', option , function (err, res) {
+//    console.log("res@getLogDate");
+//    console.log(res);
+      return callback(err,res)
     });
   }
 };
