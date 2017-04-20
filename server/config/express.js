@@ -68,7 +68,7 @@ module.exports = function(app) {
 //  });
     app.use(expressSession({
         secret: 'nito',
-//        store: cloudantStore,
+        store: cloudantStore,
         cookie: {maxAge:24*60*60*1000},
       resave:true,
       saveUninitialized:true
