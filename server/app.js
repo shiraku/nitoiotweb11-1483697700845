@@ -128,7 +128,6 @@ console.log('App started on port ' + port);
 console.log("ENV");
 console.log(config);
 console.log(app.get('env'));
-console.log(process.env.VCAP_APP_HOST);
 
 // Expose app
 exports = module.exports = app;

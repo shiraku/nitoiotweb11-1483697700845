@@ -17,13 +17,6 @@ var all = {
 
   // Root path of server
   root: path.normalize(__dirname + '/../../..'),
-  
-  //Fill Cloudant connection credentials
-   CHOST: "293adb3b-1a21-4933-a5b3-757ae3299f16-bluemix.cloudant.com",
-   CPORT: "443",
-   CUSER: "293adb3b-1a21-4933-a5b3-757ae3299f16-bluemix",
-   CPASSWORD: "3964bf57dc7304fd04f72d2c9b38cb8ee84263a62f2bc0676a9fd293f4c3c221",
-   CURL: "https://293adb3b-1a21-4933-a5b3-757ae3299f16-bluemix:3964bf57dc7304fd04f72d2c9b38cb8ee84263a62f2bc0676a9fd293f4c3c221@293adb3b-1a21-4933-a5b3-757ae3299f16-bluemix.cloudant.com"
 
   // Server port
 //  port: process.env.VCAP_APP_PORT || 9000,
@@ -45,6 +38,6 @@ var all = {
 // Export the config object based on the NODE_ENV
 // ==============================================
 module.exports = _.merge(
-  all
-//  require('./' + process.env.NODE_ENV + '.js') || {});
+  all,
+  require('./' + process.env.NODE_ENV + '.js') || {}
   );

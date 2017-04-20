@@ -27,17 +27,6 @@ var cloudant;
  * cloudant = nodejs-cloudant
  */
 function connectDoc(dbName) {
-  if (process.env.VCAP_SERVICES) {
-      var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
-      if (vcapServices.cloudantNoSQLDB) {
-          chost = vcapServices.cloudantNoSQLDB[0].credentials.host;
-          cport = vcapServices.cloudantNoSQLDB[0].credentials.port;
-          cuser = vcapServices.cloudantNoSQLDB[0].credentials.username;
-          cpassword = vcapServices.cloudantNoSQLDB[0].credentials.password;
-          curl = vcapServices.cloudantNoSQLDB[0].credentials.url;
-      }
-      console.log('VCAP Services: ' + JSON.stringify(process.env.VCAP_SERVICES));
-  }
 
   var con = new (cradle.Connection)(chost, cport, {
       secure: true,
