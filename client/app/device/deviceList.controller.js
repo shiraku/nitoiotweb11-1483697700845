@@ -292,7 +292,7 @@
 
     //グラフの表示期間が変更された時、グラフを再描画する。
     $scope.$watch('selectItem', function (newValue, oldValue, scope) {
-//      console.log(newValue);
+      console.log(newValue);
       $scope.selectItem = newValue;
       $rootScope.$broadcast('deviceListFinished');
       // rePackJson();
