@@ -13,7 +13,7 @@ var config = require('./config/environment');
 // Setup server
 var app = express();
 var server = require('http').createServer(app);
-var io = require('socket.io').listen(server);
+//var io = require('socket.io').listen(server);
 
 // bootstrap bluemix
 var host = (process.env.VCAP_APP_HOST || 'localhost');
@@ -26,18 +26,18 @@ if (host !== 'localhost') app.set('env', 'production');
 require('./config/express')(app);
 require('./routes')(app);
  
-//socket.io
-io.on('connection', function(socket){
-  console.log('a use connected');
-  //キャストイベント
-  socket.on('update', function(dat){
-    io.emit('update', dat);
-  });
-  socket.on('cansel', function(msg){
-    console.log(socket.id + ' : ' + msg);
-    io.emit('cansel', socket.id);
-  });
-})
+////socket.io
+//io.on('connection', function(socket){
+//  console.log('a use connected');
+//  //キャストイベント
+//  socket.on('update', function(dat){
+//    io.emit('update', dat);
+//  });
+//  socket.on('cansel', function(msg){
+//    console.log(socket.id + ' : ' + msg);
+//    io.emit('cansel', socket.id);
+//  });
+//})
 
 // Original Start server
 //server.listen(config.port, config.ip, function () {
