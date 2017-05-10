@@ -214,6 +214,17 @@ module.exports = function(app) {
     });
   
   
+  
+    /**
+   * 環境センサーのデータを取得するapi
+   * 環境センサーのデバイスIDを元にデータを返却する
+   * prams:id デバイスID（５桁の数字）
+   */
+  app.get('/api/device_env_latest/:id',function(req, res) {
+      deviceUnit.getEnvLatest(req,res);
+    });
+  
+  
     /**
    * コメント関連のapi
    * 感知日IDを元にコメントを取得、投稿する

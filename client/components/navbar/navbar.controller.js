@@ -41,6 +41,10 @@ angular.module('nitoiotweb11App')
           url : "/user_"+userID+"/data/download"
         },
         {
+          label : "商品カタログ",
+          url : "/documents/"
+        },
+        {
           label : "ログアウト",
           url : "/logout/"
         }

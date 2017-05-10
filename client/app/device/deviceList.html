@@ -2,157 +2,247 @@
   <!--ヘッダー読み込み-->
   <navitop></navitop>
   <div class="md-toolbar-tools searchbox">
-      <md-input-container>
-        <input ng-model="query">
-        <md-icon>
+    <md-input-container>
+      <input ng-model="query">
+      <md-icon>
         <svg width="24px" height="24px" viewBox="296 5 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <g id="Material/Icons-white/search" stroke="none" fill="none" transform="translate(296.000000, 5.000000)" fill-rule="evenodd">
-                <path d="M15.502,9.491 L14.708,9.491 L14.432,9.765 C15.407,10.902 16,12.376 16,13.991 C16,17.581 13.09,20.491 9.5,20.491 C5.91,20.491 3,17.581 3,13.991 C3,10.401 5.91,7.491 9.5,7.491 C11.115,7.491 12.588,8.083 13.725,9.057 L14.001,8.783 L14.001,7.991 L18.999,3 L20.49,4.491 L15.502,9.491 L15.502,9.491 Z M9.5,9.491 C7.014,9.491 5,11.505 5,13.991 C5,16.476 7.014,18.491 9.5,18.491 C11.985,18.491 14,16.476 14,13.991 C14,11.505 11.985,9.491 9.5,9.491 L9.5,9.491 Z" id="Shape" fill="#FFFFFF" transform="translate(11.745000, 11.745500) scale(1, -1) translate(-11.745000, -11.745500) "></path>
-            </g>
+          <g id="Material/Icons-white/search" stroke="none" fill="none" transform="translate(296.000000, 5.000000)" fill-rule="evenodd">
+            <path d="M15.502,9.491 L14.708,9.491 L14.432,9.765 C15.407,10.902 16,12.376 16,13.991 C16,17.581 13.09,20.491 9.5,20.491 C5.91,20.491 3,17.581 3,13.991 C3,10.401 5.91,7.491 9.5,7.491 C11.115,7.491 12.588,8.083 13.725,9.057 L14.001,8.783 L14.001,7.991 L18.999,3 L20.49,4.491 L15.502,9.491 L15.502,9.491 Z M9.5,9.491 C7.014,9.491 5,11.505 5,13.991 C5,16.476 7.014,18.491 9.5,18.491 C11.985,18.491 14,16.476 14,13.991 C14,11.505 11.985,9.491 9.5,9.491 L9.5,9.491 Z" id="Shape" fill="#FFFFFF" transform="translate(11.745000, 11.745500) scale(1, -1) translate(-11.745000, -11.745500) "></path>
+          </g>
         </svg>
-        </md-icon>
-      </md-input-container>
+      </md-icon>
+    </md-input-container>
   </div>
 
 
 
   <div ng-cloak>
-      <md-tabs md-dynamic-height md-border-bottom>
-        <md-tab label="一覧">
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab label="一覧">
 
-          <!--デバイス一覧-->
-          <ul>
-            <li ng-repeat="item in deviceList | filter:query" on-finish-render="deviceInfoFinished">
-              <md-card>
-                <md-list-item class="md-list-item-2" ng-click="deviceDetail()">
-                    <p class="md-body-5">{{item.deviceName}}</p>
-                    <buttondetail></buttondetail>
+        <!--デバイス一覧-->
+        <ul>
+          <li ng-repeat="item in deviceList | filter:query" on-finish-render="deviceInfoFinished">
+            <md-card>
+              <md-list-item class="md-list-item-2" ng-click="deviceDetail()">
+                <p class="md-body-5">{{item.deviceName}}</p>
+                <buttondetail></buttondetail>
+              </md-list-item>
+
+              <md-card-content>
+                <!--職場責任者・連絡先-->
+                <div class="md-contentPaddingBottom">
+                  <div class="md-body-1">職場責任者：{{item.responsiblePerson}}</div>
+                  <div class="md-body-1">連絡先：{{item.telNo}}</div>
+                  <div class="md-body-1" ng-if="item.status=='感知あり'">発生日時：{{item.date}}</div>
+                </div>
+
+                <!--感知あり/なし-->
+                <div layout="row" layout-wrap class="md-card-blank-top">
+                  <span class="md-body-3">{{item.status}}</span>
+                </div>
+
+                <!--地震の場合-->
+                <div layout="row" class="md-contentPaddingBottom" layout-wrap ng-if="item.type == 'EQ'">
+                  <div flex="25">
+                    <p flex class="md-body-1">傾き</p>
+                    <p flex class="md-body-1">商用停電</p>
+                    <p flex class="md-body-1">機器異常</p>
+                  </div>
+                  <div flex="40">
+                    <p flex class="md-body-3" ng-if="item.slope">あり（{{item.slope}}）</p>
+                    <p flex class="md-body-3" ng-if="item.slope == 0">なし</p>
+                    <p flex class="md-body-3" ng-if="item.commercialBlackout">あり</p>
+                    <p flex class="md-body-3" ng-if="!item.commercialBlackout">なし</p>
+                    <p flex class="md-body-3" ng-if="item.equipmentAbnormality">あり</p>
+                    <p flex class="md-body-3" ng-if="!item.equipmentAbnormality">なし</p>
+                  </div>
+                  <div>
+                    <div flex class="md-body-1">震度</div>
+                    <div flex class="md-body-6">{{item.seismicIntensity}}</div>
+                  </div>
+                </div>
+                <!--雷の場合-->
+                <div layout="row" class="md-contentPaddingBottom" layout-wrap ng-if="item.type == 'FL'">
+                  <div flex="25">
+                    <p flex class="md-body-1">漏電</p>
+                    <p flex class="md-body-1">商用停電</p>
+                    <p flex class="md-body-1">機器異常</p>
+                  </div>
+                  <div flex="40">
+                    <p flex class="md-body-3" ng-if="item.leakage">あり</p>
+                    <p flex class="md-body-3" ng-if="!item.leakage">なし</p>
+                    <p flex class="md-body-3" ng-if="item.commercialBlackout">あり</p>
+                    <p flex class="md-body-3" ng-if="!item.commercialBlackout">なし</p>
+                    <p flex class="md-body-3" ng-if="item.equipmentAbnormality">あり</p>
+                    <p flex class="md-body-3" ng-if="!item.equipmentAbnormality">なし</p>
+                  </div>
+                  <div>
+                    <div flex class="md-body-1">雷</div>
+                    <div flex class="md-body-6">{{item.power}}</div>
+                  </div>
+                </div>
+
+                <p class="md-body-1" ng-if="item.commentList != undefined">コメント・連絡事項</p>
+                <ul ng-if="item.commentList != undefined">
+                  <li layout="row">
+                    <p class="md-body-3">{{item.comment}} {{item.commentDate}}</p>
+                  </li>
+                </ul>
+              </md-card-content>
+
+
+              <!--環境センサー-->
+              <md-card-content layout-wrap ng-if="env && item.deviceId == 'DEV_00000'">
+                <div class="md-body-1">これからの天気</div>
+                <div layout="row">
+                  <div flex="25">
+                    <dl class="text-center">
+                      <dt class="md-body-1">現在</dt>
+                      <dd class="nito-env-img"><img src="/assets/images/icon_sunny.svg"></dd>
+                      <dd class="md-headline nito-env-temp">{{env.temperature}}<span class="md-subhead env-temp">℃</span></dd>
+                      <dd class="md-subhead md-main-text">{{env.humidity}}<span class="md-body-1">%</span></dd>
+                    </dl>
+                  </div>
+                  <div flex="25">
+                    <dl class="text-center">
+                      <dt class="md-body-1">13時</dt>
+                      <dd class="nito-env-img"><img src="/assets/images/icon_cloud.svg"></dd>
+                      <dd class="md-headline nito-env-temp">32<span class="md-subhead">℃</span></dd>
+                      <dd class="md-subhead md-main-text">50<span class="md-body-1">%</span></dd>
+                    </dl>
+                  </div>
+                  <div flex="25">
+                    <dl class="text-center">
+                      <dt class="md-body-1">14時</dt>
+                      <dd class="nito-env-img"><img src="/assets/images/icon_rainy.svg"></dd>
+                      <dd class="md-headline nito-env-temp">32<span class="md-subhead">℃</span></dd>
+                      <dd class="md-subhead md-main-text">50<span class="md-body-1">%</span></dd>
+                    </dl>
+                  </div>
+                  <div flex="25">
+                    <dl class="text-center">
+                      <dt class="md-body-1">15時</dt>
+                      <dd class="nito-env-img"><img src="/assets/images/icon_sunny_cloudy.svg"></dd>
+                      <dd class="md-headline nito-env-temp">32<span class="md-subhead">℃</span></dd>
+                      <dd class="md-subhead md-main-text">50<span class="md-body-1">%</span></dd>
+                    </dl>
+                  </div>
+                </div>
+                <div class="md-body-1">直近の気温・湿度・気圧の推移</div>
+                <!--地震データ有りの場合 グラフを表示する-->
+                <div google-chart chart="charts" class="google-chart"></div>
+              </md-card-content>
+              <md-card-content class="nito-env-data" layout-wrap ng-if="env && item.deviceId == 'DEV_00000'">
+                <div layout="row">
+                  <div flex="25" class="nito-env-datas nito-env-ap">
+                    <dl class="text-center">
+                      <dt class="md-body-1">気圧</dt>
+                      <dd class="md-body-2">{{env.pressure}}
+                        <span class="md-body-1">hpa</span></dd>
+                    </dl>
+                  </div>
+                  <div flex="25" class="nito-env-datas nito-env-uv">
+                    <dl class="text-center">
+                      <dt class="md-body-1">紫外線</dt>
+                      <dd class="md-body-2">{{env.uvi}}</dd>
+                    </dl>
+                  </div>
+                  <div flex="25" class="nito-env-datas nito-env-di">
+                    <dl class="text-center">
+                      <dt class="md-body-1">不快指数</dt>
+                      <dd class="md-body-2">{{env.discomfortIndex}}</dd>
+                    </dl>
+                  </div>
+                  <div flex="25" class="nito-env-datas nito-env-hi">
+                    <dl class="text-center">
+                      <dt class="md-body-1">熱中症指数</dt>
+                      <dd class="md-body-2">{{env.heatstroke}}</dd>
+                    </dl>
+                  </div>
+                </div>
+              </md-card-content>
+              <md-card-content ng-if="env && item.deviceId == 'DEV_00000'">
+                <p class="md-body-1">環境汚染</p>
+                <md-list-item ng-click="envLogData('noise')">
+                  <p class="md-body-2">騒音</p>
+                  <span class="md-body-1">{{env.noise}} dB</span>
+                  <buttondetail></buttondetail>
                 </md-list-item>
+                <md-list-item ng-click="envLogData('pm25')">
+                  <p class="md-body-2">PM2.5</p>
+                  <span class="md-body-1">少ない</span>
+                  <buttondetail></buttondetail>
+                </md-list-item>
+                <md-list-item ng-click="envLogData('pm10')">
+                  <p class="md-body-2">花粉</p>
+                  <span class="md-body-1">多い</span>
+                  <buttondetail></buttondetail>
+                </md-list-item>
+              </md-card-content>
+            </md-card>
+          </li>
+        </ul>
+      </md-tab>
 
-                <md-card-content>
-                    <!--職場責任者・連絡先-->
-                    <div class="md-contentPaddingBottom">
-                        <div class="md-body-1">職場責任者：{{item.responsiblePerson}}</div>
-                        <div class="md-body-1">連絡先：{{item.telNo}}</div>
-                        <div class="md-body-1" ng-if="item.status=='感知あり'">発生日時：{{item.date}}</div>
-                    </div>
+      <!--グラフタブ--------------->
+      <md-tab label="グラフ">
 
-                    <!--感知あり/なし-->
-                    <div layout="row" layout-wrap class="md-card-blank-top">
-                        <span class="md-body-3">{{item.status}}</span>
-                    </div>
-
-                    <!--地震の場合-->
-                    <div layout="row" class="md-contentPaddingBottom" layout-wrap ng-if="item.type == 'EQ'">
-                      <div flex="25">
-                        <p flex class="md-body-1">傾き</p>
-                        <p flex class="md-body-1">商用停電</p>
-                        <p flex class="md-body-1">機器異常</p>
-                      </div>
-                      <div flex="40">
-                        <p flex class="md-body-3" ng-if="item.slope">あり（{{item.slope}}）</p>
-                        <p flex class="md-body-3" ng-if="item.slope == 0">なし</p>
-                        <p flex class="md-body-3" ng-if="item.commercialBlackout">あり</p>
-                        <p flex class="md-body-3" ng-if="!item.commercialBlackout">なし</p>
-                        <p flex class="md-body-3" ng-if="item.equipmentAbnormality">あり</p>
-                        <p flex class="md-body-3" ng-if="!item.equipmentAbnormality">なし</p>
-                      </div>
-                      <div>
-                      <div flex class="md-body-1">震度</div>
-                      <div flex class="md-body-6">{{item.seismicIntensity}}</div>
-                    </div>
-                    </div>
-                    <!--雷の場合-->
-                    <div layout="row" class="md-contentPaddingBottom" layout-wrap ng-if="item.type == 'FL'">
-                      <div flex="25">
-                        <p flex class="md-body-1">漏電</p>
-                        <p flex class="md-body-1">商用停電</p>
-                        <p flex class="md-body-1">機器異常</p>
-                      </div>
-                      <div flex="40">
-                        <p flex class="md-body-3" ng-if="item.leakage">あり</p>
-                        <p flex class="md-body-3" ng-if="!item.leakage">なし</p>
-                        <p flex class="md-body-3" ng-if="item.commercialBlackout">あり</p>
-                        <p flex class="md-body-3" ng-if="!item.commercialBlackout">なし</p>
-                        <p flex class="md-body-3" ng-if="item.equipmentAbnormality">あり</p>
-                        <p flex class="md-body-3" ng-if="!item.equipmentAbnormality">なし</p>
-                      </div>
-                      <div>
-                        <div flex class="md-body-1">雷</div>
-                        <div flex class="md-body-6">{{item.power}}</div>
-                      </div>
-                    </div>
-
-                    <p class="md-body-1" ng-if="item.commentList != undefined">コメント・連絡事項</p>
-                        <ul ng-if="item.commentList != undefined">
-                          <li layout="row">
-                            <p class="md-body-3">{{item.comment}} {{item.commentDate}}</p>
-                          </li>
-                        </ul>
-                </md-card-content>
-              </md-card>
-            </li>
-          </ul>
-</md-tab>
-
-<!--グラフタブ--------------->
-        <md-tab label="グラフ">
-
-            <md-input-container class="md-block" flex-gt-sm>
-              <label>グラフの表示期間を選択</label>
-                <md-select ng-change="changeItem" ng-model="selectItem">
-                <md-option ng-repeat="item in selectItems" value="{{item.value}}">
-                  {{item.label}}
-                </md-option>
-              </md-select>
-            </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
+          <label>グラフの表示期間を選択</label>
+          <md-select ng-change="changeItem" ng-model="selectItem">
+            <md-option ng-repeat="item in selectItems" value="{{item.value}}">
+              {{item.label}}
+            </md-option>
+          </md-select>
+        </md-input-container>
 
 
 
-      <ul>
-        <li ng-repeat="item in deviceList | filter:query" on-finish-render="deviceListFinished">
+        <ul>
+          <li ng-repeat="item in deviceList | filter:query" on-finish-render="deviceListFinished">
 
-        <md-card>
-          <md-list-item class="md-list-item-2" ng-click="deviceDetail()">
-            <p class="md-body-5">{{item.deviceName}}</p>
-            <buttondetail></buttondetail>
-          </md-list-item>
-       <!--デバイスカード　コンテンツ-->
-        <md-card-content>
-          <!--地震データ有りの場合 グラフを表示する-->
-          <div google-chart chart="charts" id={{item.deviceId}}  class="google-chart">
-          <p flex class="md-body-1">地震データなし</p>
-          </div>
-          </md-card-content>
-      </md-card>
+            <md-card>
+              <md-list-item class="md-list-item-2" ng-click="deviceDetail()">
+                <p class="md-body-5">{{item.deviceName}}</p>
+                <buttondetail></buttondetail>
+              </md-list-item>
+              <!--デバイスカード　コンテンツ-->
+              <md-card-content>
+                <!--地震データ有りの場合 グラフを表示する-->
+                <div google-chart chart="charts" id={{item.deviceId}} class="google-chart">
+                  <p flex class="md-body-1">地震データなし</p>
+                </div>
+              </md-card-content>
+            </md-card>
 
-        </li>
-      </ul>
-        </md-tab>
+          </li>
+        </ul>
+      </md-tab>
 
-<!--マップタブ--------------->
-        <md-tab label="マップ">
-            <!--MAP-->
-            <div class="map">
-              <!-- <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" bounds="map.bounds">
+      <!--マップタブ--------------->
+      <md-tab label="マップ">
+        <!--MAP-->
+        <div class="map">
+          <!-- <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" bounds="map.bounds">
                 <ui-gmap-google-map zoom="map.zoom" draggable="true" bounds="map.bounds">  -->
-                <!-- <ui-gmap-markers models="markers" coords="'self'" icon="'icon'"></ui-gmap-markers>
+          <!-- <ui-gmap-markers models="markers" coords="'self'" icon="'icon'"></ui-gmap-markers>
               </ui-gmap-google-map> -->
-                <div id="map-deviceList"></div>
-            </div>
-        </md-tab>
+          <div id="map-deviceList"></div>
+        </div>
+      </md-tab>
 
 
-      </md-tabs>
+    </md-tabs>
   </div>
-<!-- </script> -->
+  <!-- </script> -->
 </div>
 
 
 <!-- Modal for inProgress -->
 <script type="text/ng-template" id="T_inProgress">
   <!-- <div class="modal-body"> -->
-        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
   <!-- </div> -->
 </script>
 <!-- Modal for inProgress-->

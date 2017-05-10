@@ -13,7 +13,7 @@ angular.module('nitoiotweb11App')
     //  UC001	デバイス一覧画面				/user_:USER_ID
     .when('/user_:USER_ID', {
       templateUrl: 'app/device/deviceList.html',
-      controller: 'DeviceListCtrl'
+      //controller: 'DeviceListCtrl'
     })
     //  UC002	デバイス詳細					/user_:USER_ID/device_:DEVICE_ID
     .when('/user_:USER_ID/device_:DEVICE_ID', {
@@ -49,6 +49,14 @@ angular.module('nitoiotweb11App')
     .when('/user_:USER_ID/data/download', {
       templateUrl: 'app/downloadCSV/downloadCsvItemSetting.html',
       // controller: 'DownloadCsvItemSettingCtrl'
+    })
+    //  UC009	ドキュメントダウンロード画面		/user_:USER_ID/data/download
+    .when('/documents', {
+      templateUrl: 'app/documents/documents.html'
+    })
+    //  UC---	計測ログダミー画面		/user_:USER_ID/data/download
+    .when('/user_:USER_ID/device_:DEVICE_ID/env_:type', {
+      templateUrl: 'app/deviceUnit/envLog.html'
     })
     .otherwise({
       redirectTo: '/login'

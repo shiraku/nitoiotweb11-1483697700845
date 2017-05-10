@@ -12,6 +12,8 @@ angular.module('nitoiotweb11App', [
   'ngCookies',
   'ui.bootstrap',
   'uiGmapgoogle-maps',
+  //'btford.socket-io',
+//  'ngSocket',
   'googlechart'
   // "googlechart-docs"
   // 'material.svgAssetsCache'

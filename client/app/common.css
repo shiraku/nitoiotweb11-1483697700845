@@ -259,6 +259,10 @@ body{
     line-height: 24px;
   }
 
+  .md-body-2{
+    font-weight: 600;
+  }
+
   .md-body-3{
     font-family: .HiraKakuInterface-W3;
     font-size: 17px;
@@ -271,12 +275,6 @@ body{
     font-family: .HiraKakuInterface-W3;
     font-size: 17px;
     color: rgba(0,0,0,0.86);
-    margin: 17px 0px;
-  }
-  .md-body-5{
-    font-family: .HiraKakuInterface-W3;
-    font-size: 14px;
-    color: rgba(0,0,0,0.54);
     margin: 17px 0px;
   }
 
@@ -327,6 +325,11 @@ body{
   .md-list-item-2 .md-list-item-inner{
     border-bottom: none;
   }
+
+/**タイポグラフィ*******************************************************************/
+.md-main-text{
+  color:rgba(0,0,0,.5);
+}
 
 /**ボタン*******************************************************************/
 
@@ -559,3 +562,38 @@ md-progress-circular {
     border: none;
     box-shadow: none;
   }
+
+
+/***環境センサー****************************/
+.nito-env-img {
+  height: 37px;
+}
+.nito-env-temp {
+  color:#D06101;
+}
+.nito-env-data {
+  padding: 0;
+}
+.nito-env-data .nito-env-datas{
+  border-right: solid 1px #E3E3E3;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+.nito-env-data dl{
+  margin-bottom: 0;
+}
+.nito-env-data .nito-env-datas:last-child {
+  border-right: none 0px #fff;
+}
+.nito-env-ap{
+  background: url('/assets/images/icon_ap.svg') 0 0 no-repeat;
+}
+.nito-env-uv{
+  background: url('/assets/images/icon_uv.svg') 0 0 no-repeat;
+}
+.nito-env-di{
+  background: url('/assets/images/icon_di.svg') 0 0 no-repeat;
+}
+.nito-env-hi{
+  background: url('/assets/images/icon_hi.svg') 0 0 no-repeat;
+}

@@ -193,6 +193,25 @@ var deviceUnit = {
   },
   
   /**
+ * 環境センサーデータ
+ * prams:req express requestオブジェクト
+ * prams:res express responseオブジェクト
+ */
+  getEnvLatest : function(req,res){
+    if(!req.user) {
+      return res.status('200').json({ error: "ログインされていません" });
+    }
+    var envDevice = req.params.id;
+    var self = this;
+    var reqest = req;
+    var response = res;
+    cloudantUtil.EtsTestEntitity.getDevice(envDevice, function(err, dat){
+      if(err) {return response.status('200').json(err);}
+      return response.status('200').json(dat);
+    });
+  },
+  
+  /**
  * 合成加速度のイメージ
  * prams:req express requestオブジェクト
  * prams:res express responseオブジェクト
