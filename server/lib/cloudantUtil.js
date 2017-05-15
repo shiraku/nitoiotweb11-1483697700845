@@ -269,8 +269,8 @@ exports.Eq_dEntitity = {
     connectDoc('eq_d');
     
       db.view('sc001/dlist', option , function (err, res) {
-        console.log('err object @getHistory');
-        console.log(err);
+//        console.log('err object @getHistory');
+//        console.log(err);
 //        console.log('row object @getHistory');
 //        console.log(res);
         if(!res) return callback({error:"データが取得できませんでした。"});
@@ -371,8 +371,10 @@ exports.Fl_dEntitity = {
 //    console.log(option);
     connectDoc('fl_d');
       db.view('sc001/dlist', option , function (err, res) {
-        console.log('err object @getHistory');
-        console.log(err);
+//        console.log('err object @getHistory');
+//        console.e.log('err object @getHistory');
+//        console.e.log('err object @getHistory');
+//        console.log(err);
 //        console.log('row object @getHistory');
 //        console.log(res);
         if(!res) return callback({error:"データが取得できませんでした。"});
@@ -558,6 +560,51 @@ exports.EtsTestEntitity = {
           "payload.d"
         ],
         "sort": [{"payload.minTime:number":"desc"}],
+        "limit": 1
+      }
+      cloudant.find(q, function(err, doc) {
+//      console.log("err@EtsTestEntitity.getDevice");
+//      console.log(err);
+//      console.log("doc@EtsTestEntitity.getDevice");
+//      console.log(doc);
+        if(err){
+          return callback(err,doc);
+        }
+  //      console.log(doc);
+        return callback(err,doc);
+      });
+    });
+  }
+}
+  
+
+
+/**
+ * 天気予報データを取得
+ */
+exports.WeatherTestEntitity = {
+  /**
+ * 渡された値をアップデートまたは追加登録する
+ * prams:query 環境センサーデバイスID
+ * prams:callback コールバック
+ */
+  getDevice : function(query, callback){
+    var cloudantCon = Cloudant({account:"a9129fbe-98cf-4f4c-894b-c3f3bd6c83d3-bluemix", password:"7d79848e17a251508b3ea466c5e04d76d5b6fce57658d0c228b089af4c9d28a3"}, function(er, cloudant, reply) {
+      if (er)
+        throw er
+
+      console.log('#####Connected with username: %s', reply.userCtx.name ,"###")
+      cloudant = cloudantCon.db.use("weather_test");
+  //    console.log("query, data@EtsTestEntitity.getDevice");
+  //    console.log(query, data);
+      var q = {
+        "selector":{"secTime":{"$exists":true}},
+        "fields": [
+          "secTime",
+          "ctime",
+          "payload"
+        ],
+        "sort": [{"secTime:number":"desc"}],
         "limit": 1
       }
       cloudant.find(q, function(err, doc) {

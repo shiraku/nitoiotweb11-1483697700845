@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('nitoiotweb11App')
-  .controller('DeviceListCtrl', ['$rootScope', '$routeParams', '$scope', '$http', '$location', 'GoogleChartService', '$modal','$interval', function ($rootScope, $routeParams, $scope, $http, $location, GoogleChartService, $modal,$interval) {
+  .controller('DeviceListCtrl', ['$rootScope', '$routeParams', '$scope', '$http', '$location', 'GoogleChartService', '$modal', '$interval', function ($rootScope, $routeParams, $scope, $http, $location, GoogleChartService, $modal, $interval) {
 
     //モーダル処理
     $scope.modalInstance = $modal.open({
@@ -156,7 +156,7 @@ angular.module('nitoiotweb11App')
     //         "heatstroke": 18.76,
     //         "battery": 3026
     //       }
-    $scope.getEnvLatest =  function(){
+    $scope.getEnvLatest = function () {
       $http.get('/api/device_env_latest/dd4c78468628/')
         .then(function successCallback(response) {
           var dat = response.data.docs[0].payload.d;
@@ -229,90 +229,97 @@ angular.module('nitoiotweb11App')
           console.error("error in posting");
         });
     }
-      $scope.getEnvLatest();
-      $interval($scope.getEnvLatest,1000*30);
-    
-    
-//    function updateEnv(response) {
-//        var dat = JSON.parse(response.data);
-//        var env = {};
-//        env["temperature"] = dat.temperature;
-//        env["humidity"] = dat.humidity;
-//        env["pressure"] = dat.pressure;
-//        var uvi = function (d) {
-//          switch (true) {
-//          case d < 3:
-//            return '弱い';
-//          case d > 3 && d < 6:
-//            return '中程度';
-//          case d > 6 && d < 8:
-//            return '強い';
-//          case d > 8 && d < 10:
-//            return '非常に強い';
-//          case d > 10:
-//            return '極端に強い';
-//          default:
-//            return '計測エラー';
-//          }
-//        }
-//        env["uvi"] = uvi(dat.uvi);
-//        var discomfortIndex = function (d) {
-//          switch (true) {
-//          case d < 75:
-//            return '暑くない';
-//            break;
-//          case d > 75 && d < 80:
-//            return 'やや暑い';
-//            break;
-//          case d > 80 && d < 85:
-//            return '暑くて汗が出る';
-//            break;
-//          case d > 85:
-//            return '暑くてたまらない';
-//            break;
-//          default:
-//            return '計測エラー';
-//          }
-//        }
-//        env["discomfortIndex"] = discomfortIndex(dat.discomfortIndex);
-//        var heatstroke = function (d) {
-//          switch (true) {
-//          case d < 21:
-//            return 'ほぼ安全';
-//            z
-//            break;
-//          case d > 21 && d < 25:
-//            return '注意';
-//            break;
-//          case d > 25 && d < 28:
-//            return '警戒';
-//            break;
-//          case d > 28 && d < 31:
-//            return '厳重警戒';
-//            break;
-//          case d > 31:
-//            return '運動は原則中止';
-//            break;
-//          default:
-//            return '計測エラー';
-//          }
-//        }
-//        env["heatstroke"] = heatstroke(dat.heatstroke);
-//        env["noise"] = dat.noise;
-//        $scope.env = env;
-//      
-//    }
-//            
-//   var ws = ngSocket('ws://nitoiotdst02.mybluemix.net/ws/om001');
-//
-//    ws.onMessage(function(dat){
-//      console.log('onMessage');
-//      updateEnv(dat);
-//    });
-//    ws.onOpen(function(dat){
-//      console.log('onOpen');
-//      ws.send("update");
-//    });
+    $scope.getEnvLatest();
+    $interval($scope.getEnvLatest, 1000 * 30);
+
+    $http.get('/api/device_env_forcast/35.62982_139.7942416/')
+      .then(function successCallback(response) {
+        var dat = response.data;
+        //          $scope.env = env;
+      }, function errorCallback(response) {
+        console.error("error in posting");
+      });
+
+    //    function updateEnv(response) {
+    //        var dat = JSON.parse(response.data);
+    //        var env = {};
+    //        env["temperature"] = dat.temperature;
+    //        env["humidity"] = dat.humidity;
+    //        env["pressure"] = dat.pressure;
+    //        var uvi = function (d) {
+    //          switch (true) {
+    //          case d < 3:
+    //            return '弱い';
+    //          case d > 3 && d < 6:
+    //            return '中程度';
+    //          case d > 6 && d < 8:
+    //            return '強い';
+    //          case d > 8 && d < 10:
+    //            return '非常に強い';
+    //          case d > 10:
+    //            return '極端に強い';
+    //          default:
+    //            return '計測エラー';
+    //          }
+    //        }
+    //        env["uvi"] = uvi(dat.uvi);
+    //        var discomfortIndex = function (d) {
+    //          switch (true) {
+    //          case d < 75:
+    //            return '暑くない';
+    //            break;
+    //          case d > 75 && d < 80:
+    //            return 'やや暑い';
+    //            break;
+    //          case d > 80 && d < 85:
+    //            return '暑くて汗が出る';
+    //            break;
+    //          case d > 85:
+    //            return '暑くてたまらない';
+    //            break;
+    //          default:
+    //            return '計測エラー';
+    //          }
+    //        }
+    //        env["discomfortIndex"] = discomfortIndex(dat.discomfortIndex);
+    //        var heatstroke = function (d) {
+    //          switch (true) {
+    //          case d < 21:
+    //            return 'ほぼ安全';
+    //            z
+    //            break;
+    //          case d > 21 && d < 25:
+    //            return '注意';
+    //            break;
+    //          case d > 25 && d < 28:
+    //            return '警戒';
+    //            break;
+    //          case d > 28 && d < 31:
+    //            return '厳重警戒';
+    //            break;
+    //          case d > 31:
+    //            return '運動は原則中止';
+    //            break;
+    //          default:
+    //            return '計測エラー';
+    //          }
+    //        }
+    //        env["heatstroke"] = heatstroke(dat.heatstroke);
+    //        env["noise"] = dat.noise;
+    //        $scope.env = env;
+    //      
+    //    }
+    //            
+    //   var ws = ngSocket('ws://nitoiotdst02.mybluemix.net/ws/om001');
+    //
+    //    ws.onMessage(function(dat){
+    //      console.log('onMessage');
+    //      updateEnv(dat);
+    //    });
+    //    ws.onOpen(function(dat){
+    //      console.log('onOpen');
+    //      ws.send("update");
+    //    });
 
 
 
@@ -786,9 +793,9 @@ angular.module('nitoiotweb11App')
 
     //画面遷移
     $scope.deviceDetail = function () {
-      $location.path("/user_" + $routeParams.USER_ID + "/device_" + this.item.deviceId.split('_')[1]);
-    }
-    //画面遷移
+        $location.path("/user_" + $routeParams.USER_ID + "/device_" + this.item.deviceId.split('_')[1]);
+      }
+      //画面遷移
     $scope.envLogData = function (type) {
       $location.path("/user_" + $routeParams.USER_ID + "/device_" + this.item.deviceId.split('_')[1] + "/env_" + type);
     }

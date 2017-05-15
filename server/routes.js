@@ -223,6 +223,9 @@ module.exports = function(app) {
   app.get('/api/device_env_latest/:id',function(req, res) {
       deviceUnit.getEnvLatest(req,res);
     });
+  app.get('/api/device_env_forcast/:latlon',function(req, res) {
+      deviceUnit.getEnvForcast(req,res);
+    });
   
   
     /**

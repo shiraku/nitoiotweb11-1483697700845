@@ -5,6 +5,7 @@
 'use strict';
 var express = require('express');
 var fs = require('fs');
+var request = require('request');
 var cloudantUtil = require('./../../lib/cloudantUtil');
 var app = express();
 
@@ -209,6 +210,39 @@ var deviceUnit = {
       if(err) {return response.status('200').json(err);}
       return response.status('200').json(dat);
     });
+  },
+  
+  /**
+ * 天気予報データ
+ * prams:req express requestオブジェクト
+ * prams:res express responseオブジェクト
+ */
+  getEnvForcast : function(req,res){
+    if(!req.user) {
+      return res.status('200').json({ error: "ログインされていません" });
+    }
+    var latlon = req.params.latlon;
+    var latlonArr = latlon.split('_');
+    var self = this;
+    var reqest = req;
+    var res = res;
+//    cloudantUtil.WeatherTestEntitity.getDevice(latlon, function(err, dat){
+//      if(err) {return response.status('200').json(err);}
+//      return response.status('200').json(dat);
+//    });
+    var url = "http://nitoiotdst02.mybluemix.net/api/forcast?lat=" + latlonArr[0] + "&lon=" + latlonArr[1];
+    
+    console.log("url@getEnvForcast");
+    console.log(url);
+    
+    request(url, function (err, response, body) {
+      console.log("err, dat, body@getEnvForcast");
+      console.log(err);
+//      console.log(response);
+      console.log(body);
+      if(err) {return res.status('200').json(err);}
+      return res.status('200').json(JSON.parse(body));
+    })
   },
   
   /**

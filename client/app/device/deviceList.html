@@ -95,7 +95,7 @@
               <!--環境センサー-->
               <md-card-content layout-wrap ng-if="env && item.deviceId == 'DEV_00000'">
                 <div class="md-body-1">これからの天気</div>
-                <div layout="row">
+                <div layout="row"  ng-click="envLogData('temp')">
                   <div flex="25">
                     <dl class="text-center">
                       <dt class="md-body-1">現在</dt>
@@ -135,26 +135,26 @@
               </md-card-content>
               <md-card-content class="nito-env-data" layout-wrap ng-if="env && item.deviceId == 'DEV_00000'">
                 <div layout="row">
-                  <div flex="25" class="nito-env-datas nito-env-ap">
+                  <div flex="25" class="nito-env-datas nito-env-ap" ng-click="envLogData('pressure')">
                     <dl class="text-center">
                       <dt class="md-body-1">気圧</dt>
                       <dd class="md-body-2">{{env.pressure}}
                         <span class="md-body-1">hpa</span></dd>
                     </dl>
                   </div>
-                  <div flex="25" class="nito-env-datas nito-env-uv">
+                  <div flex="25" class="nito-env-datas nito-env-uv" ng-click="envLogData('uvi')">
                     <dl class="text-center">
                       <dt class="md-body-1">紫外線</dt>
                       <dd class="md-body-2">{{env.uvi}}</dd>
                     </dl>
                   </div>
-                  <div flex="25" class="nito-env-datas nito-env-di">
+                  <div flex="25" class="nito-env-datas nito-env-di" ng-click="envLogData('discomfortIndex')">
                     <dl class="text-center">
                       <dt class="md-body-1">不快指数</dt>
                       <dd class="md-body-2">{{env.discomfortIndex}}</dd>
                     </dl>
                   </div>
-                  <div flex="25" class="nito-env-datas nito-env-hi">
+                  <div flex="25" class="nito-env-datas nito-env-hi" ng-click="envLogData('heatstroke')">
                     <dl class="text-center">
                       <dt class="md-body-1">熱中症指数</dt>
                       <dd class="md-body-2">{{env.heatstroke}}</dd>
