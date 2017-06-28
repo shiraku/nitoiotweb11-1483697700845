@@ -130,6 +130,7 @@ var deviceList = {
         obj["memo"] = dat.memo;
         obj["latitude"] = dat.latitude;
         obj["longitude"] = dat.longitude;
+        obj["envSensorFlg"] = (dat.envSensorFlg) ? dat.envSensorFlg : false;
         obj["status"] = (flgSense) ? '感知あり':'感知なし';
         if(flgSense){
           obj["type"] = self.latestEQDate.value.datas.type;

@@ -34,7 +34,7 @@ angular.module('nitoiotweb11App')
             ];
     //グラフの表示期間のデフォル値設定
     $scope.selectItem = 'month';
-
+    
     //デバイス一覧情報
     $http.get('/api/device_list/')
       .then(function successCallback(response) {
@@ -42,8 +42,10 @@ angular.module('nitoiotweb11App')
         //        console.log(response);
         //TODO dataに発生日時を追加していただく。（白倉さん）
         var obj = response.data;
-        $scope.deviceList = obj.device_list
-
+        $scope.deviceList = obj.device_list;
+        console.log($scope.deviceList);
+      
+      
         //MAP
 
         //初期値
@@ -66,6 +68,9 @@ angular.module('nitoiotweb11App')
         $scope.markers = [];
         angular.forEach($scope.deviceList, function (value, index) {
           //            console.log(index+' latitude: ' + value.latitude + ' longitude: ' + value.longitude);
+
+          
+          
           //マーカー
           var marker = new google.maps.Marker({
             map: map, // 地図
@@ -156,6 +161,8 @@ angular.module('nitoiotweb11App')
     //         "heatstroke": 18.76,
     //         "battery": 3026
     //       }
+    
+    
     $scope.getEnvLatest = function () {
       $http.get('/api/device_env_latest/dd4c78468628/')
         .then(function successCallback(response) {

@@ -550,7 +550,7 @@ exports.EtsTestEntitity = {
       var q = {
         "selector": {
           "$and": [
-          {"deviceId": "dd4c78468628"},
+          {"deviceId": query},
           {"payload.d.memo":"OM"},
           {"payload.minTime":{"$exists":true}}
           ]

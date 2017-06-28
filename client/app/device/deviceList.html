@@ -93,7 +93,7 @@
 
 
               <!--環境センサー-->
-              <md-card-content layout-wrap ng-if="env && item.deviceId == 'DEV_00000'">
+              <md-card-content layout-wrap ng-if="env && item.envSensorFlg">
                 <div class="md-body-1">これからの天気</div>
                 <div layout="row"  ng-click="envLogData('temp')">
                   <div flex="25">
@@ -130,10 +130,8 @@
                   </div>
                 </div>
                 <div class="md-body-1">直近の気温・湿度・気圧の推移</div>
-                <!--地震データ有りの場合 グラフを表示する-->
-                <div google-chart chart="charts" class="google-chart"></div>
               </md-card-content>
-              <md-card-content class="nito-env-data" layout-wrap ng-if="env && item.deviceId == 'DEV_00000'">
+              <md-card-content class="nito-env-data" layout-wrap ng-if="env && item.envSensorFlg">
                 <div layout="row">
                   <div flex="25" class="nito-env-datas nito-env-ap" ng-click="envLogData('pressure')">
                     <dl class="text-center">
@@ -162,7 +160,7 @@
                   </div>
                 </div>
               </md-card-content>
-              <md-card-content ng-if="env && item.deviceId == 'DEV_00000'">
+              <md-card-content ng-if="env && item.envSensorFlg">
                 <p class="md-body-1">環境汚染</p>
                 <md-list-item ng-click="envLogData('noise')">
                   <p class="md-body-2">騒音</p>
