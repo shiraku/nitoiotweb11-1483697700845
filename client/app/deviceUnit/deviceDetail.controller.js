@@ -36,7 +36,7 @@
 
         //TODO コメントを取得する
 //            console.log('/api/comment/related/DEV_' + $routeParams.DEVICE_ID + '_' + obj.earthquakeCurrentData.date_id + '/');
-        $http.get('/api/comment/related/DEV_' + $routeParams.DEVICE_ID + '_' + obj.earthquakeCurrentData.date_id + '/')
+        $http.get('/api/comment/related/DEV_' + $routeParams.DEVICE_ID + '_' + obj.earthquakeCurrentData.data.date_id + '/')
           .then(function successCallback(response) {
 //            console.log("/api/comment/related/ successfully");
 //            console.log(response);
@@ -94,8 +94,9 @@
             $scope.thunderHistoryViews = $scope.thunderHistoryViews + $scope.nextView;
         };
 
-       $scope.deviceDetailData = function(){
-         $location.path("/user_"+$routeParams.USER_ID+"/device_"+$routeParams.DEVICE_ID+"/date"+this.item.date_id);
+       $scope.deviceDetailData = function(arg){
+        var di = arg || this.item.date_id;
+         $location.path("/user_"+$routeParams.USER_ID+"/device_"+$routeParams.DEVICE_ID+"/date"+di);
 //         $location.path("/user_u000/device_00000/date20170216105553");
        }
        

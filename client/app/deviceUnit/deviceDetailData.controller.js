@@ -39,10 +39,10 @@
 
           var obj = response.data;
           var obj2;
-          if(obj.earthquakeCurrentData.datas){
-          obj2 = obj.earthquakeCurrentData.datas;
+          if(obj.earthquakeCurrentData.data.datas){
+          obj2 = obj.earthquakeCurrentData.data.datas[0];
         }else{
-          obj2 = obj.thunderCurrentData.datas
+          obj2 = obj.thunderCurrentData.data.datas[0]
         }
 
           //
@@ -73,7 +73,7 @@
           {
                deviceId   :obj._id,
                deviceName :obj.deviceName,
-               type       :obj2.type,          //地震or雷
+               type       :obj.earthquakeCurrentData.data.type,          //地震or雷
                seismicIntensity:obj2.seismicIntensity,     //震度（地震のみ）
                power :obj2.power,
                slope:obj2.slope,               //傾き（地震のみ）

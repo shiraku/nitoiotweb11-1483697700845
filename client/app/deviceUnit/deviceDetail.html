@@ -34,7 +34,7 @@
 <md-card>
   <!--現在のステータス-->
 
-      <md-list-item class="md-list-item-2" ng-click="deviceDetailData()" ng-hide="!earthquakeCurrentData">
+      <md-list-item class="md-list-item-2" ng-click="deviceDetailData(earthquakeCurrentData.data.date_id)" ng-hide="!earthquakeCurrentData">
       <p class="md-body-5">感知あり</p>
       <buttondetail></buttondetail>
     </md-list-item>
@@ -46,7 +46,7 @@
      <!--デバイスカード　コンテンツ-->
       <md-card-content ng-hide="!earthquakeCurrentData">
           <!--地震の場合-->
-          <p flex class="md-body-1">発生日時：{{earthquakeCurrentData.date}}</p>
+          <p flex class="md-body-1">発生日時：{{earthquakeCurrentData.data.date}}</p>
           <div layout="row" layout-wrap>
             <div flex="25">
               <p flex class="md-body-1">傾き</p>
@@ -54,16 +54,16 @@
               <p flex class="md-body-1">機器異常</p>
             </div>
             <div flex="40">
-              <p flex class="md-body-3" ng-if="earthquakeCurrentData.datas.slope">あり（{{earthquakeCurrentData.datas.slope}}）</p>
-              <p flex class="md-body-3" ng-if="earthquakeCurrentData.datas.slope == 0">なし</p>
-              <p flex class="md-body-3" ng-if="earthquakeCurrentData.datas.commercialBlackout">あり</p>
-              <p flex class="md-body-3" ng-if="!earthquakeCurrentData.datas.commercialBlackout">なし</p>
-              <p flex class="md-body-3" ng-if="earthquakeCurrentData.datas.equipmentAbnormality">あり</p>
-              <p flex class="md-body-3" ng-if="!earthquakeCurrentData.datas.equipmentAbnormality">なし</p>
+              <p flex class="md-body-3" ng-if="earthquakeCurrentData.data.datas.slope">あり（{{earthquakeCurrentData.datas.slope}}）</p>
+              <p flex class="md-body-3" ng-if="earthquakeCurrentData.data.datas.slope == 0">なし</p>
+              <p flex class="md-body-3" ng-if="earthquakeCurrentData.data.datas.commercialBlackout">あり</p>
+              <p flex class="md-body-3" ng-if="!earthquakeCurrentData.data.datas.commercialBlackout">なし</p>
+              <p flex class="md-body-3" ng-if="earthquakeCurrentData.data.datas.equipmentAbnormality">あり</p>
+              <p flex class="md-body-3" ng-if="!earthquakeCurrentData.data.datas.equipmentAbnormality">なし</p>
             </div>
             <div>
             <div flex class="md-body-1">震度</div>
-            <div flex class="md-body-6">{{earthquakeCurrentData.datas.seismicIntensity}}</div>
+            <div flex class="md-body-6">{{earthquakeCurrentData.data.datas[0].seismicIntensity}}</div>
           </div>
           </div>
       　</md-card-content>
@@ -91,8 +91,8 @@
 
         <md-list-item class="md-secondary" ng-repeat="item in earthquakeHistoryList | limitTo: earthquakeHistoryViews: 0" ng-click="deviceDetailData()">
             <p class="md-body-1">{{item.date}}</p>
-            <span class="md-body-1">{{item.datas.seismicIntensity}}</span>
-            <span class="md-body-1" ng-if="item.datas.seismicIntensity == undefined">-</span>
+            <span class="md-body-1">{{item.datas[0].value}}</span>
+            <span class="md-body-1" ng-if="item.datas[0].value == undefined">-</span>
             <buttondetail></buttondetail>
         </md-list-item>
         <p flex class="md-body-3" ng-if="earthquakeHistoryList.length == 0 || earthquakeHistoryList == undefined">履歴なし</p>

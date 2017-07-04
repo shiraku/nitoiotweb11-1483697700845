@@ -85,9 +85,11 @@
 
                 <p class="md-body-1" ng-if="item.commentList != undefined">コメント・連絡事項</p>
                 <ul ng-if="item.commentList != undefined">
-                  <li layout="row">
-                    <p class="md-body-3">{{item.comment}} {{item.commentDate}}</p>
-                  </li>
+                    
+                  <li ng-repeat="cl in item.commentList">
+                    <p class="md-body-2" ng-if="!cl.importantFlg">{{cl.comment}}　{{cl.timestamp}}</p>
+                    <p class="md-body-2 importantFlg" ng-if="cl.importantFlg">{{cl.comment}}　{{cl.timestamp}}</p>
+                </li>
                 </ul>
               </md-card-content>
 

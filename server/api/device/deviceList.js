@@ -17,8 +17,8 @@ var deviceList = {
   devicesJson : {},
   latestJson : {},
   latestData : {},
-  latestEQJson : {},
-  latestEQDate : {},
+  latestEQJson : [],
+  latestEQData : {},
   commentJson : {},
   commentDate : new Array(),
   
@@ -44,28 +44,28 @@ var deviceList = {
       self.devicesJson = devices;
 //      console.log("dat@devicesJson");
 //      console.log(self.devicesJson);
-      cloudantUtil.I_dataEntitity.getLatest(userDevice, function(err, latest){
-        if(err) {return response.status('200').json(err);}
-        self.latestJson = latest;
+//      cloudantUtil.I_dataEntitity.getLatest(userDevice, function(err, latest){
+//        if(err) {return response.status('200').json(err);}
+//        self.latestJson = latest;
 //          console.log("dat@latestJson");
 //          console.log(self.latestJson);
         cloudantUtil.Eq_dEntitity.getLatest(userDevice, function(err, latest){
           if(err) {return response.status('200').json(err);}
-          self.latestEQJson = latest;
+          self.latestEQJson = latest.docs;
 //            console.log("dat@latestEQJson");
 //            console.log(self.latestEQJson);
           cloudantUtil.Comment_dataEntitity.getComment(userDevice, function(err, dat){
             if(err) {return response.status('200').json(err);}
             self.commentJson = dat;
-//            console.log("dat@getComment");
-//            console.log(dat);
+            console.log("dat@getComment");
+            console.log(dat);
             
             responseJson = self.createJson();
 //            console.log(response);
             return response.status('200').json(responseJson);
           });
         });
-      });
+//      });
     });
   },
   
@@ -116,8 +116,6 @@ var deviceList = {
   createJson : function(){
     var responseJson = new Array();
     var self = this;
-//    console.log("self.latestEQDate.value@createJson");
-//    (self.latestEQDate);
     this.devicesJson.forEach(function (dat){
       var flgSense = (self.hasSense(dat._id)) ? 1 : 0;
       var obj = new Object();
@@ -133,19 +131,17 @@ var deviceList = {
         obj["envSensorFlg"] = (dat.envSensorFlg) ? dat.envSensorFlg : false;
         obj["status"] = (flgSense) ? '感知あり':'感知なし';
         if(flgSense){
-          obj["type"] = self.latestEQDate.value.datas.type;
-          obj["date"] = self.latestEQDate.value.date;
-//          console.log("self.latestEQDate.datas");
-//          console.log(self.latestEQDate.value.date);
-          obj["seismicIntensity"] = self.latestEQDate.value.datas.seismicIntensity;
-          obj["power"] = self.latestEQDate.value.datas.power,
-          obj["leakage"] = self.latestEQDate.value.datas.leakage,
-          obj["slope"] = self.latestEQDate.value.datas.slope,
-          obj["commercialBlackout"] = self.latestEQDate.value.datas.commercialBlackout,
-          obj["equipmentAbnormality"] = self.latestEQDate.value.datas.equipmentAbnormality
-          if(self.hasComment(dat._id,self.latestEQDate.value.date_id)){
-  //            console.log("self.commentDate");
-  //            console.log(self.commentDate);
+          obj["type"] = self.latestEQData.data.type;
+          obj["date"] = self.latestEQData.date;
+          obj["seismicIntensity"] = self.latestEQData.data.datas[0].seismicIntensity || self.latestEQData.data.datas[0].value;
+          obj["power"] = self.latestEQData.data.datas[0].power,
+          obj["leakage"] = self.latestEQData.data.datas[0].leakage,
+          obj["slope"] = self.latestEQData.data.datas[0].slope,
+          obj["commercialBlackout"] = self.latestEQData.data.datas[0].commercialBlackout,
+          obj["equipmentAbnormality"] = self.latestEQData.data.datas[0].equipmentAbnormality
+          if(self.hasComment(dat._id,self.latestEQData.data.date_id)){
+              console.log("self.commentDate");
+              console.log(self.commentDate);
               obj["commentList"] = self.commentDate;
           }
         }
@@ -171,16 +167,18 @@ var deviceList = {
  * prams:device　デバイスID
  */
   hasSense : function(device){
-    if(!this.latestEQJson.length) return false;
 //    console.log("device@hasSense");
 //    console.log(device);
     var deviceId = device.split('_')[1];
     var flg = false;
     for(var i = 0; i < this.latestEQJson.length; i++){
-      if(this.latestEQJson[i].key == deviceId){
+//    console.log("device@hasSense");
+//    console.log(this.latestEQJson[i].device_id);
+//    console.log(deviceId);
+      if(this.latestEQJson[i].device_id == deviceId){
 //        console.log("matchId@hasSense");
         flg =  true;
-        this.latestEQDate = this.latestEQJson[i];
+        this.latestEQData = this.latestEQJson[i];
         break;
       }
     };
@@ -217,6 +215,7 @@ var deviceList = {
   hasComment : function(id,date){
 //    console.log("date@hasComment");
 //    console.log(date,id);
+    this.commentDate = new Array();
     if(!this.commentJson.length) return false;
 //    console.log("hasData@hasComment");
     var key = id + "_" + date;

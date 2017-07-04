@@ -38,8 +38,8 @@ angular.module('nitoiotweb11App')
     //デバイス一覧情報
     $http.get('/api/device_list/')
       .then(function successCallback(response) {
-        //        console.log("/api/device_list/ successfully");
-        //        console.log(response);
+                console.log("/api/device_list/ successfully");
+                console.log(response);
         //TODO dataに発生日時を追加していただく。（白倉さん）
         var obj = response.data;
         $scope.deviceList = obj.device_list;
@@ -166,6 +166,8 @@ angular.module('nitoiotweb11App')
     $scope.getEnvLatest = function () {
       $http.get('/api/device_env_latest/dd4c78468628/')
         .then(function successCallback(response) {
+//                console.log("/api/device_env_latest/dd4c78468628/");
+//                console.log(response);
           var dat = response.data.docs[0].payload.d;
           var env = {};
           env["temperature"] = dat.temperature;
@@ -237,7 +239,7 @@ angular.module('nitoiotweb11App')
         });
     }
     $scope.getEnvLatest();
-    $interval($scope.getEnvLatest, 1000 * 30);
+    $interval($scope.getEnvLatest, 1000 * 60 * 30);
 
     $http.get('/api/device_env_forcast/35.62982_139.7942416/')
       .then(function successCallback(response) {

@@ -4,7 +4,7 @@
 // =================================
 var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
 module.exports = {
-  //*/ //nitoiotweb11-cloudantNoSQLDB
+  /*/ //nitoiotweb11-cloudantNoSQLDB
    CHOST: vcapServices.cloudantNoSQLDB[0].credentials.host,
    CPORT: vcapServices.cloudantNoSQLDB[0].credentials.port,
    CUSER: vcapServices.cloudantNoSQLDB[0].credentials.username,
@@ -16,5 +16,5 @@ module.exports = {
    CUSER: vcapServices.cloudantNoSQLDB[1].credentials.username,
    CPASSWORD: vcapServices.cloudantNoSQLDB[1].credentials.password,
    CURL: vcapServices.cloudantNoSQLDB[1].credentials.url
-  /*/
+  //*/
 };

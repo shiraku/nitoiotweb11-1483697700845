@@ -36,20 +36,26 @@ var deviceUnit = {
     cloudantUtil.M_deviceEntitity.getDevice(userDevice, function(err, dat){
       if(err) {return response.status('200').json(err);}
       deviceJson = dat;
+      
+//        console.log('M_deviceEntitity.getDevice@getDeviceDetail');
+//        console.log(deviceJson);
       cloudantUtil.Eq_dEntitity.getLatest(userDevice, function(err, dat){
         if(err) {return response.status('200').json(err);}
-        if(dat.length){
-          deviceJson["earthquakeCurrentData"] = dat[0].value;
+//        console.log("Eq_dEntitity.getLatest.dat");
+//        console.log(dat.docs);
+        if(dat.docs.length){
+          if(!dat.docs[0].data.datas[0].seismicIntensity) dat.docs[0].data.datas[0]["seismicIntensity"] = dat.docs[0].data.datas[0].value;
+          deviceJson["earthquakeCurrentData"] = dat.docs[0];
         }
-//        console.log('earthquakeCurrentData@getInfo');
+//        console.log('earthquakeCurrentData@getDeviceDetail');
 //        console.log(deviceJson);
         cloudantUtil.Fl_dEntitity.getLatest(userDevice, function(err, dat){
           if(err) {return response.status('200').json(err);}
           if(dat.length){
             deviceJson["thunderCurrentData"] = dat[0].value;
           }
-  //        console.log('thunderCurrentData@getInfo');
-  //        console.log(deviceJson);
+//          console.log('thunderCurrentData@getDeviceDetail');
+//          console.log(deviceJson);
           return response.status('200').json(deviceJson);
         });
       });
@@ -183,6 +189,8 @@ var deviceUnit = {
     if(req.params.type == 'eq'){
       cloudantUtil.Eq_dEntitity.getHistory(userDevice, function(err, dat){
         if(err) {return response.status('200').json(err);}
+        console.log("Eq_dEntitity.getHistory.dat@getHistory");
+        console.log(dat);
         return response.status('200').json(dat);
       });
     } else {
@@ -232,14 +240,14 @@ var deviceUnit = {
 //    });
     var url = "http://nitoiotdst02.mybluemix.net/api/forcast?lat=" + latlonArr[0] + "&lon=" + latlonArr[1];
     
-    console.log("url@getEnvForcast");
-    console.log(url);
+//    console.log("url@getEnvForcast");
+//    console.log(url);
     
     request(url, function (err, response, body) {
-      console.log("err, dat, body@getEnvForcast");
-      console.log(err);
+//      console.log("err, dat, body@getEnvForcast");
+//      console.log(err);
 //      console.log(response);
-      console.log(body);
+//      console.log(body);
       if(err) {return res.status('200').json(err);}
       return res.status('200').json(JSON.parse(body));
     })

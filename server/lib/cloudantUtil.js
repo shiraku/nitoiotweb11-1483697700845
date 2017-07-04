@@ -217,28 +217,69 @@ exports.Eq_dEntitity = {
  * prams:callback コールバック
  */
   getLatest : function(query, callback){
-    var q, option;
-    if(typeof query == "object" || typeof query == "array"){
-//      console.log('query is type of array');
-      q = [];
-      for(var i =0; i < query.length; i++){
-        q.push(query[i].id);
+//    var q, option;
+//    if(typeof query == "object" || typeof query == "array"){
+////      console.log('query is type of array');
+//      q = [];
+//      for(var i =0; i < query.length; i++){
+//        q.push(query[i].id);
+//      }
+//      option = {keys: q,  descending:true};
+//    }else{
+//      option = {key: query,  descending:true};
+//    }
+////      console.log('クエリ情報@M_deviceEntitity');
+////      console.log(option);
+//    connectDoc('eq_d');
+//      db.view('sc003/latest', option , function (err, res) {
+//        console.log('err object @getLatest');
+//        console.log(err);
+////        console.log('row object @getLatest');
+////        console.log(res);
+////        
+//      return callback(err,res)
+//    });
+    
+    
+      connectDoc('eq_d');
+      var di;
+      if(typeof query == "object" || typeof query == "array"){
+        di = new Array();
+        for(var i =0; i < query.length; i++){
+          di.push({"device_id":query[i].id});
+        }
+      }else{
+        di = [{"device_id":query}];
       }
-      option = {keys: q,  descending:true};
-    }else{
-      option = {key: query,  descending:true};
-    }
-//      console.log('クエリ情報@M_deviceEntitity');
-//      console.log(option);
-    connectDoc('eq_d');
-      db.view('sc003/latest', option , function (err, res) {
-        console.log('err object @getLatest');
-        console.log(err);
-//        console.log('row object @getLatest');
-//        console.log(res);
-//        
-      return callback(err,res)
-    });
+      //現在の日づげ取得
+      var d = new Date();
+      //１０日前の日付取得
+      var targetDate = new Date(d.getFullYear(),d.getMonth(),d.getDate()-10);
+      //クエリーように文字列か
+      var queryDate =  targetDate.toFormat('YYYYMMDDHH24MISS');
+      var selector = {"$or":di,"data.date_id":{"$gt":queryDate}};
+      var q = {
+        "selector":selector,
+        "fields": [
+          "device_id",
+          "data"
+        ],
+        "sort": [{"device_id":"desc"}],
+        "limit": 30
+      }
+//      console.log("selector");
+//      console.log(selector);
+      cloudant.find(q, function(err, doc) {
+//      console.log("err@Eq_dEntitity.getLatest");
+//      console.log(err);
+//      console.log("doc@Eq_dEntitity.getLatest");
+//      console.log(doc.docs);
+        if(err){
+          return callback(err,doc);
+        }
+  //      console.log(doc);
+        return callback(err,doc);
+      });
   },
   
   //デバイスIDから１年前までの感知データをget

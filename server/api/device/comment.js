@@ -32,7 +32,7 @@ var comment= {
     var response = res;
     cloudantUtil.Comment_dataEntitity.getComment(key, function(err, dat){
       if(err) {return response.status('200').json(err);}
-//        console.log('earthquakeCurrentData@getInfo');
+//        console.log('Comment_dataEntitity.getComment@getComment');
 //        console.log(deviceJson);
       return response.status('200').json(dat);
     });
