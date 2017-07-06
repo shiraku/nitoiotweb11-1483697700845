@@ -23,7 +23,10 @@
         $scope.deviceList = obj.device
         $scope.sendto = obj.sendto;
 
-        var adminFlg = document.cookie.split( '; ' )[ 0 ].split( '=' )[ 1 ];
+        var cookieAdminFlg = document.cookie.split( '; ' ).filter(function(element){
+          if(element.split("=")[0] == 'admin_mflg') return element;
+        });
+        var adminFlg = cookieAdminFlg[0].split("=")[1];
         if(adminFlg=="true"){
           $scope.isAdmin = true;
         }else{

@@ -90,6 +90,10 @@ var user = {
     var getMail;
     var self = this;
     
+//    console.log("prm@checkSendtoUser");
+//    console.log(prm);
+    console.log("req.user.sendto@checkSendtoUser");
+    console.log(req.user);
     
     if(prm.adminFlg && prm.key){
       prm.key.split('_');
@@ -110,11 +114,12 @@ var user = {
       });
     } else {
       //メールアドレスの重複チェック
+      if(!req.user.sendto) req.user["sendto"] = new Array();
       var dupMail = req.user.sendto.filter(function(element){
             return (element.mailid == prm.mailid);
         });
-  //    console.log("dupMail");
-  //    console.log(dupMail);
+//      console.log("dupMail");
+//      console.log(dupMail);
       if(dupMail.length >= 1){
         return res.status('200').send({dupFlag:true, postDat:req.body});
       } else {
@@ -170,8 +175,8 @@ var user = {
   saveSendtoUserExe : function(userDat, prm, response){
     var getMail;
     var num;
-//    console.log("userDat@saveSendtoUserExe");
-//    console.log(userDat);
+    console.log("userDat@saveSendtoUserExe");
+    console.log(userDat);
 //    console.log("prm@saveSendtoUserExe");
 //    console.log(prm);
     if(prm.key){
@@ -203,12 +208,26 @@ var user = {
     } else {
       //送信者情報の追加登録
       //必須項目のバリデーションチェック
+      
+      //閾値(alert)設定がされていない場合の初期設定
+      var defaultAlert = {
+        "seismicIntensityFlg": true,
+        "seismicIntensity": 3,
+        "siFlg": false,
+        "si": 4,
+        "lightningSurge": true,
+        "lpgm": 2,
+        "slope": true,
+        "commercialBlackout": true,
+        "equipmentAbnormality": true
+      };
+      
       if(prm.name && prm.mailid){
         var sendto = {
           "id" : userDat._id + "_sendto" + (userDat.sendto.length + 1),
           "name" : prm.name,
           "mailid" : prm.mailid,
-          "alert" : userDat.sendto[0].alert
+          "alert" : (userDat.sendto.length) ? userDat.sendto[0].alert : defaultAlert
         }
         userDat.sendto.push(sendto);
         cloudantUtil.M_userEntitity.updateUser(userDat._id, {"sendto" : userDat.sendto} , function(err, res){
