@@ -32,18 +32,16 @@
 
 
       ///デバイス情報取得/////////////////////////////////////////////
-      $http.get('/api/device_detail/' + $routeParams.DEVICE_ID)
+      $http.get('/api/device_detail_data/' + $routeParams.DEVICE_ID + '/' + $routeParams.YYYYMMDDHHMM + '/' + $routeParams.TYPE)
       .then(function successCallback(response) {
-//        console.log("/api/device_detail/ successfully");
-//        console.log(response);
+        console.log("/api/device_detail/ successfully");
+        console.log(response);
 
-          var obj = response.data;
+          var obj = response.data[0];
           var obj2;
-          if(obj.earthquakeCurrentData.data.datas){
-          obj2 = obj.earthquakeCurrentData.data.datas[0];
-        }else{
-          obj2 = obj.thunderCurrentData.data.datas[0]
-        }
+          if(obj.data.datas){
+            obj2 = obj.data.datas[0];
+          }
 
           //
           if(obj2.commercialBlackout){
@@ -69,11 +67,25 @@
           }else{
             obj2.slope = "なし"
           }
+        
+          if(obj2.power){
+            switch(obj2.power){
+              case 1:
+                obj2.power = "小";
+                break;
+              case 2:
+                obj2.power = "中";
+                break;
+              case 3:
+                obj2.power = "大";
+                break;
+            }
+          }
           $scope.detailData =
           {
                deviceId   :obj._id,
                deviceName :obj.deviceName,
-               type       :obj.earthquakeCurrentData.data.type,          //地震or雷
+               type       :obj2.type,          //地震or雷
                seismicIntensity:obj2.seismicIntensity,     //震度（地震のみ）
                power :obj2.power,
                slope:obj2.slope,               //傾き（地震のみ）
@@ -102,7 +114,7 @@
 
        ///MAP用データ/////////////////////////////////////////////
 
-          $http.get('/api/device_list/logdate/' + $routeParams.DEVICE_ID + '/' + $routeParams.YYYYMMDDHHMM + '/')
+          $http.get('/api/device_list/logdate/' + $routeParams.DEVICE_ID + '/' + $routeParams.YYYYMMDDHHMM + '/' + obj2.type)
           .then(function successCallback(response) {
             $scope.deviceList = response.data;
                 var map = new google.maps.Map( document.getElementById( 'map-detailData' ), {
@@ -114,10 +126,18 @@
                 $scope.markers =[];
                 for(var i = 0; i < response.data.length; i++){
                   //アイコンを今のデータを以前のデータで分ける
-                  if($routeParams.DEVICE_ID == response.data[i].value.did) {
-                      icon = '/assets/images/markerNow' + response.data[i].value.s + '.png'
-                  }else{
-                      icon = '/assets/images/marker' + response.data[i].value.s + '.png'
+                  if(obj2.type == 'EQ' || obj2.type == 'AL'){
+                    if($routeParams.DEVICE_ID == response.data[i].value.did) {
+                        icon = '/assets/images/markerNow' + response.data[i].value.s + '.png'
+                    }else{
+                        icon = '/assets/images/marker' + response.data[i].value.s + '.png'
+                    }
+                  }else if(obj2.type == 'FL'){
+                    if($routeParams.DEVICE_ID == response.data[i].value.did) {
+                        icon = '/assets/images/markerNow' + response.data[i].value.s + '_thunder.png'
+                    }else{
+                        icon = '/assets/images/marker' + response.data[i].value.s + '_thunder.png'
+                    }
                   }
                   var image = {
                       url : icon,

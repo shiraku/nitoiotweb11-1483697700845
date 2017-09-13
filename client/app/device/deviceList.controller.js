@@ -68,15 +68,54 @@ angular.module('nitoiotweb11App')
         $scope.markers = [];
         angular.forEach($scope.deviceList, function (value, index) {
           //            console.log(index+' latitude: ' + value.latitude + ' longitude: ' + value.longitude);
+          //アイコンを今のデータを以前のデータで分ける
+          if(value.status == '感知あり'){
+            var imgSi;
+            switch(true) {
+              case value.seismicIntensity > 6.5 :
+                  imgSi = '7';
+                  break;
+              case 6.0 < value.seismicIntensity && value.seismicIntensity < 6.5 :
+                  imgSi = '6_u';
+                  break;
+              case 5.5 < value.seismicIntensity && value.seismicIntensity < 6.0 :
+                  imgSi = '6';
+                  break;
+              case 5.0 < value.seismicIntensity && value.seismicIntensity < 5.5 :
+                  imgSi = '5_u';
+                  break;
+              case 4.5 < value.seismicIntensity && value.seismicIntensity < 5.0 :
+                  imgSi = '5';
+                  break;
+                default :
+                  imgSi = Math.round(value.seismicIntensity);
+                  break;
+                  
+            }
+            Math.round(value.seismicIntensity); 
+            var icon = '/assets/images/marker' + imgSi + '.png';
+            var image = {
+                url : icon,
+                scaledSize : new google.maps.Size(20, 34)
+            }
+            //マーカー
+            var marker = new google.maps.Marker({
+              map: map, // 地図
+              position: new google.maps.LatLng(value.latitude, value.longitude), // 位置座標
+              title: value.deviceName,
+              icon: image
+            });
+          } else {
+            //マーカー
+            var marker = new google.maps.Marker({
+              map: map, // 地図
+              position: new google.maps.LatLng(value.latitude, value.longitude), // 位置座標
+              title: value.deviceName
+            });
+          }
 
           
           
-          //マーカー
-          var marker = new google.maps.Marker({
-            map: map, // 地図
-            position: new google.maps.LatLng(value.latitude, value.longitude), // 位置座標
-            title: value.deviceName
-          });
 
           $scope.markers.push(marker);
 
@@ -241,13 +280,13 @@ angular.module('nitoiotweb11App')
     $scope.getEnvLatest();
     $interval($scope.getEnvLatest, 1000 * 60 * 30);
 
-    $http.get('/api/device_env_forcast/35.62982_139.7942416/')
-      .then(function successCallback(response) {
-        var dat = response.data;
-        //          $scope.env = env;
-      }, function errorCallback(response) {
-        console.error("error in posting");
-      });
+//    $http.get('/api/device_env_forcast/35.62982_139.7942416/')
+//      .then(function successCallback(response) {
+//        var dat = response.data;
+//        //          $scope.env = env;
+//      }, function errorCallback(response) {
+//        console.error("error in posting");
+//      });
 
     //    function updateEnv(response) {
     //        var dat = JSON.parse(response.data);

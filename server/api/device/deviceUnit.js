@@ -50,7 +50,7 @@ var deviceUnit = {
 //        console.log('earthquakeCurrentData@getDeviceDetail');
 //        console.log(deviceJson);
         cloudantUtil.Fl_dEntitity.getLatest(userDevice, function(err, dat){
-          if(err) {return response.status('200').json(err);}
+          if(err) {return response.status('200').json(deviceJson);}
           if(dat.length){
             deviceJson["thunderCurrentData"] = dat[0].value;
           }
@@ -60,6 +60,60 @@ var deviceUnit = {
         });
       });
     });
+  },
+  /**
+ * 特定日付の履歴データ
+ * prams:req express requestオブジェクト
+ * prams:res express responseオブジェクト
+ */
+  getDeviceDetailDate : function(req,res) {
+//    console.log('特定日付の履歴データ@deviceUnitクラス');
+//    console.log(req.user);
+    if(!req.user) {
+      return res.status('200').json({ error: "ログインされていません" });
+    }
+    var query = {"di" : req.params.id, "date" : req.params.date};
+    var dateType = req.params.type;
+    var self = this;
+    var reqest = req;
+    var response = res;
+    var deviceJson;
+    
+    
+    if(dateType == 'AQ' || dateType == 'EQ'){
+      cloudantUtil.Eq_dEntitity.getHistoryDate(query, function(err, dat){
+        if(err) {return response.status('200').json(err);}
+        console.log("Eq_dEntitity.getHistoryDate.dat");
+        console.log(dat.docs);
+        if(dat.docs.length){
+          if(!dat.docs[0].data.datas[0].seismicIntensity) {
+            dat.docs[0].data.datas[0]["seismicIntensity"] = dat.docs[0].data.datas[0].value;
+            dat.docs[0].data.datas[0]["type"] = "EQ";
+            delete dat.docs[0]._rev;
+            cloudantUtil.Eq_dEntitity.postHistoryDate(dat.docs[0],function(err,doc){
+              if(err) console.log(err);
+              if(doc) console.log(doc);
+            })
+          }
+        }
+        return response.status('200').json(dat.docs);
+      });
+    } else {
+        cloudantUtil.Fl_dEntitity.getHistoryDate(query, function(err, dat){
+          if(err) {return response.status('200').json(err);}
+          console.log("Fl_dEntitity.getHistoryDate.dat");
+          console.log(dat);
+          if(dat.docs.length){
+            if(!dat.docs[0].data.datas[0].power){
+              dat.docs[0].data.datas[0]["power"] = dat.docs[0].data.datas[0].value;
+              dat.docs[0].data.datas[0]["type"] = "FL";
+            }
+          }
+          return response.status('200').json(dat.docs);
+        });
+    }
+    
+    
   },
   
   /**
@@ -244,10 +298,10 @@ var deviceUnit = {
 //    console.log(url);
     
     request(url, function (err, response, body) {
-//      console.log("err, dat, body@getEnvForcast");
-//      console.log(err);
-//      console.log(response);
-//      console.log(body);
+      console.log("err, dat, body@getEnvForcast");
+      console.log(err);
+      console.log(response);
+      console.log(body);
       if(err) {return res.status('200').json(err);}
       return res.status('200').json(JSON.parse(body));
     })

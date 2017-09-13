@@ -6,7 +6,7 @@ angular.module('nitoiotweb11App')
       //UC000ログイン画面
       .when('/login', {
         templateUrl: 'app/login/login.html',
-        controller: 'LoginCtrl'
+        //controller: 'LoginCtrl'
       })
 
 
@@ -20,9 +20,9 @@ angular.module('nitoiotweb11App')
       templateUrl: 'app/deviceUnit/deviceDetail.html',
       // controller: 'DeviceDetailCtrl'
     })
-    //  UC003	デバイス詳細　データ				/user_:USER_ID/device_:DEVICE_ID/date:YYYYMMDDHHMM
-    .when('/user_:USER_ID/device_:DEVICE_ID/date:YYYYMMDDHHMM', {
-      templateUrl: 'app/deviceUnit/deviceDetailData.html'//,
+    //  UC003	デバイス詳細　データ				/user_:USER_ID/device_:DEVICE_ID/date:YYYYMMDDHHMM/:TYPE
+    .when('/user_:USER_ID/device_:DEVICE_ID/date:YYYYMMDDHHMM/:TYPE', {
+      templateUrl: 'app/deviceUnit/deviceDetailData.html',
       // controller: 'DeviceDetailDataCtrl'
     })
     //  UC005	デバイスグループ画面				/user_:USER_ID/group_:GROUP_ID

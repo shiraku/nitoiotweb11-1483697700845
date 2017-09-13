@@ -217,47 +217,29 @@ exports.Eq_dEntitity = {
  * prams:callback コールバック
  */
   getLatest : function(query, callback){
-//    var q, option;
-//    if(typeof query == "object" || typeof query == "array"){
-////      console.log('query is type of array');
-//      q = [];
-//      for(var i =0; i < query.length; i++){
-//        q.push(query[i].id);
-//      }
-//      option = {keys: q,  descending:true};
-//    }else{
-//      option = {key: query,  descending:true};
-//    }
-////      console.log('クエリ情報@M_deviceEntitity');
-////      console.log(option);
-//    connectDoc('eq_d');
-//      db.view('sc003/latest', option , function (err, res) {
-//        console.log('err object @getLatest');
-//        console.log(err);
-////        console.log('row object @getLatest');
-////        console.log(res);
-////        
-//      return callback(err,res)
-//    });
-    
     
       connectDoc('eq_d');
+    console.log(query);
       var di;
       if(typeof query == "object" || typeof query == "array"){
-        di = new Array();
+        device = new Array();
         for(var i =0; i < query.length; i++){
-          di.push({"device_id":query[i].id});
+          device.push(query[i].id);
         }
+        di = {"device_id":{"$in":device}};
       }else{
-        di = [{"device_id":query}];
+        di = {"device_id":query};
       }
+    
       //現在の日づげ取得
       var d = new Date();
       //１０日前の日付取得
       var targetDate = new Date(d.getFullYear(),d.getMonth(),d.getDate()-10);
       //クエリーように文字列か
       var queryDate =  targetDate.toFormat('YYYYMMDDHH24MISS');
-      var selector = {"$or":di,"data.date_id":{"$gt":queryDate}};
+      console.log("di",di);
+      console.log("queryDate",queryDate);
+      var selector = {"$and":[di,{"data.date_id":{"$gt":queryDate}}]};
       var q = {
         "selector":selector,
         "fields": [
@@ -267,13 +249,12 @@ exports.Eq_dEntitity = {
         "sort": [{"device_id":"desc"}],
         "limit": 30
       }
-//      console.log("selector");
-//      console.log(selector);
+      console.log(q);
       cloudant.find(q, function(err, doc) {
 //      console.log("err@Eq_dEntitity.getLatest");
 //      console.log(err);
-//      console.log("doc@Eq_dEntitity.getLatest");
-//      console.log(doc.docs);
+      console.log("doc@Eq_dEntitity.getLatest");
+      console.log(doc.docs);
         if(err){
           return callback(err,doc);
         }
@@ -354,6 +335,44 @@ exports.Eq_dEntitity = {
 //    console.log(res);
       return callback(err,res)
     });
+  },
+  getHistoryDate : function(query, callback){
+    
+      connectDoc('eq_d');
+      var selector = {"$and":[{"device_id":query.di},{"data.date_id":query.date}]};
+      var q = {
+        "selector":selector,
+        "limit": 1
+      }
+//      console.log("selector");
+//      console.log(selector);
+      cloudant.find(q, function(err, doc) {
+//      console.log("err@Eq_dEntitity.getLatest");
+//      console.log(err);
+//      console.log("doc@Eq_dEntitity.getLatest");
+//      console.log(doc.docs);
+        if(err){
+          return callback(err,doc);
+        }
+  //      console.log(doc);
+        return callback(err,doc);
+      });
+  },
+  postHistoryDate : function(query, callback){
+    
+      connectDoc('eq_d');
+      if(!query._id) return callback({"error":"_idがありません"});
+      cloudant.insert(query, function(err, doc) {
+//      console.log("err@Eq_dEntitity.getLatest");
+//      console.log(err);
+//      console.log("doc@Eq_dEntitity.getLatest");
+//      console.log(doc.docs);
+        if(err){
+          return callback(err,doc);
+        }
+  //      console.log(doc);
+        return callback(err,doc);
+      });
   }
 };
 
@@ -366,55 +385,83 @@ exports.Eq_dEntitity = {
  * getHistory：デバイスIDから１年前までの感知データを返却する
  */
 exports.Fl_dEntitity = {
-  //デバイスIDから１日以内に起きた最新の感知データをget
+  /**
+ * デバイスIDから１日以内に起きた最新の感知データを返却する
+ * prams:query U+数字５桁のuser_ID配列または文字列
+ * prams:callback コールバック
+ */
   getLatest : function(query, callback){
-    var q, option;
-    if(typeof query == "object" || typeof query == "array"){
-//      console.log('query is type of array');
-      q = [];
-      for(var i =0; i < query.length; i++){
-        q.push(query[i].id);
+    
+      connectDoc('fl_d');
+      var di;
+      if(typeof query == "object" || typeof query == "array"){
+        di = new Array();
+        for(var i =0; i < query.length; i++){
+          di.push({"device_id":query[i].id});
+        }
+      }else{
+        di = [{"device_id":query}];
       }
-      option = {keys: q,  descending:true};
-    }else{
-      option = {key: query,  descending:true};
-    }
-//      console.log('クエリ情報@M_deviceEntitity');
-//      console.log(option);
-    connectDoc('fl_d');
-      db.view('sc003/latest', option , function (err, res) {
-        console.log('err object @getLatest');
-        console.log(err);
-//        console.log('row object @getLatest');
-//        console.log(res);
-        
-      return callback(err,res)
-    });
+      //現在の日づげ取得
+      var d = new Date();
+      //１０日前の日付取得
+      var targetDate = new Date(d.getFullYear(),d.getMonth(),d.getDate()-10);
+      //クエリーように文字列か
+      var queryDate =  targetDate.toFormat('YYYYMMDDHH24MISS');
+      var selector = {"$or":di,"data.date_id":{"$gt":queryDate}};
+      var q = {
+        "selector":selector,
+        "fields": [
+          "device_id",
+          "data"
+        ],
+        "sort": [{"device_id":"desc"}],
+        "limit": 30
+      }
+//      console.log("selector");
+//      console.log(selector);
+      cloudant.find(q, function(err, doc) {
+//      console.log("err@Eq_dEntitity.getLatest");
+//      console.log(err);
+//      console.log("doc@Eq_dEntitity.getLatest");
+//      console.log(doc.docs);
+        if(err){
+          return callback(err,doc);
+        }
+  //      console.log(doc);
+        return callback(err,doc);
+      });
   },
   
-  //デバイスIDから過去のの感知データをget
+  //デバイスIDから１年前までの感知データをget
   getHistory : function(query, callback){
-    var q, option;
+    var option;
     var d = new Date();
-    var sd = new Date(d.getFullYear() - 1,d.getMonth(),d.getDate());
-    if(typeof query == "object" || typeof query == "array"){
-//      console.log('query is type of array');
-      q = [];
-      for(var i =0; i < query.length; i++){
-        q.push(query[i].id);
-      }
-      option = {startkey: [q, sd], limit:2000,  descending:true};
-    }else{
-      option = {startkey: [query, sd], limit:2000,  descending:true};
-    }
     
+    //スタート時間を取得　アクセス時間から１年前の日付を作成
+    var toDoubleDigits = function(num) {
+      num += "";
+      if (num.length === 1) {
+        num = "0" + num;
+      }
+     return num;     
+    };
+    var sd = String((d.getFullYear() - 1)) + 
+        String(toDoubleDigits(d.getMonth()+1)) + 
+        String(toDoubleDigits(d.getDate()));
+    var today = String((d.getFullYear())) + 
+        String(toDoubleDigits(d.getMonth()+1)) + 
+        String(toDoubleDigits(d.getDate()));
+//    
+//    var sd = new Date(d.getFullYear() - 1,d.getMonth(),d.getDate());
+    
+    option = {startkey: [query, today], endkey:[query, sd], limit:2000,  descending:true};
 //    console.log("query@getLatest");
 //    console.log(option);
     connectDoc('fl_d');
+    
       db.view('sc001/dlist', option , function (err, res) {
 //        console.log('err object @getHistory');
-//        console.e.log('err object @getHistory');
-//        console.e.log('err object @getHistory');
 //        console.log(err);
 //        console.log('row object @getHistory');
 //        console.log(res);
@@ -431,7 +478,73 @@ exports.Fl_dEntitity = {
         }
       return callback(err,obj)
     });
+  },
+  
+  getLogDate : function(query, callback){
+    //リクエスト時間の計算
+    var dt = new Date();
+    dt.setFullYear(query.substr(0,4));
+    dt.setMonth(parseInt(query.substr(4,2)) - 1);
+    dt.setDate(query.substr(6,2));
+    dt.setHours(query.substr(8,2));
+    dt.setMinutes(query.substr(10,2));
+    dt.setSeconds(query.substr(12,2));
+    var sd = new Date(dt.clone().setSeconds(dt.getSeconds() - 150));
+    var ed = new Date(dt.clone().setSeconds(dt.getSeconds() + 150));
+    var startDate = sd.toFormat('YYYYMMDDHH24MISS');
+    var endDate = ed.toFormat('YYYYMMDDHH24MISS');
+    
+    
+    
+    option = {startkey: startDate, endkey:endDate, limit:1000};
+//    console.log("option@getLogDate");
+//    console.log(option);
+    connectDoc('fl_d');
+    db.view('sc002/wlist', option , function (err, res) {
+//    console.log("res@getLogDate");
+//    console.log(res);
+      return callback(err,res)
+    });
+  },
+  getHistoryDate : function(query, callback){
+    
+      connectDoc('fl_d');
+      var selector = {"$and":[{"device_id":query.di},{"data.date_id":query.date}]};
+      var q = {
+        "selector":selector,
+        "limit": 1
+      }
+//      console.log("selector");
+//      console.log(selector);
+      cloudant.find(q, function(err, doc) {
+//      console.log("err@Eq_dEntitity.getLatest");
+//      console.log(err);
+//      console.log("doc@Eq_dEntitity.getLatest");
+//      console.log(doc.docs);
+        if(err){
+          return callback(err,doc);
+        }
+  //      console.log(doc);
+        return callback(err,doc);
+      });
+  },
+  postHistoryDate : function(query, callback){
+    
+      connectDoc('fl_d');
+      if(!query._id) return callback({"error":"_idがありません"});
+      cloudant.insert(query, function(err, doc) {
+//      console.log("err@Eq_dEntitity.getLatest");
+//      console.log(err);
+//      console.log("doc@Eq_dEntitity.getLatest");
+//      console.log(doc.docs);
+        if(err){
+          return callback(err,doc);
+        }
+  //      console.log(doc);
+        return callback(err,doc);
+      });
   }
+  
 };
 
 

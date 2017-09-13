@@ -96,16 +96,26 @@ var deviceList = {
     }
     var userDevice = req.params.id;
     var logdate = req.params.date;
+    var type = req.params.type;
     var reqest = req;
     var response = res;
 //      console.log("logdate@getListLogDate");
 //      console.log(logdate);
-    cloudantUtil.Eq_dEntitity.getLogDate(logdate, function(err, dat){
-      if(err) {return response.status('200').json(err);}
-//      console.log("dat@getLogDate");
-//      console.log(dat);
-      return response.status('200').json(dat);
-    });
+    if(type == 'EQ' || type == 'AL'){
+      cloudantUtil.Eq_dEntitity.getLogDate(logdate, function(err, dat){
+        if(err) {return response.status('200').json(err);}
+  //      console.log("dat@getLogDate");
+  //      console.log(dat);
+        return response.status('200').json(dat);
+      });
+    } else if(type == 'FL'){
+      cloudantUtil.Fl_dEntitity.getLogDate(logdate, function(err, dat){
+        if(err) {return response.status('200').json(err);}
+  //      console.log("dat@getLogDate");
+  //      console.log(dat);
+        return response.status('200').json(dat);
+      });
+    }
   },
   
   

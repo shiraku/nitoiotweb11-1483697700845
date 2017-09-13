@@ -152,7 +152,7 @@ module.exports = function(app) {
   app.get('/api/device_list',function(req, res) {
       deviceList.getList(req,res);
     });
-  app.get('/api/device_list/logdate/:id/:date',function(req, res) {
+  app.get('/api/device_list/logdate/:id/:date/:type',function(req, res) {
       deviceList.getListLogDate(req,res);
     });
   
@@ -174,6 +174,15 @@ module.exports = function(app) {
   //show
   app.get('/api/device_detail/:id',function(req, res) {
       deviceUnit.getDeviceDetail(req,res);
+    });
+    /**
+   * デバイス単体の特定日付のログデータapi
+   * デバイスの特定日付の情報を返す
+   * 履歴は別API（/api/device_history_:type/:id）
+   */
+  //show
+  app.get('/api/device_detail_data/:id/:date/:type',function(req, res) {
+      deviceUnit.getDeviceDetailDate(req,res);
     });
   
     /**

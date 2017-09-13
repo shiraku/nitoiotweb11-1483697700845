@@ -34,7 +34,7 @@
 <md-card>
   <!--現在のステータス-->
 
-      <md-list-item class="md-list-item-2" ng-click="deviceDetailData(earthquakeCurrentData.data.date_id)" ng-hide="!earthquakeCurrentData">
+      <md-list-item class="md-list-item-2" ng-click="deviceDetailData(earthquakeCurrentData.data.date_id,'EQ')" ng-hide="!earthquakeCurrentData">
       <p class="md-body-5">感知あり</p>
       <buttondetail></buttondetail>
     </md-list-item>
@@ -120,7 +120,7 @@
   <md-card>
     <!--現在のステータス-->
 
-      <md-list-item class="md-list-item-2" ng-click="deviceDetailData()" ng-hide="!deviceDetail.thunderCurrentData">
+      <md-list-item class="md-list-item-2" ng-click="deviceDetailData(thunderCurrentData.data.date_id,'FL')" ng-hide="!deviceDetail.thunderCurrentData">
       <p class="md-body-5">感知あり</p>
       <buttondetail></buttondetail>
       </md-list-item>

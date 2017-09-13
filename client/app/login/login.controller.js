@@ -46,7 +46,7 @@
         })
         .then(
           function successCallback(response){
-//            console.log(response);
+            console.log(response);
             if(response.data.authStat){
               $window.location.href = response.data.redirect;
             } else {

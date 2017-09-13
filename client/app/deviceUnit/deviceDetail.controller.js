@@ -94,9 +94,11 @@
             $scope.thunderHistoryViews = $scope.thunderHistoryViews + $scope.nextView;
         };
 
-       $scope.deviceDetailData = function(arg){
+       $scope.deviceDetailData = function(arg,type){
         var di = arg || this.item.date_id;
-         $location.path("/user_"+$routeParams.USER_ID+"/device_"+$routeParams.DEVICE_ID+"/date"+di);
+        var item = type || this.item.type
+        if(item === undefined) item = 'FL';
+          $location.path("/user_"+$routeParams.USER_ID+"/device_"+$routeParams.DEVICE_ID+"/date"+di+"/" + item);
 //         $location.path("/user_u000/device_00000/date20170216105553");
        }
        
