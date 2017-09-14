@@ -1,0 +1,18 @@
+{
+  "name": "livedata",
+  "description": "Website seeding database",
+  "attributes": [
+    {
+      "key" : "1",
+      "type" : "live data",
+      "name" : "live data feed 1",
+      "info" : "DBaSS, MBaSS, IoT"
+    },
+    {
+      "key": "2",
+      "type": "live data",
+      "name": "live data feed 2",
+      "info": "Cloudant, Express, AngularJS, and Node."
+    }
+  ]
+}
