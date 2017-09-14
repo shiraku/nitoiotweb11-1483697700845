@@ -25,21 +25,21 @@
           <li ng-repeat="item in deviceList | filter:query" on-finish-render="deviceInfoFinished">
             <md-card>
               <md-list-item class="md-list-item-2" ng-click="deviceDetail()">
-                <p class="md-body-5">{{item.deviceName}}</p>
+                <p class="md-body-5">{{::item.deviceName}}</p>
                 <buttondetail></buttondetail>
               </md-list-item>
 
               <md-card-content>
                 <!--職場責任者・連絡先-->
                 <div class="md-contentPaddingBottom">
-                  <div class="md-body-1">職場責任者：{{item.responsiblePerson}}</div>
-                  <div class="md-body-1">連絡先：{{item.telNo}}</div>
+                  <div class="md-body-1">職場責任者：{{::item.responsiblePerson}}</div>
+                  <div class="md-body-1">連絡先：{{::item.telNo}}</div>
                   <div class="md-body-1" ng-if="item.status=='感知あり'">発生日時：{{item.date}}</div>
                 </div>
 
                 <!--感知あり/なし-->
                 <div layout="row" layout-wrap class="md-card-blank-top">
-                  <span class="md-body-3">{{item.status}}</span>
+                  <span class="md-body-3">{{::item.status}}</span>
                 </div>
 
                 <!--地震の場合-->
@@ -50,7 +50,7 @@
                     <p flex class="md-body-1">機器異常</p>
                   </div>
                   <div flex="40">
-                    <p flex class="md-body-3" ng-if="item.slope">あり（{{item.slope}}）</p>
+                    <p flex class="md-body-3" ng-if="item.slope">あり（{{::item.slope}}）</p>
                     <p flex class="md-body-3" ng-if="item.slope == 0">なし</p>
                     <p flex class="md-body-3" ng-if="item.commercialBlackout">あり</p>
                     <p flex class="md-body-3" ng-if="!item.commercialBlackout">なし</p>
@@ -87,8 +87,8 @@
                 <ul ng-if="item.commentList != undefined">
                     
                   <li ng-repeat="cl in item.commentList">
-                    <p class="md-body-2" ng-if="!cl.importantFlg">{{cl.comment}}　{{cl.timestamp}}</p>
-                    <p class="md-body-2 importantFlg" ng-if="cl.importantFlg">{{cl.comment}}　{{cl.timestamp}}</p>
+                    <p class="md-body-2" ng-if="!cl.importantFlg">{{::cl.comment}}　{{::cl.timestamp}}</p>
+                    <p class="md-body-2 importantFlg" ng-if="cl.importantFlg">{{::cl.comment}}　{{::cl.timestamp}}</p>
                 </li>
                 </ul>
               </md-card-content>
@@ -102,8 +102,8 @@
                     <dl class="text-center">
                       <dt class="md-body-1">現在</dt>
                       <dd class="nito-env-img"><img src="/assets/images/icon_sunny.svg"></dd>
-                      <dd class="md-headline nito-env-temp">{{env.temperature}}<span class="md-subhead env-temp">℃</span></dd>
-                      <dd class="md-subhead md-main-text">{{env.humidity}}<span class="md-body-1">%</span></dd>
+                      <dd class="md-headline nito-env-temp">{{::env.temperature}}<span class="md-subhead env-temp">℃</span></dd>
+                      <dd class="md-subhead md-main-text">{{::env.humidity}}<span class="md-body-1">%</span></dd>
                     </dl>
                   </div>
                   <div flex="25">
@@ -138,26 +138,26 @@
                   <div flex="25" class="nito-env-datas nito-env-ap" ng-click="envLogData('pressure')">
                     <dl class="text-center">
                       <dt class="md-body-1">気圧</dt>
-                      <dd class="md-body-2">{{env.pressure}}
+                      <dd class="md-body-2">{{::env.pressure}}
                         <span class="md-body-1">hpa</span></dd>
                     </dl>
                   </div>
                   <div flex="25" class="nito-env-datas nito-env-uv" ng-click="envLogData('uvi')">
                     <dl class="text-center">
                       <dt class="md-body-1">紫外線</dt>
-                      <dd class="md-body-2">{{env.uvi}}</dd>
+                      <dd class="md-body-2">{{::env.uvi}}</dd>
                     </dl>
                   </div>
                   <div flex="25" class="nito-env-datas nito-env-di" ng-click="envLogData('discomfortIndex')">
                     <dl class="text-center">
                       <dt class="md-body-1">不快指数</dt>
-                      <dd class="md-body-2">{{env.discomfortIndex}}</dd>
+                      <dd class="md-body-2">{{::env.discomfortIndex}}</dd>
                     </dl>
                   </div>
                   <div flex="25" class="nito-env-datas nito-env-hi" ng-click="envLogData('heatstroke')">
                     <dl class="text-center">
                       <dt class="md-body-1">熱中症指数</dt>
-                      <dd class="md-body-2">{{env.heatstroke}}</dd>
+                      <dd class="md-body-2">{{::env.heatstroke}}</dd>
                     </dl>
                   </div>
                 </div>
@@ -166,7 +166,7 @@
                 <p class="md-body-1">環境汚染</p>
                 <md-list-item ng-click="envLogData('noise')">
                   <p class="md-body-2">騒音</p>
-                  <span class="md-body-1">{{env.noise}} dB</span>
+                  <span class="md-body-1">{{::env.noise}} dB</span>
                   <buttondetail></buttondetail>
                 </md-list-item>
                 <md-list-item ng-click="envLogData('pm25')">
@@ -192,7 +192,7 @@
           <label>グラフの表示期間を選択</label>
           <md-select ng-change="changeItem" ng-model="selectItem">
             <md-option ng-repeat="item in selectItems" value="{{item.value}}">
-              {{item.label}}
+              {{::item.label}}
             </md-option>
           </md-select>
         </md-input-container>
@@ -204,13 +204,13 @@
 
             <md-card>
               <md-list-item class="md-list-item-2" ng-click="deviceDetail()">
-                <p class="md-body-5">{{item.deviceName}}</p>
+                <p class="md-body-5">{{::item.deviceName}}</p>
                 <buttondetail></buttondetail>
               </md-list-item>
               <!--デバイスカード　コンテンツ-->
               <md-card-content>
                 <!--地震データ有りの場合 グラフを表示する-->
-                <div google-chart chart="charts" id={{item.deviceId}} class="google-chart">
+                <div google-chart chart="charts" id={{::item.deviceId}} class="google-chart">
                   <p flex class="md-body-1">地震データなし</p>
                 </div>
               </md-card-content>

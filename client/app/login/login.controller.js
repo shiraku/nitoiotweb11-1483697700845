@@ -20,10 +20,10 @@
 
 //    	alert("$routeParams"+$routeParams.userId)
 
-      
-      $rootScope.success = false;
-      $rootScope.error = false;
-      
+//      
+//      $rootScope.success = false;
+//      $rootScope.error = false;
+//      
       /**
       ***　処理概要：パラメータを取得してリダイレクト先を返却する
       **/
