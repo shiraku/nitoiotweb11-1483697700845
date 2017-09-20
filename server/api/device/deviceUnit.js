@@ -151,7 +151,34 @@ var deviceUnit = {
     var response = res;
     var option = new Object();
     Object.keys(req.body).forEach(function(key){
-      option[key] = req.body[key];
+      option[key] = reqest.body[key];
+      if(key == "deviceName"){
+        var deviceName = reqest.body[key];
+        //デバイスが紐づいているユーザーIDを取得するクエリー
+        cloudantUtil.M_userEntitity.getUserHasDevice(reqest.params.id, function(err, dat){
+//          console.log("updateDeviceBasicInfo getUserHasDevice");
+//          console.log(dat);
+          for(var i = 0; i < dat.length; i++){
+            dat[i].device.forEach(function(element){
+//              console.log("dat[i].device.forEach");
+//              console.log(element);
+              if(element.id == reqest.params.id){
+                element.name = deviceName;
+              }
+            });
+          }
+          console.log("updateDeviceBasicInfo getUserHasDevice");
+          console.log({"docs":dat});
+          cloudantUtil.M_userEntitity.updateUserHasDevice({"docs":dat}, function(err,doc){
+              console.log("M_userEntitity.getUserHasDevice");
+              console.log(doc);
+              console.log("M_userEntitity.getUserHasDevice err");
+              console.log(err);
+          });
+        });
+        
+        
+      }
     });
 //    console.log('userDevice,option@updateDeviceBasicInfo');
 //    console.log(userDevice,option);
@@ -163,6 +190,7 @@ var deviceUnit = {
       if(err) {return response.status('200').send({message:'更新できませんした。', error: true});}
       return response.status('200').send({message:'更新しました。'});
     });
+    
   },
   
   

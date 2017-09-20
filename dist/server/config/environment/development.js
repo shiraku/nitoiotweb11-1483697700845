@@ -7,7 +7,7 @@ module.exports = {
   // Root path of server
   root: path.normalize(__dirname + '/../../..'),
 
-  /*/ //nitoiotweb11-cloudantNoSQLDB
+  /*/ //nitoiotweb11-cloudantNoSQLDB *
   //Fill Cloudant connection credentials
    CHOST: "293adb3b-1a21-4933-a5b3-757ae3299f16-bluemix.cloudant.com",
    CPORT: "443",

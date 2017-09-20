@@ -21,7 +21,10 @@ angular.module('nitoiotweb11App')
 
 
     var adminFlg = document.cookie.split( '; ' )[ 0 ].split( '=' )[ 1 ];
-    var userID = document.cookie.split( '; ' )[ 1 ].split( '=' )[ 1 ];
+    var cookieUID = document.cookie.split( '; ' ).filter(function(element){
+      return (element.split( '=' )[0] == 'user_id');
+    });
+    var userID = cookieUID[0].split( '=' )[1]
 
 
     if(adminFlg=="true"){

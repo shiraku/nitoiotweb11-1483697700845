@@ -112,13 +112,7 @@ module.exports = function(app) {
    */
   app.get('/api/user/',function(req, res) {
       if(!req.user) res.status(500).json({ error: "ログインされていません" });
-      var obj = new Object();
-//      console.log(req.user);
-      obj["name"] = req.user.name;
-      obj["admin_mflg"] = req.user.admin_mflg;
-      obj["device"] = req.user.device;
-      obj["sendto"] = req.user.sendto;
-      res.status(200).json(obj);
+      user.getUser(req,res);
     });
   app.post('/api/user/',function(req, res) {
       user.updateUser(req,res);
@@ -285,6 +279,7 @@ module.exports = function(app) {
   app.post('/api/alert/',function(req, res) {
       user.updateAlert(req,res);
     });
+  
 
 
     /**

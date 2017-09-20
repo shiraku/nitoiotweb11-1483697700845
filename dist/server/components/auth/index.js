@@ -29,9 +29,9 @@ Auth.prototype.init = function(){
     },
     function(userId, password, done) {
       cloudantUtil.M_userEntitity.getUser(userId, function(err, user){
-//          console.log("cloudantUtil.M_userEntitity.getUser");
-//          console.log(err);
-//          console.log(user);
+          console.log("cloudantUtil.M_userEntitity.getUser");
+          console.log(err);
+          console.log(user);
         if(err) {return done(err);}
         if(!user) {
           return done(null, false, {message:'ユーザーIDが正しくありません。' });
@@ -47,18 +47,18 @@ Auth.prototype.init = function(){
   
   //セッションをシリアライズ
   passport.serializeUser(function(user, done){
-//    console.log("serializeUser");
+    console.log("serializeUser");
 //    console.log(done);
-//    console.log(user);
+    console.log(user);
     done(null, user);
   });
   
   
   //セッションをディシリアライズ
   passport.deserializeUser(function(serializeUser, done){
-//    console.log("deserializeUser");
+    console.log("deserializeUser");
 //    console.log(done);
-//    console.log(serializeUser);
+    console.log(serializeUser);
     done(null, serializeUser);
 //      cloudantUtil.M_userEntitity.getUser(serializeUser._id.split("_")[1], function(err, user){
 //          console.log("cloudantUtil.M_userEntitity.getUser");

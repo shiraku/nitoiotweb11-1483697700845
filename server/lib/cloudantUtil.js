@@ -87,14 +87,67 @@ exports.M_userEntitity = {
  * prams:callback コールバック
  */
   getUser : function(query, callback){
+      console.log("getUser query");
+      console.log(query);
     connectDoc('m_user');
+    if(query.match(/muser_/g)) {
+      query = query.split('_')[1];
+    }
     db.get('muser_' + query, function(err, doc) {
+      console.log("getUser");
+      console.log(err);
+      console.log(doc);
       if(err){
+      console.log(err);
         return callback(err);
       }
-//      console.log(doc);
+      console.log(doc);
       return callback(err,doc);
     });
+  },
+  
+  /**
+ * 渡されたデバイスIDから紐づけられたユーザーを全て返却する
+ * prams:deviceId 数字５桁の文字列
+ * prams:callback コールバック
+ */
+  getUserHasDevice : function(deviceId, callback){
+    connectDoc('m_user');
+    
+    var q = {
+        "selector": {
+          "device": {
+          "$elemMatch" : {
+              "id": deviceId
+          }
+          }
+        }
+      };
+    
+      cloudant.find(q, function(err, doc) {
+        if(err){
+          return callback(err,doc.docs);
+        }
+  //      console.log(doc);
+        return callback(err,doc.docs);
+      });
+  },
+  
+  /**
+ * 渡されたデバイスIDから紐づけられたユーザーを全て返却する
+ * prams:deviceId 数字５桁の文字列
+ * prams:callback コールバック
+ */
+  updateUserHasDevice : function(query, callback){
+    connectDoc('m_user');
+    
+      cloudant.bulk(query, function(err, doc) {
+        if(err){
+          return callback(err,doc);
+        }
+  //      console.log(doc);
+        return callback(err,doc);
+      });
   },
   
   /**

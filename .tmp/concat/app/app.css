@@ -1,0 +1,667 @@
+
+/**
+ * Bootstrap Fonts
+ */
+
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('../bower_components/bootstrap/fonts/glyphicons-halflings-regular.eot');
+    src: url('../bower_components/bootstrap/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
+    url('../bower_components/bootstrap/fonts/glyphicons-halflings-regular.woff') format('woff'),
+    url('../bower_components/bootstrap/fonts/glyphicons-halflings-regular.ttf') format('truetype'),
+    url('../bower_components/bootstrap/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+/**
+ *Font Awesome Fonts
+ */
+
+@font-face {
+    font-family: 'FontAwesome';
+    src: url('../bower_components/font-awesome/fonts/fontawesome-webfont.eot?v=4.1.0');
+    src: url('../bower_components/font-awesome/fonts/fontawesome-webfont.eot?#iefix&v=4.1.0') format('embedded-opentype'),
+    url('../bower_components/font-awesome/fonts/fontawesome-webfont.woff?v=4.1.0') format('woff'),
+    url('../bower_components/font-awesome/fonts/fontawesome-webfont.ttf?v=4.1.0') format('truetype'),
+    url('../bower_components/font-awesome/fonts/fontawesome-webfont.svg?v=4.1.0#fontawesomeregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/**
+ * App-wide Styles
+ */
+
+.browsehappy {
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
+}
+body{
+  background-color:#f8f8f8;
+}
+.thing-form {
+    margin: 20px 0;
+}
+
+#banner {
+    border-bottom: none;
+    margin-top: -20px;
+}
+
+#banner h1 {
+    font-size: 60px;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+
+.hero-unit {
+    position: relative;
+    padding: 30px 15px;
+    color: #F5F5F5;
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    background: #4393B9;
+}
+
+.footer {
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 70px;
+    border-top: 1px solid #E5E5E5;
+}
+
+.navbar-text {
+    margin-left: 15px;
+}
+
+.md-toolbar-tools h1 {
+    font-size: inherit;
+    font-weight: inherit;
+    margin: inherit;
+}
+
+.md-padding {
+    min-height: 180px; }
+
+    .navBardemoBasicUsage md-content .ext-content {
+  padding: 50px;
+  margin: 20px;
+  background-color: #FFF2E0; }
+
+
+  ul{
+    list-style:none;
+    -webkit-padding-start: 0;
+  }
+
+  .md-subhead{
+    font-family: .HiraKakuInterface-W7;
+    font-size: 17px;
+    color: rgba(0,0,0,0.87);
+    letter-spacing: 0;
+    line-height: 24px;
+  }
+
+
+.md-input {
+  font-size: 16px;
+}
+
+
+/**カスタム*********************************/
+
+  /**ツールバー**/
+   /***TODO #d0021bに変える**/
+  /*md-content .md-toolbar-tools,.md-toolbar-tools{
+    background-color: #4D6BD0;
+    color: white;
+  }
+
+  .md-toolbar-tools input{
+    background: none;
+    border: none;
+  }
+
+
+  md-sidenav md-toolbar{
+
+  }*/
+
+  /**カード**/
+
+  /**カードタイトル　テキスト**/
+  /*md-card md-card-title md-card-title-text .md-subhead{
+    padding-top: 0px;
+    font-family: HiraKakuInterface-W7;
+    font-size: 17px;
+    color: rgba(0,0,0,0.87);
+    letter-spacing: 0;
+    line-height: 50px;
+    font-weight: bold;
+
+  }*/
+  /*md-card md-card-title md-card-title-text:only-child .md-subhead{
+      padding-top: 0px;
+      font-family: HiraKakuInterface-W7;
+      font-size: 17px;
+      color: rgba(0,0,0,0.87);
+      letter-spacing: 0;
+      line-height: 50px;
+      padding-left: 15px;
+      font-weight: bold;
+  }*/
+
+    /*.md-subhead2{
+    font-family: .HiraKakuInterface-W3;
+    font-size: 17px;
+    color: rgba(0,0,0,0.87);
+    letter-spacing: 0;
+    line-height: 24px;
+    }
+*/
+
+
+  /**カード**/
+  /*md-card md-card-content{
+    border-bottom: 1px solid #E3E3E3;
+    padding-top: 16px !important;
+  }
+
+  .container{
+     margin-right: 0;
+     margin-left: 0;
+  }
+
+  .navbar-brand{
+    font-family: .HiraKakuInterface-W3;
+    font-size: 20px;
+    color: rgba(0,0,0,0.87);
+    padding: 12px 15px;
+    letter-spacing: 0;
+    line-height: 28px;
+  }
+  .navbar{
+    margin-bottom:0;
+    box-shadow: 0 0 4px 0 rgba(0,0,0,0.12), 0 4px 4px 0 rgba(0,0,0,0.24);
+  }*/
+
+  /**TODO きちんと表示されるように**/
+  /*md-input-container{
+    padding-top: 22px;
+    padding-left: 30px;
+    padding-bottom:0;
+    margin: 0;
+  }*/
+
+  /*md-input-container input{
+  border-bottom: 1px solid rgb(255, 255, 255);
+  }
+
+  .md-contentPaddingBottom{
+    padding-bottom: 20px;
+  }
+
+  .md-display-3{
+    font-family: .HiraKakuInterface-W7;
+    font-size: 64px;
+    color: rgba(0,0,0,0.87);
+    line-height: 64px
+  }*/
+  /**GoogleMAP**/
+  /*.map .angular-google-map-container {
+  	height: 600px;
+  }
+  .mapDetail .angular-google-map-container {
+  	height: 200px;
+  }
+
+  .google-chart{
+    height: 300px;
+  }
+
+  .md-docs-dark-theme{
+      margin-top: 4px;
+}
+
+  ul{
+    padding-left: 0;
+  }*/
+
+
+  /**ナビバー**********************************************************/
+  /**ハンバーガーメニューー**/
+  .material-icons{
+    opacity: 0.54;
+  }
+  /**ナビバー背景**/
+  .commonNavbar{
+    background: #F5F5F5 !important;
+    box-shadow: 0 0 4px 0 rgba(0,0,0,0.12), 0 4px 4px 0 rgba(0,0,0,0.24);
+  }
+  /**ナビバー位置**/
+  .navbar{
+    margin-bottom: 0px
+  }
+  /**ナビバーテキスト**/
+  .md-toolbar-tools h2{
+    font-family: .HiraKakuInterface-W3;
+    font-size: 20px;
+    color: rgba(0,0,0,0.87);
+    letter-spacing: 0;
+    line-height: 28px;
+    padding-left: 15px;
+  }
+
+  /**各ページ情報バー**********************************************************/
+  .md-toolbar-tools{
+    /*background: #526CC9;*/
+/*    background: #b31326;*/
+    background: #bd1b39;
+  }
+  /* 基本情報: */
+  .md-toolbar-tools h3{
+    font-family: .HiraKakuInterface-W3;
+    font-size: 20px;
+    color: #FFFFFF;
+    line-height: 28px;
+  }
+
+  /**カード*******************************************************************/
+
+
+  md-card{
+    margin-bottom: 40px;
+  }
+
+  /**デバイス一覧用**/
+  ul md-card{
+    margin-bottom: 20px;
+  }
+
+  /**コンテント**/
+  md-card-content{
+    border-bottom: 1px solid #E3E3E3;
+    /*padding-top: 16px !important;*/
+  }
+
+  md-card md-card-title md-card-title-text{
+    border-bottom: 1px solid #E3E3E3;
+    /*padding: 0px 0px 0px;*/
+  }
+
+
+  /***レイアウト用空白***/
+  .md-card-blank-top{
+    margin-top: 25px;
+  }
+
+  /**文字**/
+  .md-body-1{
+    font-family: .HiraKakuInterface-W3;
+    font-size: 14px;
+    color: rgba(0,0,0,0.54);
+    line-height: 24px;
+  }
+
+  .md-body-2{
+    font-weight: 600;
+  }
+
+  .md-body-3{
+    font-family: .HiraKakuInterface-W3;
+    font-size: 17px;
+    color: rgba(0,0,0,0.87);
+    letter-spacing: 0;
+    line-height: 24px;
+  }
+
+    .md-body-4{
+    font-family: .HiraKakuInterface-W3;
+    font-size: 17px;
+    color: rgba(0,0,0,0.86);
+    margin: 17px 0px;
+  }
+
+  .md-body-5{
+      /* 感知あり: */
+    font-family: .HiraKakuInterface-W7;
+    font-size: 17px;
+    color: rgba(0,0,0,0.87);
+    letter-spacing: 0;
+    line-height: 24px;
+    font-weight: bold;      /**オリジナル**/
+  }
+
+  .md-body-6{
+      /* 震度・雷 */
+    font-family: .HiraKakuInterface-W7;
+    font-size: 64px;
+    color: rgba(0,0,0,0.87);
+    line-height: 64px;
+    font-weight: bold;       /**オリジナル**/
+  }
+
+  .md-body-7{
+    font-family: .HiraKakuInterface-W3;
+    font-size: 20px;
+    color: rgba(0,0,0,0.87);
+    letter-spacing: 0;
+    line-height: 24px;
+  }
+.md-body-8{
+    /* ホームチェッカー: */
+  font-family: .HiraKakuInterface-W7;
+  font-size: 20px;
+  color: rgba(0,0,0,0.87);
+  letter-spacing: 0;
+  line-height: 24px;
+  font-weight: bold;
+}
+
+  md-list-item .md-list-item-inner{
+    border-bottom: solid 1px #E3E3E3;
+  }
+
+  .md-list-item-2{
+    border-bottom: solid 1px #E3E3E3;
+  }
+
+  .md-list-item-2 .md-list-item-inner{
+    border-bottom: none;
+  }
+
+/**タイポグラフィ*******************************************************************/
+.md-main-text{
+  color:rgba(0,0,0,.5);
+}
+
+/**ボタン*******************************************************************/
+
+  /* ボタン */
+  .md-text-button-1{
+  border-radius: 2px;
+  max-width: 150px;
+  width: 150px;
+  }
+  .md-text-button-2{
+  background: #D0011B;
+  border-radius: 2px;
+  max-width: 150px;
+  width: 150px;
+  }
+
+  /* ボタンのテキスト　*/
+  .md-ripple-container{
+    font-family: .HiraKakuInterface-W3;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+  }
+  .md-ripple-container-1{
+  color: #D0011B;
+}
+  .md-ripple-container-2{
+    color: #FFFFFF;
+  }
+
+  buttondetail {
+    line-height: 0px;
+}
+  /* スイッチ */
+  .nito-switch-label span {
+    float:left;
+    margin: 16px 16px -16px 16px;
+    line-height: 30px;
+  }
+  .nito-switch-label md-switch {
+    margin: 16px 0 -16px 0;
+  }
+  .nito-switch-label .nito-default .md-bar {
+    background-color: rgb(158,158,158);
+  }
+  .nito-switch-label .nito-default .md-thumb {
+    background-color: #ffffff;
+  }
+
+/**ダイアログ*******************************************************************/
+ md-dialog md-dialog-content .md-prompt-input-container{
+   margin-bottom: 0px;
+ }
+
+
+ md-dialog md-dialog-content .md-prompt-input-container-2{
+   margin-top: 0;
+ }
+
+ .md-button.md-default-theme.md-primary, .md-button.md-primary{
+   color: #D0011B;
+ }
+
+ .latlonEdit{
+     max-width: 100%;
+   }
+
+/**GoogleMAP*******************************************************************/
+
+ .mapEdit .angular-google-map-container {
+  height: 300px;
+  width:300px;
+ }
+
+ #map-deviceList {
+height: 500px ;
+}
+
+#map-detailData {
+ height: 200px ;
+}
+
+/**ログイン画面*******************************************************************/
+
+ /* app bar bg: */
+ .loginbar{
+background: #F5F5F5;
+box-shadow: 0 0 4px 0 rgba(0,0,0,0.12), 0 4px 4px 0 rgba(0,0,0,0.24);
+height: 240px;
+margin: 0;
+}
+
+ .loginContent{
+background: #FFFFFF;
+box-shadow: 0 0 2px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24);
+border-radius: 2px;
+border: 1px solid rgba(0,0,0,0.12);
+position: absolute;
+position: relative;
+top: -100px;
+padding: 50px;
+}
+
+ .loginContent md-input-container{
+   margin-bottom: 0px;
+ }
+
+.loginText{
+  text-align: center;
+  padding: 25px;
+}
+
+.logoContent{
+  text-align: center;
+  padding: 40px 70px;
+}
+
+.alert{
+  position: fixed;
+  width: 100%;
+  top:0;
+  margin-bottom: 0px;
+  z-index: 9999;
+}
+
+md-menu-content{
+  padding : 0;
+}
+
+.mailId{
+      text-align: right;
+}
+
+/***Datepicker***************/
+md-datepicker{
+width: 100%;
+display: block;
+padding-right: 0;
+}
+
+
+/*
+.md-datepicker-input-container{
+    display: table-cell;
+}
+
+.md-datepicker-triangle-button{
+    top: 0;
+}
+
+.md-datepicker-triangle-button.md-button.md-icon-button{
+    margin-right: 12px;
+    margin-top: 15px;
+}
+
+.md-datepicker-calendar-icon{
+    margin-left: 0;
+}*/
+
+.md-datepicker-button{
+  margin-left: 0px !important;
+  padding-left: 0px !important;
+  display: table-cell;
+}
+
+
+.nito-datepicker {
+  display: block;
+  margin-right: -18px;
+}
+
+.nito-datepicker > md-datepicker .md-datepicker-input-container{
+  left: auto;
+  width: calc(100% - 76px);
+}
+
+.nito-datepicker > md-datepicker .md-datepicker-triangle-button{
+  right: 6px;
+}
+
+
+
+/****セレクトボックス****************/
+
+.md-select-icon{
+    color: rgba(0,0,0,0.38);
+}
+
+/****検索ボックス****************/
+
+.searchbox{
+  padding-top: 20px;
+}
+.searchbox md-input-container{
+    width: 100%;
+}
+
+.searchbox md-input-container input{
+  font-family: .HiraKakuInterface-W3;
+  font-size: 20px;
+  color: #FFFFFF;
+  line-height: 28px;
+}
+.searchbox md-input-container:not(.md-input-invalid).md-input-focused .md-input{
+  border-color:rgba(256,256,256,0.5); 
+}
+
+
+/****サイドナビ****************/
+md-sidenav{
+  top: 57px !important;
+  background: #404040;
+}
+
+md-sidenav md-list-item p{
+  color: white !important;
+}
+
+/***デバイス詳細データ****************************/
+.importantFlg{
+  color: red
+}
+
+/**Progress/Loading**/
+md-progress-circular {
+  margin: 300px auto;
+}
+
+.modal-content{
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+
+/***環境センサー****************************/
+.nito-env-img {
+  height: 37px;
+}
+.nito-env-temp {
+  color:#D06101;
+}
+.nito-env-data {
+  padding: 0;
+}
+.nito-env-data .nito-env-datas{
+  border-right: solid 1px #E3E3E3;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+.nito-env-data dl{
+  margin-bottom: 0;
+}
+.nito-env-data .nito-env-datas:last-child {
+  border-right: none 0px #fff;
+}
+.nito-env-ap{
+  background: url('/assets/images/icon_ap.svg') 0 0 no-repeat;
+}
+.nito-env-uv{
+  background: url('/assets/images/icon_uv.svg') 0 0 no-repeat;
+}
+.nito-env-di{
+  background: url('/assets/images/icon_di.svg') 0 0 no-repeat;
+}
+.nito-env-hi{
+  background: url('/assets/images/icon_hi.svg') 0 0 no-repeat;
+}
+.modal-primary .modal-header,
+.modal-info .modal-header,
+.modal-success .modal-header,
+.modal-warning .modal-header,
+.modal-danger .modal-header {
+  color: #fff;
+  border-radius: 5px 5px 0 0;
+}
+.modal-primary .modal-header {
+  background: #428bca;
+}
+.modal-info .modal-header {
+  background: #5bc0de;
+}
+.modal-success .modal-header {
+  background: #5cb85c;
+}
+.modal-warning .modal-header {
+  background: #f0ad4e;
+}
+.modal-danger .modal-header {
+  background: #d9534f;
+}

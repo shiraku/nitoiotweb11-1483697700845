@@ -101,6 +101,6 @@
           $location.path("/user_"+$routeParams.USER_ID+"/device_"+$routeParams.DEVICE_ID+"/date"+di+"/" + item);
 //         $location.path("/user_u000/device_00000/date20170216105553");
        }
-       
+      
 
     }]);

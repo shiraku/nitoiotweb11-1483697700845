@@ -17,6 +17,29 @@ var app = express();
  *************************************************/
 var user = {
   /**
+ * ユーザー情報の取得
+ * prams:req express requestオブジェクト
+ * prams:res express responseオブジェクト
+ */
+  getUser : function(req,res) {
+    if(!req.user) {
+      return res.status('200').json({ error: "ログインされていません" });
+    }
+    
+//    console.log("req.user.sendto@updateSendtoUser");
+//    console.log(req.user.sendto);
+//    console.log("req.body@updateUser");
+//    console.log(req.body);
+    var userId = req.user._id;
+    var reqest = req;
+    var response = res;
+    
+    cloudantUtil.M_userEntitity.getUser(userId, function(err, dat){
+      if(err) {return response.status('200').json(err);}
+      return response.status('200').json(dat);
+    });
+  },
+  /**
  * ユーザー情報の更新と追加api file
  * prams:req express requestオブジェクト
  * prams:res express responseオブジェクト
