@@ -90,9 +90,9 @@
   <p class="md-body-1">地震履歴</p>
 
         <md-list-item class="md-secondary" ng-repeat="item in earthquakeHistoryList | limitTo: earthquakeHistoryViews: 0" ng-click="deviceDetailData()">
-            <p class="md-body-1">{{item.date}}</p>
-            <span class="md-body-1">{{item.datas[0].value}}</span>
-            <span class="md-body-1" ng-if="item.datas[0].value == undefined">-</span>
+            <p class="md-body-1">{{item.data.date}}</p>
+            <span class="md-body-1">{{item.data.datas[0].value}}</span>
+            <span class="md-body-1" ng-if="item.data.datas[0].value == undefined">{{item.data.sdata.S}}</span>
             <buttondetail></buttondetail>
         </md-list-item>
         <p flex class="md-body-3" ng-if="earthquakeHistoryList.length == 0 || earthquakeHistoryList == undefined">履歴なし</p>

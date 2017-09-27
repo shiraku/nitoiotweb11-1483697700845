@@ -1605,112 +1605,109 @@ function dialogShow(ev,param){
 
   }]);
 
-
 'use strict';
 
-    angular.module('nitoiotweb11App')
-    .controller('DeviceDetailCtrl',['$rootScope','$routeParams','$scope','$http','$location', function ($rootScope,$routeParams,$scope, $http, $location) {
+angular.module('nitoiotweb11App')
+  .controller('DeviceDetailCtrl', ['$rootScope', '$routeParams', '$scope', '$http', '$location', function ($rootScope, $routeParams, $scope, $http, $location) {
 
-      //デバイス情報
-      $http.get('/api/device_detail/'+$routeParams.DEVICE_ID)
+    //デバイス情報
+    $http.get('/api/device_detail/' + $routeParams.DEVICE_ID)
       .then(function successCallback(response) {
-//        console.log("/api/device_detail/"+$routeParams.DEVICE_ID+" successfully");
-//        console.log(response);
+        //        console.log("/api/device_detail/"+$routeParams.DEVICE_ID+" successfully");
+        //        console.log(response);
 
         var obj = response.data;
 
         //地震の最新データある場合のみObjectにpush
-        if(obj.earthquakeCurrentData){
+        if (obj.hasOwnProperty("earthquakeCurrentData")) {
           $scope.earthquakeCurrentData = obj.earthquakeCurrentData;
         }
         //雷の最新データある場合のみObjectにpush
-        if(obj.thunderCurrentData){
+        if (obj.hasOwnProperty("thunderCurrentData")) {
           $scope.thunderCurrentData = obj.thunderCurrentData;
         }
 
         //ヘッダータイトル
         $scope.navtitle = obj.deviceName;
 
-        $scope.deviceDetail =
-        {
-             deviceId       :obj._id,
-             deviceName     :obj.deviceName,
-             responsiblePerson :obj.responsiblePerson,
-             telNo          :obj.telNo,
-             address        :obj.address,
-             memo           :obj.memo
-       };
+        $scope.deviceDetail = {
+          deviceId: obj._id,
+          deviceName: obj.deviceName,
+          responsiblePerson: obj.responsiblePerson,
+          telNo: obj.telNo,
+          address: obj.address,
+          memo: obj.memo
+        };
 
         //TODO コメントを取得する
-//            console.log('/api/comment/related/DEV_' + $routeParams.DEVICE_ID + '_' + obj.earthquakeCurrentData.date_id + '/');
-        $http.get('/api/comment/related/DEV_' + $routeParams.DEVICE_ID + '_' + obj.earthquakeCurrentData.data.date_id + '/')
-          .then(function successCallback(response) {
-//            console.log("/api/comment/related/ successfully");
-//            console.log(response);
-            if(response.data){
+        //            console.log('/api/comment/related/DEV_' + $routeParams.DEVICE_ID + '_' + obj.earthquakeCurrentData.date_id + '/');
+        if (obj.hasOwnProperty("earthquakeCurrentData")) {
+          $http.get('/api/comment/related/DEV_' + $routeParams.DEVICE_ID + '_' + obj.earthquakeCurrentData.data.date_id + '/')
+            .then(function successCallback(response) {
+              //            console.log("/api/comment/related/ successfully");
+              //            console.log(response);
+              if (response.data) {
                 $scope.commentList = response.data;
-            }
-          });
+              }
+            }, function errorCallback(response) {
+              console.error("error in /api/device_detail/00000");
+            });
+        }
 
-
-      }, function errorCallback(response) {
-        console.error("error in /api/device_detail/00000");
       });
-
-
-      //地震履歴情報
-      $http.get('/api/device_history_eq/'+$routeParams.DEVICE_ID)
+    //地震履歴情報
+    $http.get('/api/device_history_eq/' + $routeParams.DEVICE_ID)
       .then(function successCallback(response) {
-//        console.log("/api/device_history_eq/"+$routeParams.DEVICE_ID+" successfully");
-//        console.log(response);
+        //        console.log("/api/device_history_eq/"+$routeParams.DEVICE_ID+" successfully");
+        //        console.log(response);
 
-        $scope.earthquakeHistoryList = response.data.data;
-//        console.log($scope.earthquakeHistoryList);
+        $scope.earthquakeHistoryList = response.data;
+        //        console.log($scope.earthquakeHistoryList);
 
       }, function errorCallback(response) {
-        console.error("error in /api/device_history_eq/"+$routeParams.DEVICE_ID);
+        console.error("error in /api/device_history_eq/" + $routeParams.DEVICE_ID);
       });
-      //雷履歴情報
-      $http.get('/api/device_history_fl/'+$routeParams.DEVICE_ID)
+    //雷履歴情報
+    $http.get('/api/device_history_fl/' + $routeParams.DEVICE_ID)
       .then(function successCallback(response) {
-//        console.log("/api/device_history_fl/"+$routeParams.DEVICE_ID+" successfully");
-//        console.log(response);
+        //        console.log("/api/device_history_fl/"+$routeParams.DEVICE_ID+" successfully");
+        //        console.log(response);
 
-        $scope.thunderHistoryList = response.data.data;
-//        console.log($scope.thunderHistoryList);
+        $scope.thunderHistoryList = response.data;
+        //        console.log($scope.thunderHistoryList);
 
       }, function errorCallback(response) {
-        console.error("error in /api/device_history_fl/"+$routeParams.DEVICE_ID);
+        console.error("error in /api/device_history_fl/" + $routeParams.DEVICE_ID);
       });
 
 
-      //TODO さらに見るボタンが動かないので、修正する。
-        $scope.earthquakeHistoryViews = 10; // 地震情報表示する件数(初期表示件数を指定)
-        $scope.thunderHistoryViews = 10; //　雷情報表示する件数(初期表示件数を指定)
-        $scope.nextView = 10; // 地震&雷情報もっと見るをクリックしたときに表示する数
+    //TODO さらに見るボタンが動かないので、修正する。
+    $scope.earthquakeHistoryViews = 10; // 地震情報表示する件数(初期表示件数を指定)
+    $scope.thunderHistoryViews = 10; //　雷情報表示する件数(初期表示件数を指定)
+    $scope.nextView = 10; // 地震&雷情報もっと見るをクリックしたときに表示する数
 
-        // 地震情報さらに見るクリック時
-        $scope.earthquakeHistoryMoreClick = function() {
-            $scope.moreCount++;
-            $scope.earthquakeHistoryViews = $scope.earthquakeHistoryViews + $scope.nextView;
-        };
+    // 地震情報さらに見るクリック時
+    $scope.earthquakeHistoryMoreClick = function () {
+      $scope.moreCount++;
+      $scope.earthquakeHistoryViews = $scope.earthquakeHistoryViews + $scope.nextView;
+    };
 
-        // 雷情報さらに見るクリック時
-        $scope.thunderHistoryMoreClick = function() {
-            $scope.moreCount++;
-            $scope.thunderHistoryViews = $scope.thunderHistoryViews + $scope.nextView;
-        };
+    // 雷情報さらに見るクリック時
+    $scope.thunderHistoryMoreClick = function () {
+      $scope.moreCount++;
+      $scope.thunderHistoryViews = $scope.thunderHistoryViews + $scope.nextView;
+    };
 
-       $scope.deviceDetailData = function(arg,type){
-        var di = arg || this.item.date_id;
-        var item = type || this.item.type
-        if(item === undefined) item = 'FL';
-          $location.path("/user_"+$routeParams.USER_ID+"/device_"+$routeParams.DEVICE_ID+"/date"+di+"/" + item);
-//         $location.path("/user_u000/device_00000/date20170216105553");
-       }
-      
+    $scope.deviceDetailData = function (arg, type) {
+      var di = arg || this.item.date_id;
+      var item = type || this.item.type
+      if (item === undefined) item = 'FL';
+      $location.path("/user_" + $routeParams.USER_ID + "/device_" + $routeParams.DEVICE_ID + "/date" + di + "/" + item);
+      //         $location.path("/user_u000/device_00000/date20170216105553");
+    }
 
-    }]);
+
+  }]);
 
 
 'use strict';
@@ -2896,7 +2893,7 @@ $scope.mailAddressDelete = function (ev){
         })
         .then(
           function successCallback(response){
-            console.log(response);
+//            console.log(response);
             if(response.data.authStat){
               $window.location.href = response.data.redirect;
             } else {
@@ -3189,7 +3186,7 @@ angular.module('nitoiotweb11App').run(['$templateCache', function($templateCache
 
 
   $templateCache.put('app/deviceUnit/deviceDetail.html',
-    "<div ng-controller=DeviceDetailCtrl ng-cloak=\"\" class=navBardemoBasicUsage><!--ヘッダー読み込み--><navitop></navitop><!-- <md-content class=\"md-padding\"> --><!--基本情報--><div class=md-toolbar-tools><h3 class=\"ng-binding ng-isolate-scope\">基本情報</h3></div><md-card><md-card-content><md-card-title-text><span class=md-body-5>{{deviceDetail.deviceName}}</span></md-card-title-text></md-card-content><md-card-content><p class=md-subhead>職場責任者：{{deviceDetail.responsiblePerson}}</p><p class=md-subhead>連絡先：{{deviceDetail.telNo}}</p><p class=md-subhead>住所：{{deviceDetail.address}}</p><p class=md-subhead>メモ：{{deviceDetail.memo}}</p></md-card-content></md-card><!--地震--><div class=md-toolbar-tools><h3 class=\"ng-binding ng-isolate-scope\">地震</h3></div><md-card><!--現在のステータス--><md-list-item class=md-list-item-2 ng-click=\"deviceDetailData(earthquakeCurrentData.data.date_id,'EQ')\" ng-hide=!earthquakeCurrentData><p class=md-body-5>感知あり</p><buttondetail></buttondetail></md-list-item><md-list-item class=md-list-item-2 ng-hide=earthquakeCurrentData><p class=md-body-5>感知なし</p></md-list-item><!--デバイスカード　コンテンツ--><md-card-content ng-hide=!earthquakeCurrentData><!--地震の場合--><p flex class=md-body-1>発生日時：{{earthquakeCurrentData.data.date}}</p><div layout=row layout-wrap><div flex=25><p flex class=md-body-1>傾き</p><p flex class=md-body-1>商用停電</p><p flex class=md-body-1>機器異常</p></div><div flex=40><p flex class=md-body-3 ng-if=earthquakeCurrentData.data.datas.slope>あり（{{earthquakeCurrentData.datas.slope}}）</p><p flex class=md-body-3 ng-if=\"earthquakeCurrentData.data.datas.slope == 0\">なし</p><p flex class=md-body-3 ng-if=earthquakeCurrentData.data.datas.commercialBlackout>あり</p><p flex class=md-body-3 ng-if=!earthquakeCurrentData.data.datas.commercialBlackout>なし</p><p flex class=md-body-3 ng-if=earthquakeCurrentData.data.datas.equipmentAbnormality>あり</p><p flex class=md-body-3 ng-if=!earthquakeCurrentData.data.datas.equipmentAbnormality>なし</p></div><div><div flex class=md-body-1>震度</div><div flex class=md-body-6>{{earthquakeCurrentData.data.datas[0].seismicIntensity}}</div></div></div></md-card-content><md-card-content ng-hide=\"commentList.length == 0 || commentList == undefined\"><p class=md-body-1>コメント・連絡事項</p><div layout=row layout-wrap><ul><li ng-repeat=\"item in commentList\"><p class=md-body-2 ng-if=!item.value.importantFlg>{{item.value.comment}}　{{item.value.timestamp}}</p><p class=\"md-body-2 importantFlg\" ng-if=item.value.importantFlg>{{item.value.comment}}　{{item.value.timestamp}}</p></li></ul></div></md-card-content><!--TODO メディア速報表示させる---><md-card-content ng-hide=\"earthquakeCurrentData.datas.mediaNewsletter == undefined\"><p class=md-body-1>メディア速報</p><p class=md-body-2>気象庁公報：震度{{earthquakeCurrentData.datas.mediaNewsletter[0].japanMeteorologicalAgency}}</p><p class=md-body-2>長周期地震動階級：{{earthquakeCurrentData.datas.mediaNewsletter[0].longPeriodSeismicActivityClass}}</p></md-card-content><!--地震履歴--><md-card-content><p class=md-body-1>地震履歴</p><md-list-item class=md-secondary ng-repeat=\"item in earthquakeHistoryList | limitTo: earthquakeHistoryViews: 0\" ng-click=deviceDetailData()><p class=md-body-1>{{item.date}}</p><span class=md-body-1>{{item.datas[0].value}}</span> <span class=md-body-1 ng-if=\"item.datas[0].value == undefined\">-</span><buttondetail></buttondetail></md-list-item><p flex class=md-body-3 ng-if=\"earthquakeHistoryList.length == 0 || earthquakeHistoryList == undefined\">履歴なし</p><div layout layout-align=center><md-button class=\"md-accent md-button md-ink-ripple\" type=button ng-click=earthquakeHistoryMoreClick() ng-transclude=\"\" ng-hide=\"earthquakeHistoryViews >= earthquakeHistoryList.length  || earthquakeHistoryList == undefined\"><div class=md-ripple-container>さらに表示</div></md-button></div></md-card-content></md-card><!--雷--><div class=md-toolbar-tools><h3 class=\"ng-binding ng-isolate-scope\">雷</h3></div><md-card><!--現在のステータス--><md-list-item class=md-list-item-2 ng-click=\"deviceDetailData(thunderCurrentData.data.date_id,'FL')\" ng-hide=!deviceDetail.thunderCurrentData><p class=md-body-5>感知あり</p><buttondetail></buttondetail></md-list-item><md-list-item class=md-list-item-2 ng-hide=deviceDetail.thunderCurrentData><p class=md-body-5>感知なし</p></md-list-item><!--デバイスカード　コンテンツ--><md-card-content ng-hide=!deviceDetail.thunderCurrentData><p flex class=md-body-1>発生日時：{{deviceDetail.thunderCurrentData.date}}</p><div layout=row layout-wrap><div flex=25><p flex class=md-body-1>漏電</p><p flex class=md-body-1>商用停電</p><p flex class=md-body-1>機器異常</p></div><div flex=40><p flex class=md-body-3 ng-if=thunderCurrentData.datas.leakage>あり</p><p flex class=md-body-3 ng-if=!thunderCurrentData.datas.leakage>なし</p><p flex class=md-body-3 ng-if=thunderCurrentData.datas.commercialBlackout>あり</p><p flex class=md-body-3 ng-if=!thunderCurrentData.datas.commercialBlackout>なし</p><p flex class=md-body-3 ng-if=thunderCurrentData.datas.equipmentAbnormality>あり</p><p flex class=md-body-3 ng-if=!thunderCurrentData.datas.equipmentAbnormality>なし</p></div><div><div flex class=md-body-1>雷</div><div flex class=md-body-6>{{thunderCurrentData.power}}</div></div></div></md-card-content><md-card-content ng-hide=\"thunderCurrentData.datas.commentList == undefined\"><p class=md-body-1>コメント・連絡事項</p><div layout=row layout-wrap><ul><li ng-repeat=\"item in thunderCurrentData.commentList\"><p class=md-body-2>{{item.comment}}　{{item.commentDate}}</p></li></ul></div></md-card-content><md-card-content ng-hide=\"thunderCurrentData.datas.mediaNewsletter == undefined\"><!-- <div layout=\"row\" layout-wrap> --><p class=md-body-1>メディア速報</p><p class=md-body-2>気象庁公報：{{thunderCurrentData.mediaNewsletter[0].japanMeteorologicalAgency}}</p><p class=md-body-2>長周期地震動階級{{thunderCurrentData.mediaNewsletter[0].longPeriodSeismicActivityClass}}</p><!-- </div> --></md-card-content><!--雷履歴--><md-card-content><p class=md-body-1>雷履歴</p><md-list-item class=md-secondary ng-repeat=\"item in thunderHistoryList | limitTo: thunderHistoryViews: 0\" ng-click=deviceDetailData()><p class=md-body-1>{{item.date}}</p><span class=md-body-1 ng-if=\"item.datas[0].value == 1\">小</span> <span class=md-body-1 ng-if=\"item.datas[0].value == 2\">中</span> <span class=md-body-1 ng-if=\"item.datas[0].value == 3\">大</span> <span class=md-body-1 ng-if=\"item.datas[0].value == undefined\">-</span><buttondetail></buttondetail></md-list-item><p flex class=md-body-3 ng-if=\"thunderHistoryList.length == 0 || thunderHistoryList == undefined\">履歴なし</p><div layout layout-align=center><md-button class=\"md-accent md-button md-ink-ripple\" type=button ng-click=thunderHistoryMoreClick() ng-transclude=\"\" ng-hide=\"thunderHistoryViews >= thunderHistoryList.length || thunderHistoryList == undefined\"><div class=md-ripple-container>さらに表示</div></md-button></div></md-card-content></md-card><!-- </md-content> --></div><footer class=footer></footer>"
+    "<div ng-controller=DeviceDetailCtrl ng-cloak=\"\" class=navBardemoBasicUsage><!--ヘッダー読み込み--><navitop></navitop><!-- <md-content class=\"md-padding\"> --><!--基本情報--><div class=md-toolbar-tools><h3 class=\"ng-binding ng-isolate-scope\">基本情報</h3></div><md-card><md-card-content><md-card-title-text><span class=md-body-5>{{deviceDetail.deviceName}}</span></md-card-title-text></md-card-content><md-card-content><p class=md-subhead>職場責任者：{{deviceDetail.responsiblePerson}}</p><p class=md-subhead>連絡先：{{deviceDetail.telNo}}</p><p class=md-subhead>住所：{{deviceDetail.address}}</p><p class=md-subhead>メモ：{{deviceDetail.memo}}</p></md-card-content></md-card><!--地震--><div class=md-toolbar-tools><h3 class=\"ng-binding ng-isolate-scope\">地震</h3></div><md-card><!--現在のステータス--><md-list-item class=md-list-item-2 ng-click=\"deviceDetailData(earthquakeCurrentData.data.date_id,'EQ')\" ng-hide=!earthquakeCurrentData><p class=md-body-5>感知あり</p><buttondetail></buttondetail></md-list-item><md-list-item class=md-list-item-2 ng-hide=earthquakeCurrentData><p class=md-body-5>感知なし</p></md-list-item><!--デバイスカード　コンテンツ--><md-card-content ng-hide=!earthquakeCurrentData><!--地震の場合--><p flex class=md-body-1>発生日時：{{earthquakeCurrentData.data.date}}</p><div layout=row layout-wrap><div flex=25><p flex class=md-body-1>傾き</p><p flex class=md-body-1>商用停電</p><p flex class=md-body-1>機器異常</p></div><div flex=40><p flex class=md-body-3 ng-if=earthquakeCurrentData.data.datas.slope>あり（{{earthquakeCurrentData.datas.slope}}）</p><p flex class=md-body-3 ng-if=\"earthquakeCurrentData.data.datas.slope == 0\">なし</p><p flex class=md-body-3 ng-if=earthquakeCurrentData.data.datas.commercialBlackout>あり</p><p flex class=md-body-3 ng-if=!earthquakeCurrentData.data.datas.commercialBlackout>なし</p><p flex class=md-body-3 ng-if=earthquakeCurrentData.data.datas.equipmentAbnormality>あり</p><p flex class=md-body-3 ng-if=!earthquakeCurrentData.data.datas.equipmentAbnormality>なし</p></div><div><div flex class=md-body-1>震度</div><div flex class=md-body-6>{{earthquakeCurrentData.data.datas[0].seismicIntensity}}</div></div></div></md-card-content><md-card-content ng-hide=\"commentList.length == 0 || commentList == undefined\"><p class=md-body-1>コメント・連絡事項</p><div layout=row layout-wrap><ul><li ng-repeat=\"item in commentList\"><p class=md-body-2 ng-if=!item.value.importantFlg>{{item.value.comment}}　{{item.value.timestamp}}</p><p class=\"md-body-2 importantFlg\" ng-if=item.value.importantFlg>{{item.value.comment}}　{{item.value.timestamp}}</p></li></ul></div></md-card-content><!--TODO メディア速報表示させる---><md-card-content ng-hide=\"earthquakeCurrentData.datas.mediaNewsletter == undefined\"><p class=md-body-1>メディア速報</p><p class=md-body-2>気象庁公報：震度{{earthquakeCurrentData.datas.mediaNewsletter[0].japanMeteorologicalAgency}}</p><p class=md-body-2>長周期地震動階級：{{earthquakeCurrentData.datas.mediaNewsletter[0].longPeriodSeismicActivityClass}}</p></md-card-content><!--地震履歴--><md-card-content><p class=md-body-1>地震履歴</p><md-list-item class=md-secondary ng-repeat=\"item in earthquakeHistoryList | limitTo: earthquakeHistoryViews: 0\" ng-click=deviceDetailData()><p class=md-body-1>{{item.data.date}}</p><span class=md-body-1>{{item.data.datas[0].value}}</span> <span class=md-body-1 ng-if=\"item.data.datas[0].value == undefined\">{{item.data.sdata.S}}</span><buttondetail></buttondetail></md-list-item><p flex class=md-body-3 ng-if=\"earthquakeHistoryList.length == 0 || earthquakeHistoryList == undefined\">履歴なし</p><div layout layout-align=center><md-button class=\"md-accent md-button md-ink-ripple\" type=button ng-click=earthquakeHistoryMoreClick() ng-transclude=\"\" ng-hide=\"earthquakeHistoryViews >= earthquakeHistoryList.length  || earthquakeHistoryList == undefined\"><div class=md-ripple-container>さらに表示</div></md-button></div></md-card-content></md-card><!--雷--><div class=md-toolbar-tools><h3 class=\"ng-binding ng-isolate-scope\">雷</h3></div><md-card><!--現在のステータス--><md-list-item class=md-list-item-2 ng-click=\"deviceDetailData(thunderCurrentData.data.date_id,'FL')\" ng-hide=!deviceDetail.thunderCurrentData><p class=md-body-5>感知あり</p><buttondetail></buttondetail></md-list-item><md-list-item class=md-list-item-2 ng-hide=deviceDetail.thunderCurrentData><p class=md-body-5>感知なし</p></md-list-item><!--デバイスカード　コンテンツ--><md-card-content ng-hide=!deviceDetail.thunderCurrentData><p flex class=md-body-1>発生日時：{{deviceDetail.thunderCurrentData.date}}</p><div layout=row layout-wrap><div flex=25><p flex class=md-body-1>漏電</p><p flex class=md-body-1>商用停電</p><p flex class=md-body-1>機器異常</p></div><div flex=40><p flex class=md-body-3 ng-if=thunderCurrentData.datas.leakage>あり</p><p flex class=md-body-3 ng-if=!thunderCurrentData.datas.leakage>なし</p><p flex class=md-body-3 ng-if=thunderCurrentData.datas.commercialBlackout>あり</p><p flex class=md-body-3 ng-if=!thunderCurrentData.datas.commercialBlackout>なし</p><p flex class=md-body-3 ng-if=thunderCurrentData.datas.equipmentAbnormality>あり</p><p flex class=md-body-3 ng-if=!thunderCurrentData.datas.equipmentAbnormality>なし</p></div><div><div flex class=md-body-1>雷</div><div flex class=md-body-6>{{thunderCurrentData.power}}</div></div></div></md-card-content><md-card-content ng-hide=\"thunderCurrentData.datas.commentList == undefined\"><p class=md-body-1>コメント・連絡事項</p><div layout=row layout-wrap><ul><li ng-repeat=\"item in thunderCurrentData.commentList\"><p class=md-body-2>{{item.comment}}　{{item.commentDate}}</p></li></ul></div></md-card-content><md-card-content ng-hide=\"thunderCurrentData.datas.mediaNewsletter == undefined\"><!-- <div layout=\"row\" layout-wrap> --><p class=md-body-1>メディア速報</p><p class=md-body-2>気象庁公報：{{thunderCurrentData.mediaNewsletter[0].japanMeteorologicalAgency}}</p><p class=md-body-2>長周期地震動階級{{thunderCurrentData.mediaNewsletter[0].longPeriodSeismicActivityClass}}</p><!-- </div> --></md-card-content><!--雷履歴--><md-card-content><p class=md-body-1>雷履歴</p><md-list-item class=md-secondary ng-repeat=\"item in thunderHistoryList | limitTo: thunderHistoryViews: 0\" ng-click=deviceDetailData()><p class=md-body-1>{{item.date}}</p><span class=md-body-1 ng-if=\"item.datas[0].value == 1\">小</span> <span class=md-body-1 ng-if=\"item.datas[0].value == 2\">中</span> <span class=md-body-1 ng-if=\"item.datas[0].value == 3\">大</span> <span class=md-body-1 ng-if=\"item.datas[0].value == undefined\">-</span><buttondetail></buttondetail></md-list-item><p flex class=md-body-3 ng-if=\"thunderHistoryList.length == 0 || thunderHistoryList == undefined\">履歴なし</p><div layout layout-align=center><md-button class=\"md-accent md-button md-ink-ripple\" type=button ng-click=thunderHistoryMoreClick() ng-transclude=\"\" ng-hide=\"thunderHistoryViews >= thunderHistoryList.length || thunderHistoryList == undefined\"><div class=md-ripple-container>さらに表示</div></md-button></div></md-card-content></md-card><!-- </md-content> --></div><footer class=footer></footer>"
   );
 
 

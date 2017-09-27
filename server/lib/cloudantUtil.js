@@ -87,21 +87,21 @@ exports.M_userEntitity = {
  * prams:callback コールバック
  */
   getUser : function(query, callback){
-      console.log("getUser query");
-      console.log(query);
+//      console.log("getUser query");
+//      console.log(query);
     connectDoc('m_user');
     if(query.match(/muser_/g)) {
       query = query.split('_')[1];
     }
     db.get('muser_' + query, function(err, doc) {
-      console.log("getUser");
-      console.log(err);
-      console.log(doc);
+//      console.log("getUser");
+//      console.log(err);
+//      console.log(doc);
       if(err){
-      console.log(err);
+//      console.log(err);
         return callback(err);
       }
-      console.log(doc);
+//      console.log(doc);
       return callback(err,doc);
     });
   },
@@ -161,11 +161,11 @@ exports.M_userEntitity = {
 //    console.log("query, data@updateUser");
 //    console.log(query, data);
     db.merge(query, data , function(err, doc) {
-    console.log("err@updateUser");
-    console.log(err);
 //    console.log("doc@updateUser");
 //    console.log(doc);
       if(err){
+        console.log("err@updateUser");
+        console.log(err);
         return callback(err,doc);
       }
 //      console.log(doc);
@@ -183,11 +183,11 @@ exports.M_userEntitity = {
 //    console.log("query, data@updateUser");
 //    console.log(query, data);
     cloudant.search("search_m_user", "search_devices_mails", {q:'device:'+query +'<string>'}, function(err, doc) {
-    console.log("err@getSenderList");
-    console.log(err);
 //    console.log("doc@getSenderList");
 //    console.log(doc);
       if(err){
+        console.log("err@getSenderList");
+        console.log(err);
         return callback(err,doc);
       }
 //      console.log(doc);
@@ -243,11 +243,11 @@ exports.M_deviceEntitity = {
 //    console.log("query, data@updateDevice");
 //    console.log(query, data);
     db.merge(query, data , function(err, doc) {
-    console.log("err@updateUser");
-    console.log(err);
 //    console.log("doc@updateUser");
 //    console.log(doc);
       if(err){
+        console.log("err@updateUser");
+        console.log(err);
         return callback(err);
       }
       return callback(err,doc);
@@ -272,7 +272,7 @@ exports.Eq_dEntitity = {
   getLatest : function(query, callback){
     
       connectDoc('eq_d');
-    console.log(query);
+//      console.log(query);
       var di;
       if(typeof query == "object" || typeof query == "array"){
         device = new Array();
@@ -290,8 +290,8 @@ exports.Eq_dEntitity = {
       var targetDate = new Date(d.getFullYear(),d.getMonth(),d.getDate()-10);
       //クエリーように文字列か
       var queryDate =  targetDate.toFormat('YYYYMMDDHH24MISS');
-      console.log("di",di);
-      console.log("queryDate",queryDate);
+//      console.log("di",di);
+//      console.log("queryDate",queryDate);
       var selector = {"$and":[di,{"data.date_id":{"$gt":queryDate}}]};
       var q = {
         "selector":selector,
@@ -304,14 +304,14 @@ exports.Eq_dEntitity = {
       }
       console.log(q);
       cloudant.find(q, function(err, doc) {
-//      console.log("err@Eq_dEntitity.getLatest");
-//      console.log(err);
-      console.log("doc@Eq_dEntitity.getLatest");
-      console.log(doc.docs);
         if(err){
+          console.log("err@Eq_dEntitity.getLatest");
+          console.log(err);
           return callback(err,doc);
         }
   //      console.log(doc);
+        console.log("doc@Eq_dEntitity.getLatest");
+        console.log(doc.docs);
         return callback(err,doc);
       });
   },
@@ -392,10 +392,20 @@ exports.Eq_dEntitity = {
   getHistoryDate : function(query, callback){
     
       connectDoc('eq_d');
-      var selector = {"$and":[{"device_id":query.di},{"data.date_id":query.date}]};
-      var q = {
-        "selector":selector,
-        "limit": 1
+      if(query.hasOwnProperty("limit")){
+        var selector = {"$and":[{"device_id":query.di},{"data.date_id":query.date}]};
+        var q = {
+          "selector":selector,
+          "sort": [{"_id":"desc"}],
+          "limit": query.limit
+        }
+      } else {
+        var selector = {"$and":[{"device_id":query.di},{"data.date_id":{"$gt":query.date}}]};
+        var q = {
+          "selector":selector,
+          "sort": [{"_id":"desc"}],
+          "limit": 100
+        }
       }
 //      console.log("selector");
 //      console.log(selector);
@@ -646,8 +656,8 @@ exports.Comment_dataEntitity = {
 //        console.log(q);
     connectDoc('comment_data');
       db.view('sc001/indexByDevice', {keys: q, descending:true} , function (err, res) {
-        console.log('err object @getLatest');
-        console.log(err);
+//        console.log('err object @getLatest');
+//        console.log(err);
 //        console.log('row object @getComment');
 //        console.log(res);
       return callback(err,res)
@@ -815,10 +825,10 @@ exports.WeatherTestEntitity = {
         "limit": 1
       }
       cloudant.find(q, function(err, doc) {
-      console.log("err@EtsTestEntitity.getDevice");
-      console.log(err);
-      console.log("doc@EtsTestEntitity.getDevice");
-      console.log(doc);
+//      console.log("err@EtsTestEntitity.getDevice");
+//      console.log(err);
+//      console.log("doc@EtsTestEntitity.getDevice");
+//      console.log(doc);
         if(err){
           return callback(err,doc);
         }

@@ -8,6 +8,7 @@ var fs = require('fs');
 var request = require('request');
 var cloudantUtil = require('./../../lib/cloudantUtil');
 var app = express();
+require('date-utils');
 
   /***********************************************
  * デバイス単体 deviceUnit
@@ -72,7 +73,7 @@ var deviceUnit = {
     if(!req.user) {
       return res.status('200').json({ error: "ログインされていません" });
     }
-    var query = {"di" : req.params.id, "date" : req.params.date};
+    var query = {"di" : req.params.id, "date" : req.params.date, "limit":1};
     var dateType = req.params.type;
     var self = this;
     var reqest = req;
@@ -83,8 +84,8 @@ var deviceUnit = {
     if(dateType == 'AQ' || dateType == 'EQ'){
       cloudantUtil.Eq_dEntitity.getHistoryDate(query, function(err, dat){
         if(err) {return response.status('200').json(err);}
-        console.log("Eq_dEntitity.getHistoryDate.dat");
-        console.log(dat.docs);
+//        console.log("Eq_dEntitity.getHistoryDate.dat");
+//        console.log(dat.docs);
         if(dat.docs.length){
           if(!dat.docs[0].data.datas[0].seismicIntensity) {
             dat.docs[0].data.datas[0]["seismicIntensity"] = dat.docs[0].data.datas[0].value;
@@ -101,8 +102,8 @@ var deviceUnit = {
     } else {
         cloudantUtil.Fl_dEntitity.getHistoryDate(query, function(err, dat){
           if(err) {return response.status('200').json(err);}
-          console.log("Fl_dEntitity.getHistoryDate.dat");
-          console.log(dat);
+//          console.log("Fl_dEntitity.getHistoryDate.dat");
+//          console.log(dat);
           if(dat.docs.length){
             if(!dat.docs[0].data.datas[0].power){
               dat.docs[0].data.datas[0]["power"] = dat.docs[0].data.datas[0].value;
@@ -167,8 +168,8 @@ var deviceUnit = {
               }
             });
           }
-          console.log("updateDeviceBasicInfo getUserHasDevice");
-          console.log({"docs":dat});
+//          console.log("updateDeviceBasicInfo getUserHasDevice");
+//          console.log({"docs":dat});
           cloudantUtil.M_userEntitity.updateUserHasDevice({"docs":dat}, function(err,doc){
               console.log("M_userEntitity.getUserHasDevice");
               console.log(doc);
@@ -264,21 +265,29 @@ var deviceUnit = {
     if(!req.user) {
       return res.status('200').json({ error: "ログインされていません" });
     }
-    var userDevice = req.params.id;
+    
+    //リクエスト時間の計算
+    var dt = new Date();
+    dt.setFullYear(dt.getFullYear() - 1);
+    var startDate = dt.toFormat('YYYYMMDDHH24MISS');
+    var query = {"di" : req.params.id, "date" : startDate};
     var self = this;
     var reqest = req;
     var response = res;
+//        console.log("query@getHistory");
+//        console.log(query);
+    
     if(req.params.type == 'eq'){
-      cloudantUtil.Eq_dEntitity.getHistory(userDevice, function(err, dat){
+      cloudantUtil.Eq_dEntitity.getHistoryDate(query, function(err, dat){
         if(err) {return response.status('200').json(err);}
         console.log("Eq_dEntitity.getHistory.dat@getHistory");
         console.log(dat);
-        return response.status('200').json(dat);
+        return response.status('200').json(dat.docs);
       });
     } else {
-      cloudantUtil.Fl_dEntitity.getHistory(userDevice, function(err, dat){
+      cloudantUtil.Fl_dEntitity.getHistoryDate(query, function(err, dat){
         if(err) {return response.status('200').json(err);}
-        return response.status('200').json(dat);
+        return response.status('200').json(dat.docs);
       });
     }
   },
@@ -326,10 +335,10 @@ var deviceUnit = {
 //    console.log(url);
     
     request(url, function (err, response, body) {
-      console.log("err, dat, body@getEnvForcast");
-      console.log(err);
-      console.log(response);
-      console.log(body);
+//      console.log("err, dat, body@getEnvForcast");
+//      console.log(err);
+//      console.log(response);
+//      console.log(body);
       if(err) {return res.status('200').json(err);}
       return res.status('200').json(JSON.parse(body));
     })

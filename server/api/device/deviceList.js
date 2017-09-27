@@ -143,21 +143,21 @@ var deviceList = {
         if(flgSense){
           obj["type"] = self.latestEQData.data.type;
           obj["date"] = self.latestEQData.date;
-          obj["seismicIntensity"] = self.latestEQData.data.datas[0].seismicIntensity || self.latestEQData.data.datas[0].value;
+          obj["seismicIntensity"] = self.latestEQData.data.sdata.S || self.latestEQData.data.datas[0].value;
           obj["power"] = self.latestEQData.data.datas[0].power,
           obj["leakage"] = self.latestEQData.data.datas[0].leakage,
-          obj["slope"] = self.latestEQData.data.datas[0].slope,
-          obj["commercialBlackout"] = self.latestEQData.data.datas[0].commercialBlackout,
-          obj["equipmentAbnormality"] = self.latestEQData.data.datas[0].equipmentAbnormality
+          obj["slope"] = self.latestEQData.data.sdata.TA,
+          obj["commercialBlackout"] = self.latestEQData.data.AP,
+          obj["equipmentAbnormality"] = self.latestEQData.data.HC
           if(self.hasComment(dat._id,self.latestEQData.data.date_id)){
-              console.log("self.commentDate");
-              console.log(self.commentDate);
+//              console.log("self.commentDate");
+//              console.log(self.commentDate);
               obj["commentList"] = self.commentDate;
           }
         }
 //        if(self.hasLatest(dat._id)){
-////            console.log("self.latestDate.datas");
-////            console.log(self.latestDate);
+//            console.log("self.latestDate.datas");
+//            console.log(self.latestDate);
 //            obj["slope"] = self.latestDate.slope;
 //            obj["commercialBlackout"] = self.latestDate.commercialBlackout;
 //            obj["equipmentAbnormality"] = self.latestDate.equipmentAbnormality;

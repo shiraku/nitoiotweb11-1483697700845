@@ -77,7 +77,7 @@ module.exports = function(app) {
         }
         var url = decodeURIComponent(req.body.query);
           console.log('login success');
-        console.log(req.body);
+//        console.log(req.body);
         return res.status(200).send({ redirect:url, authStat:true});
       });
     })(req, res, next);

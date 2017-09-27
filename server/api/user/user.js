@@ -115,8 +115,8 @@ var user = {
     
 //    console.log("prm@checkSendtoUser");
 //    console.log(prm);
-    console.log("req.user.sendto@checkSendtoUser");
-    console.log(req.user);
+//    console.log("req.user.sendto@checkSendtoUser");
+//    console.log(req.user);
     
     if(prm.adminFlg && prm.key){
       prm.key.split('_');
