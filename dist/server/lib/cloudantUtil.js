@@ -310,8 +310,8 @@ exports.Eq_dEntitity = {
           return callback(err,doc);
         }
   //      console.log(doc);
-        console.log("doc@Eq_dEntitity.getLatest");
-        console.log(doc.docs);
+//        console.log("doc@Eq_dEntitity.getLatest");
+//        console.log(doc.docs);
         return callback(err,doc);
       });
   },
@@ -404,7 +404,7 @@ exports.Eq_dEntitity = {
         var q = {
           "selector":selector,
           "sort": [{"_id":"desc"}],
-          "limit": 100
+          "limit": 1000
         }
       }
 //      console.log("selector");
@@ -458,12 +458,13 @@ exports.Fl_dEntitity = {
       connectDoc('fl_d');
       var di;
       if(typeof query == "object" || typeof query == "array"){
-        di = new Array();
+        device = new Array();
         for(var i =0; i < query.length; i++){
-          di.push({"device_id":query[i].id});
+          device.push(query[i].id);
         }
+        di = {"device_id":{"$in":device}};
       }else{
-        di = [{"device_id":query}];
+        di = {"device_id":query};
       }
       //現在の日づげ取得
       var d = new Date();
@@ -471,7 +472,9 @@ exports.Fl_dEntitity = {
       var targetDate = new Date(d.getFullYear(),d.getMonth(),d.getDate()-10);
       //クエリーように文字列か
       var queryDate =  targetDate.toFormat('YYYYMMDDHH24MISS');
-      var selector = {"$or":di,"data.date_id":{"$gt":queryDate}};
+//      console.log("di",di);
+//      console.log("queryDate",queryDate);
+      var selector = {"$and":[di,{"data.date_id":{"$gt":queryDate}}]};
       var q = {
         "selector":selector,
         "fields": [
@@ -481,13 +484,14 @@ exports.Fl_dEntitity = {
         "sort": [{"device_id":"desc"}],
         "limit": 30
       }
-//      console.log("selector");
-//      console.log(selector);
+      console.log("selector");
+      console.log(selector);
+      console.log(q);
       cloudant.find(q, function(err, doc) {
-//      console.log("err@Eq_dEntitity.getLatest");
-//      console.log(err);
-//      console.log("doc@Eq_dEntitity.getLatest");
-//      console.log(doc.docs);
+      console.log("err@Fl_dEntitity.getLatest");
+      console.log(err);
+      console.log("doc@Fl_dEntitity.getLatest");
+      console.log(doc);
         if(err){
           return callback(err,doc);
         }
@@ -572,10 +576,20 @@ exports.Fl_dEntitity = {
   getHistoryDate : function(query, callback){
     
       connectDoc('fl_d');
-      var selector = {"$and":[{"device_id":query.di},{"data.date_id":query.date}]};
-      var q = {
-        "selector":selector,
-        "limit": 1
+      if(query.hasOwnProperty("limit")){
+        var selector = {"$and":[{"device_id":query.di},{"data.date_id":query.date}]};
+        var q = {
+          "selector":selector,
+          "sort": [{"_id":"desc"}],
+          "limit": query.limit
+        }
+      } else {
+        var selector = {"$and":[{"device_id":query.di},{"data.date_id":{"$gt":query.date}}]};
+        var q = {
+          "selector":selector,
+          "sort": [{"_id":"desc"}],
+          "limit": 1000
+        }
       }
 //      console.log("selector");
 //      console.log(selector);
@@ -708,6 +722,32 @@ exports.EqimageEntitity = {
 //      console.log(query);
     connectDoc('eqimage');
     db.getAttachment(query, 'eq.png', function(err, dat) {
+      if(err){
+        return callback(err);
+      }
+
+      var result = dat.body.toString('base64');
+      callback( null, result );   
+    });
+    
+  }
+};
+
+
+
+
+/**
+ * eqimageへのアクセス
+ * グラフイメージ情報に関するデータベース
+ * getChartImage：デバイスID＋データタイプから環境センサーイメージを取得し返却する
+ */
+exports.Om_ImageEntitity = {
+  //感知データIDから合成加速度イメージを取得し返却する
+  getChartImage : function(query, callback){
+//      console.log('クエリ情報@M_deviceEntitity');
+//      console.log(query);
+    connectDoc('om_image');
+    db.getAttachment(query, query + '.svg', function(err, dat) {
       if(err){
         return callback(err);
       }

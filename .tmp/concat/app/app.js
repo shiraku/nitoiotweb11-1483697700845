@@ -176,18 +176,18 @@ angular.module('nitoiotweb11App')
             ];
     //グラフの表示期間のデフォル値設定
     $scope.selectItem = 'month';
-    
+
     //デバイス一覧情報
     $http.get('/api/device_list/')
       .then(function successCallback(response) {
-                console.log("/api/device_list/ successfully");
-                console.log(response);
+        console.log("/api/device_list/ successfully");
+        console.log(response);
         //TODO dataに発生日時を追加していただく。（白倉さん）
         var obj = response.data;
         $scope.deviceList = obj.device_list;
         console.log($scope.deviceList);
-      
-      
+
+
         //MAP
 
         //初期値
@@ -211,34 +211,34 @@ angular.module('nitoiotweb11App')
         angular.forEach($scope.deviceList, function (value, index) {
           //            console.log(index+' latitude: ' + value.latitude + ' longitude: ' + value.longitude);
           //アイコンを今のデータを以前のデータで分ける
-          if(value.status == '感知あり'){
+          if (value.status == '感知あり') {
             var imgSi;
-            switch(true) {
-              case value.seismicIntensity > 6.5 :
-                  imgSi = '7';
-                  break;
-              case 6.0 < value.seismicIntensity && value.seismicIntensity < 6.5 :
-                  imgSi = '6_u';
-                  break;
-              case 5.5 < value.seismicIntensity && value.seismicIntensity < 6.0 :
-                  imgSi = '6';
-                  break;
-              case 5.0 < value.seismicIntensity && value.seismicIntensity < 5.5 :
-                  imgSi = '5_u';
-                  break;
-              case 4.5 < value.seismicIntensity && value.seismicIntensity < 5.0 :
-                  imgSi = '5';
-                  break;
-                default :
-                  imgSi = Math.round(value.seismicIntensity);
-                  break;
-                  
+            switch (true) {
+              case value.seismicIntensity > 6.5:
+                imgSi = '7';
+                break;
+              case 6.0 < value.seismicIntensity && value.seismicIntensity < 6.5:
+                imgSi = '6_u';
+                break;
+              case 5.5 < value.seismicIntensity && value.seismicIntensity < 6.0:
+                imgSi = '6';
+                break;
+              case 5.0 < value.seismicIntensity && value.seismicIntensity < 5.5:
+                imgSi = '5_u';
+                break;
+              case 4.5 < value.seismicIntensity && value.seismicIntensity < 5.0:
+                imgSi = '5';
+                break;
+              default:
+                imgSi = Math.round(value.seismicIntensity);
+                break;
+
             }
-            Math.round(value.seismicIntensity); 
+            Math.round(value.seismicIntensity);
             var icon = '/assets/images/marker' + imgSi + '.png';
             var image = {
-                url : icon,
-                scaledSize : new google.maps.Size(20, 34)
+              url: icon,
+              scaledSize: new google.maps.Size(20, 34)
             }
             //マーカー
             var marker = new google.maps.Marker({
@@ -256,8 +256,8 @@ angular.module('nitoiotweb11App')
             });
           }
 
-          
-          
+
+
 
           $scope.markers.push(marker);
 
@@ -342,13 +342,13 @@ angular.module('nitoiotweb11App')
     //         "heatstroke": 18.76,
     //         "battery": 3026
     //       }
-    
-    
+
+
     $scope.getEnvLatest = function () {
       $http.get('/api/device_env_latest/dd4c78468628/')
         .then(function successCallback(response) {
-//                console.log("/api/device_env_latest/dd4c78468628/");
-//                console.log(response);
+          //                console.log("/api/device_env_latest/dd4c78468628/");
+          //                console.log(response);
           var dat = response.data.docs[0].payload.d;
           var env = {};
           env["temperature"] = dat.temperature;
@@ -356,60 +356,60 @@ angular.module('nitoiotweb11App')
           env["pressure"] = dat.pressure;
           var uvi = function (d) {
             switch (true) {
-            case d < 3:
-              return '弱い';
-            case d > 3 && d < 6:
-              return '中程度';
-            case d > 6 && d < 8:
-              return '強い';
-            case d > 8 && d < 10:
-              return '非常に強い';
-            case d > 10:
-              return '極端に強い';
-            default:
-              return '計測エラー';
+              case d < 3:
+                return '弱い';
+              case d > 3 && d < 6:
+                return '中程度';
+              case d > 6 && d < 8:
+                return '強い';
+              case d > 8 && d < 10:
+                return '非常に強い';
+              case d > 10:
+                return '極端に強い';
+              default:
+                return '計測エラー';
             }
           }
           env["uvi"] = uvi(dat.uvi);
           var discomfortIndex = function (d) {
             switch (true) {
-            case d < 75:
-              return '暑くない';
-              break;
-            case d > 75 && d < 80:
-              return 'やや暑い';
-              break;
-            case d > 80 && d < 85:
-              return '暑くて汗が出る';
-              break;
-            case d > 85:
-              return '暑くてたまらない';
-              break;
-            default:
-              return '計測エラー';
+              case d < 75:
+                return '暑くない';
+                break;
+              case d > 75 && d < 80:
+                return 'やや暑い';
+                break;
+              case d > 80 && d < 85:
+                return '暑くて汗が出る';
+                break;
+              case d > 85:
+                return '暑くてたまらない';
+                break;
+              default:
+                return '計測エラー';
             }
           }
           env["discomfortIndex"] = discomfortIndex(dat.discomfortIndex);
           var heatstroke = function (d) {
             switch (true) {
-            case d < 21:
-              return 'ほぼ安全';
-              z
-              break;
-            case d > 21 && d < 25:
-              return '注意';
-              break;
-            case d > 25 && d < 28:
-              return '警戒';
-              break;
-            case d > 28 && d < 31:
-              return '厳重警戒';
-              break;
-            case d > 31:
-              return '運動は原則中止';
-              break;
-            default:
-              return '計測エラー';
+              case d < 21:
+                return 'ほぼ安全';
+                z
+                break;
+              case d > 21 && d < 25:
+                return '注意';
+                break;
+              case d > 25 && d < 28:
+                return '警戒';
+                break;
+              case d > 28 && d < 31:
+                return '厳重警戒';
+                break;
+              case d > 31:
+                return '運動は原則中止';
+                break;
+              default:
+                return '計測エラー';
             }
           }
           env["heatstroke"] = heatstroke(dat.heatstroke);
@@ -422,13 +422,13 @@ angular.module('nitoiotweb11App')
     $scope.getEnvLatest();
     $interval($scope.getEnvLatest, 1000 * 60 * 30);
 
-//    $http.get('/api/device_env_forcast/35.62982_139.7942416/')
-//      .then(function successCallback(response) {
-//        var dat = response.data;
-//        //          $scope.env = env;
-//      }, function errorCallback(response) {
-//        console.error("error in posting");
-//      });
+    //    $http.get('/api/device_env_forcast/35.62982_139.7942416/')
+    //      .then(function successCallback(response) {
+    //        var dat = response.data;
+    //        //          $scope.env = env;
+    //      }, function errorCallback(response) {
+    //        console.error("error in posting");
+    //      });
 
     //    function updateEnv(response) {
     //        var dat = JSON.parse(response.data);
@@ -529,10 +529,88 @@ angular.module('nitoiotweb11App')
               //              console.log(hisRes);
               $scope.graphDataElem.push(hisRes.data);
               $scope.$emit('graphDataElem', hisRes.data);
+              var prevElem = '';
+              //              hisRes.data.forEach(function(elem){
+              //                if(prevElem == '' || prevElem != elem.device_id){
+              //                  prevElem = elem.device_id;
+              //                  $scope.graphDatas.push(new Array());
+              //                }
+              //                $scope.graphDatas[$scope.graphDatas.length - 1].push(elem.data.datas[0].value);
+              //              });
+              $scope.graphDatas = hisRes.data
+              //            
+              //              if (hisRes.data.hasOwnProperty('data')) {
+              //                $scope.graphDatas.push(hisRes.data);
+              //              }
 
-              if (hisRes.data.hasOwnProperty('data')) {
-                $scope.graphDatas.push(hisRes.data);
-              }
+              $scope.$on('deviceListFinished', function (event) {
+                var rows = [];
+                $scope.graphDatas.forEach(function (dat) {
+
+
+                  //          for (var l = 0; dat.length > l; l++) {
+                  //            rows.push([new Date(d.date), Number(si)]);
+                  //          }
+                  rows.push([new Date(dat.data.date), Number(dat.data.datas[0].value)]);
+                });
+                //             google.charts.load('current', {packages: ['controls','corechart', 'bar']});
+                //             google.charts.setOnLoadCallback(drawChart(deviceName,response));
+                google.charts.load('current', {
+                  packages: ['controls', 'corechart', 'bar']
+                });
+                google.charts.setOnLoadCallback(function () {
+
+                  var dataTable = new google.visualization.DataTable();
+                  dataTable.addColumn('datetime', 'yyyy/mm/dd hh:mm');
+                  dataTable.addColumn('number', '震度');
+
+                  dataTable.addRows(rows);
+
+                  var dt = new Date();
+                  var min;
+                  switch ($scope.selectItem) {
+                    case 'day':
+                      min = new Date(dt.setDate(dt.getDate() - 1));
+                      break;
+                    case 'week':
+                      min = new Date(dt.setDate(dt.getDate() - 7));
+                      break;
+                    case 'month':
+                      min = new Date(dt.setMonth(dt.getMonth() - 1));
+                      break;
+                    case 'year':
+                      min = new Date(dt.setFullYear(dt.getFullYear() - 1));
+                      break;
+                    default:
+                      min = new Date(dt.setMonth(dt.getMonth() - 1));
+                      break;
+                  }
+
+                  var options = {
+                    hAxis: {
+                      title: '日時',
+                      format: ($scope.selectItem != 'day') ? 'yyyy/MM/dd' : 'dd hh:mm',
+                      viewWindow: {
+                        min: min,
+                        max: new Date()
+                      }
+                    },
+                    vAxis: {
+                      title: '震度',
+                      viewWindow: {
+                        min: 0,
+                        max: 8
+                      }
+                    },
+                    legend: 'none'
+                  };
+                  var id = "DEV_" + $scope.graphDataElem[0][0].device_id;
+                  document.getElementById(id).innerHTML = '';
+                  var chart = new google.visualization.ColumnChart(document.getElementById(id));
+                  chart.draw(dataTable, options);
+                });
+              });
+
 
             }, function errorCallback(hisRes) {
               console.error("error in posting");
@@ -553,77 +631,6 @@ angular.module('nitoiotweb11App')
     $scope.$on('deviceInfoFinished', function (event) {
       console.log("deviceInfoFinished");
       $scope.modalInstance.close();
-    });
-
-    $scope.$on('deviceListFinished', function (event) {
-      $scope.graphDatas.forEach(function (dat) {
-
-        //             google.charts.load('current', {packages: ['controls','corechart', 'bar']});
-        //             google.charts.setOnLoadCallback(drawChart(deviceName,response));
-        google.charts.load('current', {
-          packages: ['controls', 'corechart', 'bar']
-        });
-        google.charts.setOnLoadCallback(function () {
-
-          var dataTable = new google.visualization.DataTable();
-          dataTable.addColumn('datetime', 'yyyy/mm/dd hh:mm');
-          dataTable.addColumn('number', '震度');
-
-          var rows = [];
-
-          for (var l = 0; dat.data.length > l; l++) {
-            var d = dat.data[l];
-            //              console.log("d@setOnLoadCallback");
-            //              console.log(d);
-            var si = (typeof d.datas === 'array') ? d.datas[0].value : d.datas.seismicIntensity
-            rows.push([new Date(d.date), Number(si)]);
-          }
-          dataTable.addRows(rows);
-
-          var dt = new Date();
-          var min;
-          switch ($scope.selectItem) {
-          case 'day':
-            min = new Date(dt.setDate(dt.getDate() - 1));
-            break;
-          case 'week':
-            min = new Date(dt.setDate(dt.getDate() - 7));
-            break;
-          case 'month':
-            min = new Date(dt.setMonth(dt.getMonth() - 1));
-            break;
-          case 'year':
-            min = new Date(dt.setFullYear(dt.getFullYear() - 1));
-            break;
-          default:
-            min = new Date(dt.setMonth(dt.getMonth() - 1));
-            break;
-          }
-
-          var options = {
-            hAxis: {
-              title: '日時',
-              format: ($scope.selectItem != 'day') ? 'yyyy/MM/dd' : 'dd hh:mm',
-              viewWindow: {
-                min: min,
-                max: new Date()
-              }
-            },
-            vAxis: {
-              title: '震度',
-              viewWindow: {
-                min: 0,
-                max: 8
-              }
-            },
-            legend: 'none'
-          };
-          var id = "DEV_" + dat.device_id;
-          document.getElementById(id).innerHTML = '';
-          var chart = new google.visualization.ColumnChart(document.getElementById(id));
-          chart.draw(dataTable, options);
-        });
-      });
     });
 
     // $scope.$on('graphDataElem',(event,data){
@@ -983,9 +990,9 @@ angular.module('nitoiotweb11App')
 
     //画面遷移
     $scope.deviceDetail = function () {
-        $location.path("/user_" + $routeParams.USER_ID + "/device_" + this.item.deviceId.split('_')[1]);
-      }
-      //画面遷移
+      $location.path("/user_" + $routeParams.USER_ID + "/device_" + this.item.deviceId.split('_')[1]);
+    }
+    //画面遷移
     $scope.envLogData = function (type) {
       $location.path("/user_" + $routeParams.USER_ID + "/device_" + this.item.deviceId.split('_')[1] + "/env_" + type);
     }
@@ -1036,6 +1043,7 @@ angular.module('nitoiotweb11App')
       }
     }
   }]);
+
 
 'use strict';
 
@@ -1699,8 +1707,8 @@ angular.module('nitoiotweb11App')
     };
 
     $scope.deviceDetailData = function (arg, type) {
-      var di = arg || this.item.date_id;
-      var item = type || this.item.type
+      var di = arg || this.item.data.date_id;
+      var item = type || this.item.data.type
       if (item === undefined) item = 'FL';
       $location.path("/user_" + $routeParams.USER_ID + "/device_" + $routeParams.DEVICE_ID + "/date" + di + "/" + item);
       //         $location.path("/user_u000/device_00000/date20170216105553");
@@ -1750,45 +1758,51 @@ angular.module('nitoiotweb11App')
 
           var obj = response.data[0];
           var obj2;
-          if(obj.data.datas){
-            obj2 = obj.data.datas[0];
+          if(obj.data.sdata){
+            obj2 = obj.data.sdata;
+            obj2["sdataFlg"] = true;
+            
+            if(obj2.TA){
+              obj2.TA = "あり（"+obj2.TA+"°）";
+            }else{
+              obj2.TA = "なし"
+            }
+            
+          }else{
+            obj2 = new Object();
+            obj2["sdataFlg"] = false;
           }
 
           //
-          if(obj2.commercialBlackout){
-            obj2.commercialBlackout = "あり"
+          if(obj.data.HC){
+            obj.data.HC = "あり"
           }else{
-            obj2.commercialBlackout = "なし"
+            obj.data.HC = "なし"
           }
 
-          if(obj2.equipmentAbnormality){
-            obj2.equipmentAbnormality = "あり"
+          if(obj.data.AP){
+            obj.data.AP = "あり"
           }else{
-            obj2.equipmentAbnormality = "なし"
+            obj.data.AP = "なし"
           }
 
-          if(obj2.leakage){
-            obj2.leakage = "あり"
+          if(obj.data.datas[0].leakage){
+            obj.data.datas[0].leakage = "あり"
           }else{
-            obj2.leakage = "なし"
+            obj.data.datas[0].leakage = "なし"
           }
 
-          if(obj2.slope){
-            obj2.slope = "あり（"+obj2.slope+"°）";
-          }else{
-            obj2.slope = "なし"
-          }
         
-          if(obj2.power){
-            switch(obj2.power){
+          if(obj.data.datas[0].power){
+            switch(obj.data.datas[0].power){
               case 1:
-                obj2.power = "小";
+                obj.data.datas[0].power = "小";
                 break;
               case 2:
-                obj2.power = "中";
+                obj.data.datas[0].power = "中";
                 break;
               case 3:
-                obj2.power = "大";
+                obj.data.datas[0].power = "大";
                 break;
             }
           }
@@ -1796,13 +1810,20 @@ angular.module('nitoiotweb11App')
           {
                deviceId   :obj._id,
                deviceName :obj.deviceName,
-               type       :obj2.type,          //地震or雷
-               seismicIntensity:obj2.seismicIntensity,     //震度（地震のみ）
-               power :obj2.power,
-               slope:obj2.slope,               //傾き（地震のみ）
-               leakage:obj2.leakage,             //漏電（雷のみ）
-               commercialBlackout:obj2.commercialBlackout,
-               equipmentAbnormality:obj2.equipmentAbnormality,
+               type       :obj.data.datas[0].type || obj2.ID,          //地震or雷
+               dataFlg       :obj2.sdataFlg,          //Sdataフラグ
+               seismicIntensity:obj2.S,     //震度（地震のみ）
+               ma:obj2.MA,               //最大加速度(gal)(ベクトル合成値)
+               si:obj2.SI,               //SI値
+               vpx:obj2.VPX,               //X成分卓越周期
+               vpy:obj2.VPY,               //Y成分卓越周期
+               vpz:obj2.VPZ,               //Z成分卓越周期
+               pc:obj2.PC,               //長周期階級
+               slope:obj2.TA,               //傾き（地震のみ）
+               power :obj.data.datas[0].power,    //かみなり（雷のみ）
+               leakage:obj.data.datas[0].leakage,             //漏電（雷のみ）
+               commercialBlackout:obj.data.AP,             //停電
+               equipmentAbnormality:obj.data.HC             //機器異常
          };
 
           //TODO コメントを取得する
@@ -1824,8 +1845,8 @@ angular.module('nitoiotweb11App')
         }
 
        ///MAP用データ/////////////////////////////////////////////
-
-          $http.get('/api/device_list/logdate/' + $routeParams.DEVICE_ID + '/' + $routeParams.YYYYMMDDHHMM + '/' + obj2.type)
+          var type  = obj.data.datas[0].type || obj2.ID;
+          $http.get('/api/device_list/logdate/' + $routeParams.DEVICE_ID + '/' + $routeParams.YYYYMMDDHHMM + '/' + type)
           .then(function successCallback(response) {
             $scope.deviceList = response.data;
                 var map = new google.maps.Map( document.getElementById( 'map-detailData' ), {
@@ -1837,13 +1858,13 @@ angular.module('nitoiotweb11App')
                 $scope.markers =[];
                 for(var i = 0; i < response.data.length; i++){
                   //アイコンを今のデータを以前のデータで分ける
-                  if(obj2.type == 'EQ' || obj2.type == 'AL'){
+                  if(type == 'EQ' || type == 'AL'){
                     if($routeParams.DEVICE_ID == response.data[i].value.did) {
                         icon = '/assets/images/markerNow' + response.data[i].value.s + '.png'
                     }else{
                         icon = '/assets/images/marker' + response.data[i].value.s + '.png'
                     }
-                  }else if(obj2.type == 'FL'){
+                  }else if(type == 'FL'){
                     if($routeParams.DEVICE_ID == response.data[i].value.did) {
                         icon = '/assets/images/markerNow' + response.data[i].value.s + '_thunder.png'
                     }else{
@@ -2671,25 +2692,31 @@ $scope.mailAddressDelete = function (ev){
     .controller('EnvLogCtrl',['$rootScope','$routeParams','$scope','$http','$location','$window','$timeout', function ($rootScope,$routeParams,$scope, $http, $location,$window,$timeout) {
       
       var logName;
+      var chartType;
       
       switch($routeParams.type){
         case 'temp':
           logName = '気温・湿度';
+          chartType = 'TEMP';
           break;
         case 'pressure':
           logName = '気圧';
+          chartType = 'PRES';
           break;
         case 'uvi':
           logName = '紫外線';
+          chartType = 'UVI';
           break;
         case 'discomfortIndex':
           logName = '不快指数';
+          chartType = 'DISC';
           break;
         case 'heatstroke':
           logName = '熱中症指数';
           break;
         case 'noise':
           logName = '騒音';
+          chartType = 'NOIS';
           break;
         case 'pm25':
           logName = 'PM2.5';
@@ -2702,10 +2729,20 @@ $scope.mailAddressDelete = function (ev){
       //ヘッダータイトル
       $scope.navtitle=logName;
       
-      if($routeParams.type == 'noise' || $routeParams.type == 'pm25' || $routeParams.type == 'pm10'){
-        $scope.gType=true;
+      
+      //グラフイメージの取得と表示
+      //$http.get('/api/cahrt_env_' + $routeParams.DEVICE_ID + '/TEMP/')
+      if(chartType) {
+        $http.get('/api/chart_env_00014/' + chartType + '/')
+          .then(function successCallback(response) {
+            console.log(response);
+             $scope.chart_env = 'data:image/svg+xml;base64,' + response.data.toString('base64');
+          }, function errorCallback(response) {
+            console.error("error in posting");
+          $scope.chart_env = '/assets/images/no-chart.svg';
+          });
       }else{
-        $scope.gType=false;
+        $scope.chart_env = '/assets/images/no-chart.svg';
       }
       
     //画面遷移
@@ -3167,7 +3204,7 @@ angular.module('nitoiotweb11App').run(['$templateCache', function($templateCache
   'use strict';
 
   $templateCache.put('app/device/deviceList.html',
-    "<div ng-controller=DeviceListCtrl ng-cloak=\"\" class=navBardemoBasicUsage><!--ヘッダー読み込み--><navitop></navitop><div class=\"md-toolbar-tools searchbox\"><md-input-container><input ng-model=query><md-icon><svg width=24px height=24px viewbox=\"296 5 24 24\" version=1.1 xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink><g id=Material/Icons-white/search stroke=none fill=none transform=\"translate(296.000000, 5.000000)\" fill-rule=evenodd><path d=\"M15.502,9.491 L14.708,9.491 L14.432,9.765 C15.407,10.902 16,12.376 16,13.991 C16,17.581 13.09,20.491 9.5,20.491 C5.91,20.491 3,17.581 3,13.991 C3,10.401 5.91,7.491 9.5,7.491 C11.115,7.491 12.588,8.083 13.725,9.057 L14.001,8.783 L14.001,7.991 L18.999,3 L20.49,4.491 L15.502,9.491 L15.502,9.491 Z M9.5,9.491 C7.014,9.491 5,11.505 5,13.991 C5,16.476 7.014,18.491 9.5,18.491 C11.985,18.491 14,16.476 14,13.991 C14,11.505 11.985,9.491 9.5,9.491 L9.5,9.491 Z\" id=Shape fill=#FFFFFF transform=\"translate(11.745000, 11.745500) scale(1, -1) translate(-11.745000, -11.745500) \"></path></g></svg></md-icon></md-input-container></div><div ng-cloak><md-tabs md-dynamic-height md-border-bottom><md-tab label=一覧><!--デバイス一覧--><ul><li ng-repeat=\"item in deviceList | filter:query\" on-finish-render=deviceInfoFinished><md-card><md-list-item class=md-list-item-2 ng-click=deviceDetail()><p class=md-body-5>{{::item.deviceName}}</p><buttondetail></buttondetail></md-list-item><md-card-content><!--職場責任者・連絡先--><div class=md-contentPaddingBottom><div class=md-body-1>職場責任者：{{::item.responsiblePerson}}</div><div class=md-body-1>連絡先：{{::item.telNo}}</div><div class=md-body-1 ng-if=\"item.status=='感知あり'\">発生日時：{{item.date}}</div></div><!--感知あり/なし--><div layout=row layout-wrap class=md-card-blank-top><span class=md-body-3>{{::item.status}}</span></div><!--地震の場合--><div layout=row class=md-contentPaddingBottom layout-wrap ng-if=\"item.type == 'EQ'\"><div flex=25><p flex class=md-body-1>傾き</p><p flex class=md-body-1>商用停電</p><p flex class=md-body-1>機器異常</p></div><div flex=40><p flex class=md-body-3 ng-if=item.slope>あり（{{::item.slope}}）</p><p flex class=md-body-3 ng-if=\"item.slope == 0\">なし</p><p flex class=md-body-3 ng-if=item.commercialBlackout>あり</p><p flex class=md-body-3 ng-if=!item.commercialBlackout>なし</p><p flex class=md-body-3 ng-if=item.equipmentAbnormality>あり</p><p flex class=md-body-3 ng-if=!item.equipmentAbnormality>なし</p></div><div><div flex class=md-body-1>震度</div><div flex class=md-body-6>{{item.seismicIntensity}}</div></div></div><!--雷の場合--><div layout=row class=md-contentPaddingBottom layout-wrap ng-if=\"item.type == 'FL'\"><div flex=25><p flex class=md-body-1>漏電</p><p flex class=md-body-1>商用停電</p><p flex class=md-body-1>機器異常</p></div><div flex=40><p flex class=md-body-3 ng-if=item.leakage>あり</p><p flex class=md-body-3 ng-if=!item.leakage>なし</p><p flex class=md-body-3 ng-if=item.commercialBlackout>あり</p><p flex class=md-body-3 ng-if=!item.commercialBlackout>なし</p><p flex class=md-body-3 ng-if=item.equipmentAbnormality>あり</p><p flex class=md-body-3 ng-if=!item.equipmentAbnormality>なし</p></div><div><div flex class=md-body-1>雷</div><div flex class=md-body-6>{{item.power}}</div></div></div><p class=md-body-1 ng-if=\"item.commentList != undefined\">コメント・連絡事項</p><ul ng-if=\"item.commentList != undefined\"><li ng-repeat=\"cl in item.commentList\"><p class=md-body-2 ng-if=!cl.importantFlg>{{::cl.comment}}　{{::cl.timestamp}}</p><p class=\"md-body-2 importantFlg\" ng-if=cl.importantFlg>{{::cl.comment}}　{{::cl.timestamp}}</p></li></ul></md-card-content><!--環境センサー--><md-card-content layout-wrap ng-if=\"env && item.envSensorFlg\"><div class=md-body-1>これからの天気</div><div layout=row ng-click=\"envLogData('temp')\"><div flex=25><dl class=text-center><dt class=md-body-1>現在</dt><dd class=nito-env-img><img src=/assets/images/icon_sunny.svg></dd><dd class=\"md-headline nito-env-temp\">{{::env.temperature}}<span class=\"md-subhead env-temp\">℃</span></dd><dd class=\"md-subhead md-main-text\">{{::env.humidity}}<span class=md-body-1>%</span></dd></dl></div><div flex=25><dl class=text-center><dt class=md-body-1>13時</dt><dd class=nito-env-img><img src=/assets/images/icon_cloud.svg></dd><dd class=\"md-headline nito-env-temp\">32<span class=md-subhead>℃</span></dd><dd class=\"md-subhead md-main-text\">50<span class=md-body-1>%</span></dd></dl></div><div flex=25><dl class=text-center><dt class=md-body-1>14時</dt><dd class=nito-env-img><img src=/assets/images/icon_rainy.svg></dd><dd class=\"md-headline nito-env-temp\">32<span class=md-subhead>℃</span></dd><dd class=\"md-subhead md-main-text\">50<span class=md-body-1>%</span></dd></dl></div><div flex=25><dl class=text-center><dt class=md-body-1>15時</dt><dd class=nito-env-img><img src=/assets/images/icon_sunny_cloudy.svg></dd><dd class=\"md-headline nito-env-temp\">32<span class=md-subhead>℃</span></dd><dd class=\"md-subhead md-main-text\">50<span class=md-body-1>%</span></dd></dl></div></div><div class=md-body-1>直近の気温・湿度・気圧の推移</div></md-card-content><md-card-content class=nito-env-data layout-wrap ng-if=\"env && item.envSensorFlg\"><div layout=row><div flex=25 class=\"nito-env-datas nito-env-ap\" ng-click=\"envLogData('pressure')\"><dl class=text-center><dt class=md-body-1>気圧</dt><dd class=md-body-2>{{::env.pressure}} <span class=md-body-1>hpa</span></dd></dl></div><div flex=25 class=\"nito-env-datas nito-env-uv\" ng-click=\"envLogData('uvi')\"><dl class=text-center><dt class=md-body-1>紫外線</dt><dd class=md-body-2>{{::env.uvi}}</dd></dl></div><div flex=25 class=\"nito-env-datas nito-env-di\" ng-click=\"envLogData('discomfortIndex')\"><dl class=text-center><dt class=md-body-1>不快指数</dt><dd class=md-body-2>{{::env.discomfortIndex}}</dd></dl></div><div flex=25 class=\"nito-env-datas nito-env-hi\" ng-click=\"envLogData('heatstroke')\"><dl class=text-center><dt class=md-body-1>熱中症指数</dt><dd class=md-body-2>{{::env.heatstroke}}</dd></dl></div></div></md-card-content><md-card-content ng-if=\"env && item.envSensorFlg\"><p class=md-body-1>環境汚染</p><md-list-item ng-click=\"envLogData('noise')\"><p class=md-body-2>騒音</p><span class=md-body-1>{{::env.noise}} dB</span><buttondetail></buttondetail></md-list-item><md-list-item ng-click=\"envLogData('pm25')\"><p class=md-body-2>PM2.5</p><span class=md-body-1>少ない</span><buttondetail></buttondetail></md-list-item><md-list-item ng-click=\"envLogData('pm10')\"><p class=md-body-2>花粉</p><span class=md-body-1>多い</span><buttondetail></buttondetail></md-list-item></md-card-content></md-card></li></ul></md-tab><!--グラフタブ---------------><md-tab label=グラフ><md-input-container class=md-block flex-gt-sm><label>グラフの表示期間を選択</label><md-select ng-change=changeItem ng-model=selectItem><md-option ng-repeat=\"item in selectItems\" value={{item.value}}>{{::item.label}}</md-option></md-select></md-input-container><ul><li ng-repeat=\"item in deviceList | filter:query\" on-finish-render=deviceListFinished><md-card><md-list-item class=md-list-item-2 ng-click=deviceDetail()><p class=md-body-5>{{::item.deviceName}}</p><buttondetail></buttondetail></md-list-item><!--デバイスカード　コンテンツ--><md-card-content><!--地震データ有りの場合 グラフを表示する--><div google-chart chart=charts id={{::item.deviceId}} class=google-chart><p flex class=md-body-1>地震データなし</p></div></md-card-content></md-card></li></ul></md-tab><!--マップタブ---------------><md-tab label=マップ><!--MAP--><div class=map><!-- <ui-gmap-google-map center=\"map.center\" zoom=\"map.zoom\" draggable=\"true\" bounds=\"map.bounds\">\n" +
+    "<div ng-controller=DeviceListCtrl ng-cloak=\"\" class=navBardemoBasicUsage><!--ヘッダー読み込み--><navitop></navitop><div class=\"md-toolbar-tools searchbox\"><md-input-container><input ng-model=query><md-icon><svg width=24px height=24px viewbox=\"296 5 24 24\" version=1.1 xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink><g id=Material/Icons-white/search stroke=none fill=none transform=\"translate(296.000000, 5.000000)\" fill-rule=evenodd><path d=\"M15.502,9.491 L14.708,9.491 L14.432,9.765 C15.407,10.902 16,12.376 16,13.991 C16,17.581 13.09,20.491 9.5,20.491 C5.91,20.491 3,17.581 3,13.991 C3,10.401 5.91,7.491 9.5,7.491 C11.115,7.491 12.588,8.083 13.725,9.057 L14.001,8.783 L14.001,7.991 L18.999,3 L20.49,4.491 L15.502,9.491 L15.502,9.491 Z M9.5,9.491 C7.014,9.491 5,11.505 5,13.991 C5,16.476 7.014,18.491 9.5,18.491 C11.985,18.491 14,16.476 14,13.991 C14,11.505 11.985,9.491 9.5,9.491 L9.5,9.491 Z\" id=Shape fill=#FFFFFF transform=\"translate(11.745000, 11.745500) scale(1, -1) translate(-11.745000, -11.745500) \"></path></g></svg></md-icon></md-input-container></div><div ng-cloak><md-tabs md-dynamic-height md-border-bottom><md-tab label=一覧><!--デバイス一覧--><ul><li ng-repeat=\"item in deviceList | filter:query\" on-finish-render=deviceInfoFinished><md-card><md-list-item class=md-list-item-2 ng-click=deviceDetail()><p class=md-body-5>{{::item.deviceName}}</p><buttondetail></buttondetail></md-list-item><md-card-content><!--職場責任者・連絡先--><div class=md-contentPaddingBottom><div class=md-body-1>職場責任者：{{::item.responsiblePerson}}</div><div class=md-body-1>連絡先：{{::item.telNo}}</div><div class=md-body-1 ng-if=\"item.status=='感知あり'\">発生日時：{{item.date}}</div></div><!--感知あり/なし--><div layout=row layout-wrap class=md-card-blank-top><span class=md-body-3>{{::item.status}}</span></div><!--地震の場合--><div layout=row class=md-contentPaddingBottom layout-wrap ng-if=\"item.type == 'EQ'\"><div flex=25><p flex class=md-body-1>傾き</p><p flex class=md-body-1>商用停電</p><p flex class=md-body-1>機器異常</p></div><div flex=40><p flex class=md-body-3 ng-if=item.slope>あり（{{::item.slope}}）</p><p flex class=md-body-3 ng-if=\"item.slope == 0\">なし</p><p flex class=md-body-3 ng-if=item.commercialBlackout>あり</p><p flex class=md-body-3 ng-if=!item.commercialBlackout>なし</p><p flex class=md-body-3 ng-if=item.equipmentAbnormality>あり</p><p flex class=md-body-3 ng-if=!item.equipmentAbnormality>なし</p></div><div><div flex class=md-body-1>震度</div><div flex class=md-body-6>{{item.seismicIntensity}}</div></div></div><!--雷の場合--><div layout=row class=md-contentPaddingBottom layout-wrap ng-if=\"item.type == 'FL'\"><div flex=25><p flex class=md-body-1>漏電</p><p flex class=md-body-1>商用停電</p><p flex class=md-body-1>機器異常</p></div><div flex=40><p flex class=md-body-3 ng-if=item.leakage>あり</p><p flex class=md-body-3 ng-if=!item.leakage>なし</p><p flex class=md-body-3 ng-if=item.commercialBlackout>あり</p><p flex class=md-body-3 ng-if=!item.commercialBlackout>なし</p><p flex class=md-body-3 ng-if=item.equipmentAbnormality>あり</p><p flex class=md-body-3 ng-if=!item.equipmentAbnormality>なし</p></div><div><div flex class=md-body-1>雷</div><div flex class=md-body-6>{{item.power}}</div></div></div><p class=md-body-1 ng-if=\"item.commentList != undefined\">コメント・連絡事項</p><ul ng-if=\"item.commentList != undefined\"><li ng-repeat=\"cl in item.commentList\"><p class=md-body-2 ng-if=!cl.importantFlg>{{::cl.comment}}　{{::cl.timestamp}}</p><p class=\"md-body-2 importantFlg\" ng-if=cl.importantFlg>{{::cl.comment}}　{{::cl.timestamp}}</p></li></ul></md-card-content><!--環境センサー--><md-card-content layout-wrap ng-if=\"env && item.envSensorFlg\"><div class=md-body-1>これからの天気</div><div layout=row ng-click=\"envLogData('temp')\"><div flex=25><dl class=text-center><dt class=md-body-1>現在</dt><dd class=nito-env-img><img src=/assets/images/icon_sunny.svg></dd><dd class=\"md-headline nito-env-temp\">{{::env.temperature}}<span class=\"md-subhead env-temp\">℃</span></dd><dd class=\"md-subhead md-main-text\">{{::env.humidity}}<span class=md-body-1>%</span></dd></dl></div><div flex=25><dl class=text-center><dt class=md-body-1>13時</dt><dd class=nito-env-img><img src=/assets/images/icon_cloud.svg></dd><dd class=\"md-headline nito-env-temp\">32<span class=md-subhead>℃</span></dd><dd class=\"md-subhead md-main-text\">50<span class=md-body-1>%</span></dd></dl></div><div flex=25><dl class=text-center><dt class=md-body-1>14時</dt><dd class=nito-env-img><img src=/assets/images/icon_rainy.svg></dd><dd class=\"md-headline nito-env-temp\">32<span class=md-subhead>℃</span></dd><dd class=\"md-subhead md-main-text\">50<span class=md-body-1>%</span></dd></dl></div><div flex=25><dl class=text-center><dt class=md-body-1>15時</dt><dd class=nito-env-img><img src=/assets/images/icon_sunny_cloudy.svg></dd><dd class=\"md-headline nito-env-temp\">32<span class=md-subhead>℃</span></dd><dd class=\"md-subhead md-main-text\">50<span class=md-body-1>%</span></dd></dl></div></div><div class=md-body-1>直近の気温・湿度・気圧の推移</div></md-card-content><md-card-content class=nito-env-data layout-wrap ng-if=\"env && item.envSensorFlg\"><div layout=row><div flex=25 class=\"nito-env-datas nito-env-ap\" ng-click=\"envLogData('pressure')\"><dl class=text-center><dt class=md-body-1>気圧</dt><dd class=md-body-2>{{::env.pressure}} <span class=md-body-1>hpa</span></dd></dl></div><div flex=25 class=\"nito-env-datas nito-env-uv\" ng-click=\"envLogData('uvi')\"><dl class=text-center><dt class=md-body-1>紫外線</dt><dd class=md-body-2>{{::env.uvi}}</dd></dl></div><div flex=25 class=\"nito-env-datas nito-env-di\" ng-click=\"envLogData('discomfortIndex')\"><dl class=text-center><dt class=md-body-1>不快指数</dt><dd class=md-body-2>{{::env.discomfortIndex}}</dd></dl></div><div flex=25 class=\"nito-env-datas nito-env-hi\" ng-click=\"envLogData('heatstroke')\"><dl class=text-center><dt class=md-body-1>熱中症指数</dt><dd class=md-body-2>{{::env.heatstroke}}</dd></dl></div></div></md-card-content><md-card-content ng-if=\"env && item.envSensorFlg\"><p class=md-body-1>環境汚染</p><md-list-item ng-click=\"envLogData('noise')\"><p class=md-body-2>騒音</p><span class=md-body-1>{{::env.noise}} dB</span><buttondetail></buttondetail></md-list-item></md-card-content></md-card></li></ul></md-tab><!--グラフタブ---------------><md-tab label=グラフ><md-input-container class=md-block flex-gt-sm><label>グラフの表示期間を選択</label><md-select ng-change=changeItem ng-model=selectItem><md-option ng-repeat=\"item in selectItems\" value={{item.value}}>{{::item.label}}</md-option></md-select></md-input-container><ul><li ng-repeat=\"item in deviceList | filter:query\" on-finish-render=deviceListFinished><md-card><md-list-item class=md-list-item-2 ng-click=deviceDetail()><p class=md-body-5>{{::item.deviceName}}</p><buttondetail></buttondetail></md-list-item><!--デバイスカード　コンテンツ--><md-card-content><!--地震データ有りの場合 グラフを表示する--><div google-chart chart=charts id={{::item.deviceId}} class=google-chart><p flex class=md-body-1>地震データなし</p></div></md-card-content></md-card></li></ul></md-tab><!--マップタブ---------------><md-tab label=マップ><!--MAP--><div class=map><!-- <ui-gmap-google-map center=\"map.center\" zoom=\"map.zoom\" draggable=\"true\" bounds=\"map.bounds\">\n" +
     "                <ui-gmap-google-map zoom=\"map.zoom\" draggable=\"true\" bounds=\"map.bounds\">  --><!-- <ui-gmap-markers models=\"markers\" coords=\"'self'\" icon=\"'icon'\"></ui-gmap-markers>\n" +
     "              </ui-gmap-google-map> --><div id=map-deviceList></div></div></md-tab></md-tabs></div><!-- </script> --></div><!-- Modal for inProgress --><script type=text/ng-template id=T_inProgress><!-- <div class=\"modal-body\"> -->\n" +
     "  <md-progress-circular md-mode=\"indeterminate\"></md-progress-circular>\n" +
@@ -3186,12 +3223,12 @@ angular.module('nitoiotweb11App').run(['$templateCache', function($templateCache
 
 
   $templateCache.put('app/deviceUnit/deviceDetail.html',
-    "<div ng-controller=DeviceDetailCtrl ng-cloak=\"\" class=navBardemoBasicUsage><!--ヘッダー読み込み--><navitop></navitop><!-- <md-content class=\"md-padding\"> --><!--基本情報--><div class=md-toolbar-tools><h3 class=\"ng-binding ng-isolate-scope\">基本情報</h3></div><md-card><md-card-content><md-card-title-text><span class=md-body-5>{{deviceDetail.deviceName}}</span></md-card-title-text></md-card-content><md-card-content><p class=md-subhead>職場責任者：{{deviceDetail.responsiblePerson}}</p><p class=md-subhead>連絡先：{{deviceDetail.telNo}}</p><p class=md-subhead>住所：{{deviceDetail.address}}</p><p class=md-subhead>メモ：{{deviceDetail.memo}}</p></md-card-content></md-card><!--地震--><div class=md-toolbar-tools><h3 class=\"ng-binding ng-isolate-scope\">地震</h3></div><md-card><!--現在のステータス--><md-list-item class=md-list-item-2 ng-click=\"deviceDetailData(earthquakeCurrentData.data.date_id,'EQ')\" ng-hide=!earthquakeCurrentData><p class=md-body-5>感知あり</p><buttondetail></buttondetail></md-list-item><md-list-item class=md-list-item-2 ng-hide=earthquakeCurrentData><p class=md-body-5>感知なし</p></md-list-item><!--デバイスカード　コンテンツ--><md-card-content ng-hide=!earthquakeCurrentData><!--地震の場合--><p flex class=md-body-1>発生日時：{{earthquakeCurrentData.data.date}}</p><div layout=row layout-wrap><div flex=25><p flex class=md-body-1>傾き</p><p flex class=md-body-1>商用停電</p><p flex class=md-body-1>機器異常</p></div><div flex=40><p flex class=md-body-3 ng-if=earthquakeCurrentData.data.datas.slope>あり（{{earthquakeCurrentData.datas.slope}}）</p><p flex class=md-body-3 ng-if=\"earthquakeCurrentData.data.datas.slope == 0\">なし</p><p flex class=md-body-3 ng-if=earthquakeCurrentData.data.datas.commercialBlackout>あり</p><p flex class=md-body-3 ng-if=!earthquakeCurrentData.data.datas.commercialBlackout>なし</p><p flex class=md-body-3 ng-if=earthquakeCurrentData.data.datas.equipmentAbnormality>あり</p><p flex class=md-body-3 ng-if=!earthquakeCurrentData.data.datas.equipmentAbnormality>なし</p></div><div><div flex class=md-body-1>震度</div><div flex class=md-body-6>{{earthquakeCurrentData.data.datas[0].seismicIntensity}}</div></div></div></md-card-content><md-card-content ng-hide=\"commentList.length == 0 || commentList == undefined\"><p class=md-body-1>コメント・連絡事項</p><div layout=row layout-wrap><ul><li ng-repeat=\"item in commentList\"><p class=md-body-2 ng-if=!item.value.importantFlg>{{item.value.comment}}　{{item.value.timestamp}}</p><p class=\"md-body-2 importantFlg\" ng-if=item.value.importantFlg>{{item.value.comment}}　{{item.value.timestamp}}</p></li></ul></div></md-card-content><!--TODO メディア速報表示させる---><md-card-content ng-hide=\"earthquakeCurrentData.datas.mediaNewsletter == undefined\"><p class=md-body-1>メディア速報</p><p class=md-body-2>気象庁公報：震度{{earthquakeCurrentData.datas.mediaNewsletter[0].japanMeteorologicalAgency}}</p><p class=md-body-2>長周期地震動階級：{{earthquakeCurrentData.datas.mediaNewsletter[0].longPeriodSeismicActivityClass}}</p></md-card-content><!--地震履歴--><md-card-content><p class=md-body-1>地震履歴</p><md-list-item class=md-secondary ng-repeat=\"item in earthquakeHistoryList | limitTo: earthquakeHistoryViews: 0\" ng-click=deviceDetailData()><p class=md-body-1>{{item.data.date}}</p><span class=md-body-1>{{item.data.datas[0].value}}</span> <span class=md-body-1 ng-if=\"item.data.datas[0].value == undefined\">{{item.data.sdata.S}}</span><buttondetail></buttondetail></md-list-item><p flex class=md-body-3 ng-if=\"earthquakeHistoryList.length == 0 || earthquakeHistoryList == undefined\">履歴なし</p><div layout layout-align=center><md-button class=\"md-accent md-button md-ink-ripple\" type=button ng-click=earthquakeHistoryMoreClick() ng-transclude=\"\" ng-hide=\"earthquakeHistoryViews >= earthquakeHistoryList.length  || earthquakeHistoryList == undefined\"><div class=md-ripple-container>さらに表示</div></md-button></div></md-card-content></md-card><!--雷--><div class=md-toolbar-tools><h3 class=\"ng-binding ng-isolate-scope\">雷</h3></div><md-card><!--現在のステータス--><md-list-item class=md-list-item-2 ng-click=\"deviceDetailData(thunderCurrentData.data.date_id,'FL')\" ng-hide=!deviceDetail.thunderCurrentData><p class=md-body-5>感知あり</p><buttondetail></buttondetail></md-list-item><md-list-item class=md-list-item-2 ng-hide=deviceDetail.thunderCurrentData><p class=md-body-5>感知なし</p></md-list-item><!--デバイスカード　コンテンツ--><md-card-content ng-hide=!deviceDetail.thunderCurrentData><p flex class=md-body-1>発生日時：{{deviceDetail.thunderCurrentData.date}}</p><div layout=row layout-wrap><div flex=25><p flex class=md-body-1>漏電</p><p flex class=md-body-1>商用停電</p><p flex class=md-body-1>機器異常</p></div><div flex=40><p flex class=md-body-3 ng-if=thunderCurrentData.datas.leakage>あり</p><p flex class=md-body-3 ng-if=!thunderCurrentData.datas.leakage>なし</p><p flex class=md-body-3 ng-if=thunderCurrentData.datas.commercialBlackout>あり</p><p flex class=md-body-3 ng-if=!thunderCurrentData.datas.commercialBlackout>なし</p><p flex class=md-body-3 ng-if=thunderCurrentData.datas.equipmentAbnormality>あり</p><p flex class=md-body-3 ng-if=!thunderCurrentData.datas.equipmentAbnormality>なし</p></div><div><div flex class=md-body-1>雷</div><div flex class=md-body-6>{{thunderCurrentData.power}}</div></div></div></md-card-content><md-card-content ng-hide=\"thunderCurrentData.datas.commentList == undefined\"><p class=md-body-1>コメント・連絡事項</p><div layout=row layout-wrap><ul><li ng-repeat=\"item in thunderCurrentData.commentList\"><p class=md-body-2>{{item.comment}}　{{item.commentDate}}</p></li></ul></div></md-card-content><md-card-content ng-hide=\"thunderCurrentData.datas.mediaNewsletter == undefined\"><!-- <div layout=\"row\" layout-wrap> --><p class=md-body-1>メディア速報</p><p class=md-body-2>気象庁公報：{{thunderCurrentData.mediaNewsletter[0].japanMeteorologicalAgency}}</p><p class=md-body-2>長周期地震動階級{{thunderCurrentData.mediaNewsletter[0].longPeriodSeismicActivityClass}}</p><!-- </div> --></md-card-content><!--雷履歴--><md-card-content><p class=md-body-1>雷履歴</p><md-list-item class=md-secondary ng-repeat=\"item in thunderHistoryList | limitTo: thunderHistoryViews: 0\" ng-click=deviceDetailData()><p class=md-body-1>{{item.date}}</p><span class=md-body-1 ng-if=\"item.datas[0].value == 1\">小</span> <span class=md-body-1 ng-if=\"item.datas[0].value == 2\">中</span> <span class=md-body-1 ng-if=\"item.datas[0].value == 3\">大</span> <span class=md-body-1 ng-if=\"item.datas[0].value == undefined\">-</span><buttondetail></buttondetail></md-list-item><p flex class=md-body-3 ng-if=\"thunderHistoryList.length == 0 || thunderHistoryList == undefined\">履歴なし</p><div layout layout-align=center><md-button class=\"md-accent md-button md-ink-ripple\" type=button ng-click=thunderHistoryMoreClick() ng-transclude=\"\" ng-hide=\"thunderHistoryViews >= thunderHistoryList.length || thunderHistoryList == undefined\"><div class=md-ripple-container>さらに表示</div></md-button></div></md-card-content></md-card><!-- </md-content> --></div><footer class=footer></footer>"
+    "<div ng-controller=DeviceDetailCtrl ng-cloak=\"\" class=navBardemoBasicUsage><!--ヘッダー読み込み--><navitop></navitop><!-- <md-content class=\"md-padding\"> --><!--基本情報--><div class=md-toolbar-tools><h3 class=\"ng-binding ng-isolate-scope\">基本情報</h3></div><md-card><md-card-content><md-card-title-text><span class=md-body-5>{{deviceDetail.deviceName}}</span></md-card-title-text></md-card-content><md-card-content><p class=md-subhead>職場責任者：{{deviceDetail.responsiblePerson}}</p><p class=md-subhead>連絡先：{{deviceDetail.telNo}}</p><p class=md-subhead>住所：{{deviceDetail.address}}</p><p class=md-subhead>メモ：{{deviceDetail.memo}}</p></md-card-content></md-card><!--地震--><div class=md-toolbar-tools><h3 class=\"ng-binding ng-isolate-scope\">地震</h3></div><md-card><!--現在のステータス--><md-list-item class=md-list-item-2 ng-click=\"deviceDetailData(earthquakeCurrentData.data.date_id,'EQ')\" ng-hide=!earthquakeCurrentData><p class=md-body-5>感知あり</p><buttondetail></buttondetail></md-list-item><md-list-item class=md-list-item-2 ng-hide=earthquakeCurrentData><p class=md-body-5>感知なし</p></md-list-item><!--デバイスカード　コンテンツ--><md-card-content ng-hide=!earthquakeCurrentData><!--地震の場合--><p flex class=md-body-1>発生日時：{{earthquakeCurrentData.data.date}}</p><div layout=row layout-wrap><div flex=25><p flex class=md-body-1>傾き</p><p flex class=md-body-1>商用停電</p><p flex class=md-body-1>機器異常</p></div><div flex=40><p flex class=md-body-3 ng-if=earthquakeCurrentData.data.datas.slope>あり（{{earthquakeCurrentData.datas.slope}}）</p><p flex class=md-body-3 ng-if=\"earthquakeCurrentData.data.datas.slope == 0\">なし</p><p flex class=md-body-3 ng-if=earthquakeCurrentData.data.datas.commercialBlackout>あり</p><p flex class=md-body-3 ng-if=!earthquakeCurrentData.data.datas.commercialBlackout>なし</p><p flex class=md-body-3 ng-if=earthquakeCurrentData.data.datas.equipmentAbnormality>あり</p><p flex class=md-body-3 ng-if=!earthquakeCurrentData.data.datas.equipmentAbnormality>なし</p></div><div><div flex class=md-body-1>震度</div><div flex class=md-body-6>{{earthquakeCurrentData.data.sdata.S}}</div></div></div></md-card-content><md-card-content ng-hide=\"commentList.length == 0 || commentList == undefined\"><p class=md-body-1>コメント・連絡事項</p><div layout=row layout-wrap><ul><li ng-repeat=\"item in commentList\"><p class=md-body-2 ng-if=!item.value.importantFlg>{{item.value.comment}}　{{item.value.timestamp}}</p><p class=\"md-body-2 importantFlg\" ng-if=item.value.importantFlg>{{item.value.comment}}　{{item.value.timestamp}}</p></li></ul></div></md-card-content><!--TODO メディア速報表示させる---><md-card-content ng-hide=\"earthquakeCurrentData.datas.mediaNewsletter == undefined\"><p class=md-body-1>メディア速報</p><p class=md-body-2>気象庁公報：震度{{earthquakeCurrentData.datas.mediaNewsletter[0].japanMeteorologicalAgency}}</p><p class=md-body-2>長周期地震動階級：{{earthquakeCurrentData.datas.mediaNewsletter[0].longPeriodSeismicActivityClass}}</p></md-card-content><!--地震履歴--><md-card-content><p class=md-body-1>地震履歴</p><md-list-item class=md-secondary ng-repeat=\"item in earthquakeHistoryList | limitTo: earthquakeHistoryViews: 0\" ng-click=deviceDetailData()><p class=md-body-1>{{item.data.date}}</p><span class=md-body-1>{{item.data.datas[0].value}}</span> <span class=md-body-1 ng-if=\"item.data.datas[0].value == undefined\">{{item.data.sdata.S}}</span><buttondetail></buttondetail></md-list-item><p flex class=md-body-3 ng-if=\"earthquakeHistoryList.length == 0 || earthquakeHistoryList == undefined\">履歴なし</p><div layout layout-align=center><md-button class=\"md-accent md-button md-ink-ripple\" type=button ng-click=earthquakeHistoryMoreClick() ng-transclude=\"\" ng-hide=\"earthquakeHistoryViews >= earthquakeHistoryList.length  || earthquakeHistoryList == undefined\"><div class=md-ripple-container>さらに表示</div></md-button></div></md-card-content></md-card><!--雷--><div class=md-toolbar-tools><h3 class=\"ng-binding ng-isolate-scope\">雷</h3></div><md-card><!--現在のステータス--><md-list-item class=md-list-item-2 ng-click=\"deviceDetailData(thunderCurrentData.data.date_id,'FL')\" ng-hide=!deviceDetail.thunderCurrentData><p class=md-body-5>感知あり</p><buttondetail></buttondetail></md-list-item><md-list-item class=md-list-item-2 ng-hide=deviceDetail.thunderCurrentData><p class=md-body-5>感知なし</p></md-list-item><!--デバイスカード　コンテンツ--><md-card-content ng-hide=!deviceDetail.thunderCurrentData><p flex class=md-body-1>発生日時：{{deviceDetail.thunderCurrentData.date}}</p><div layout=row layout-wrap><div flex=25><p flex class=md-body-1>漏電</p><p flex class=md-body-1>商用停電</p><p flex class=md-body-1>機器異常</p></div><div flex=40><p flex class=md-body-3 ng-if=thunderCurrentData.datas.leakage>あり</p><p flex class=md-body-3 ng-if=!thunderCurrentData.datas.leakage>なし</p><p flex class=md-body-3 ng-if=thunderCurrentData.datas.commercialBlackout>あり</p><p flex class=md-body-3 ng-if=!thunderCurrentData.datas.commercialBlackout>なし</p><p flex class=md-body-3 ng-if=thunderCurrentData.datas.equipmentAbnormality>あり</p><p flex class=md-body-3 ng-if=!thunderCurrentData.datas.equipmentAbnormality>なし</p></div><div><div flex class=md-body-1>雷</div><div flex class=md-body-6>{{thunderCurrentData.power}}</div></div></div></md-card-content><md-card-content ng-hide=\"thunderCurrentData.datas.commentList == undefined\"><p class=md-body-1>コメント・連絡事項</p><div layout=row layout-wrap><ul><li ng-repeat=\"item in thunderCurrentData.commentList\"><p class=md-body-2>{{item.comment}}　{{item.commentDate}}</p></li></ul></div></md-card-content><md-card-content ng-hide=\"thunderCurrentData.datas.mediaNewsletter == undefined\"><!-- <div layout=\"row\" layout-wrap> --><p class=md-body-1>メディア速報</p><p class=md-body-2>気象庁公報：{{thunderCurrentData.mediaNewsletter[0].japanMeteorologicalAgency}}</p><p class=md-body-2>長周期地震動階級{{thunderCurrentData.mediaNewsletter[0].longPeriodSeismicActivityClass}}</p><!-- </div> --></md-card-content><!--雷履歴--><md-card-content><p class=md-body-1>雷履歴</p><md-list-item class=md-secondary ng-repeat=\"item in thunderHistoryList | limitTo: thunderHistoryViews: 0\" ng-click=deviceDetailData()><p class=md-body-1>{{item.data.date}}</p><span class=md-body-1 ng-if=\"item.data.datas[0].value == 1\">小</span> <span class=md-body-1 ng-if=\"item.data.datas[0].value == 2\">中</span> <span class=md-body-1 ng-if=\"item.data.datas[0].value == 3\">大</span> <span class=md-body-1 ng-if=\"item.data.datas[0].value == undefined\">-</span><buttondetail></buttondetail></md-list-item><p flex class=md-body-3 ng-if=\"thunderHistoryList.length == 0 || thunderHistoryList == undefined\">履歴なし</p><div layout layout-align=center><md-button class=\"md-accent md-button md-ink-ripple\" type=button ng-click=thunderHistoryMoreClick() ng-transclude=\"\" ng-hide=\"thunderHistoryViews >= thunderHistoryList.length || thunderHistoryList == undefined\"><div class=md-ripple-container>さらに表示</div></md-button></div></md-card-content></md-card><!-- </md-content> --></div><footer class=footer></footer>"
   );
 
 
   $templateCache.put('app/deviceUnit/deviceDetailData.html',
-    "<div ng-controller=DeviceDetailDataCtrl ng-cloak=\"\" class=navBardemoBasicUsage><!--ヘッダー読み込み--><navitop></navitop><div ng-show=error class=\"alert alert-danger\">{{error}}</div><div ng-show=success class=\"alert alert-success\">{{success}}</div><!--地震または雷--><div class=md-toolbar-tools><h3 class=\"ng-binding ng-isolate-scope\"><div ng-if=\"detailData.type == 'EQ'\">地震</div><div ng-if=\"detailData.type == 'FL'\"><a class=\"docs-anchor ng-scope\" ng-href=#basic-usage name=basic-usage href=#basic-usage>雷</a></div></h3></div><!--デバイスカード--><md-card><!--デバイスカード　タイトル（デバイス名）--><md-card-content><!--タイトル（デバイス名）--><md-card-title-text><span class=md-body-5>感知あり</span></md-card-title-text></md-card-content><!--デバイスカード　コンテンツ--><md-card-content><!--地震の場合--><div layout=row ng-if=\"detailData.type == 'EQ'\"><div flex=25><p flex class=md-body-1>傾き</p><p flex class=md-body-1>商用停電</p><p flex class=md-body-1>機器異常</p></div><div flex=40><p flex class=md-body-3>{{detailData.slope}}</p><p flex class=md-body-3>{{detailData.commercialBlackout}}</p><p flex class=md-body-3>{{detailData.equipmentAbnormality}}</p></div><div><div flex class=md-body-1>震度</div><div flex class=md-body-6>{{detailData.seismicIntensity}}</div></div></div><!--雷の場合--><div layout=row layout-wrap ng-if=\"detailData.type == 'FL'\"><div flex=25><p flex class=md-body-1>漏電</p><p flex class=md-body-1>商用停電</p><p flex class=md-body-1>機器異常</p></div><div flex=40><p flex class=md-body-3>{{detailData.leakage}}</p><p flex class=md-body-3>{{detailData.commercialBlackout}}</p><p flex class=md-body-3>{{detailData.equipmentAbnormality}}</p></div><div><div flex class=md-body-1>雷</div><div flex class=md-display-3>{{detailData.power}}</div></div></div></md-card-content><md-card-content><p class=md-body-1>コメント・連絡事項</p><div layout=row layout-wrap ng-hide=\"detailData.commentList == undefined\"><ul><li ng-repeat=\"item in detailData.commentList\"><p class=md-body-2 ng-if=!item.value.importantFlg>{{item.value.comment}}　{{item.value.timestamp}}</p><p class=\"md-body-2 importantFlg\" ng-if=item.value.importantFlg>{{item.value.comment}}　{{item.value.timestamp}}</p></li></ul></div><md-button class=\"md-accent md-button md-ink-ripple\" type=button ng-click=addComment() ng-transclude=\"\"><div class=md-ripple-container>コメント追加</div></md-button></md-card-content><md-card-content ng-hide=\"detailData.mediaNewsletter == undefined\"><div class=md-body-1>メディア速報</div><div class=md-body-2>気象庁公報：震度{{detailData.mediaNewsletter.japanMeteorologicalAgency}}</div><div class=md-body-2>長周期地震動階級：{{detailData.mediaNewsletter.longPeriodSeismicActivityClass}}</div></md-card-content></md-card><!--グラフ--><div class=md-toolbar-tools><h3 class=\"ng-binding ng-isolate-scope\">グラフ</h3></div><md-card><md-card-title><span class=md-body-3>合成加速度</span></md-card-title><img ng-src={{chart_acceleration}}></md-card><!--マップ--><div class=md-toolbar-tools><h3 class=\"ng-binding ng-isolate-scope\">マップ</h3></div><md-card><md-content class=md-padding><div id=map-detailData></div></md-content></md-card></div><footer class=footer></footer>"
+    "<div ng-controller=DeviceDetailDataCtrl ng-cloak=\"\" class=navBardemoBasicUsage><!--ヘッダー読み込み--><navitop></navitop><div ng-show=error class=\"alert alert-danger\">{{error}}</div><div ng-show=success class=\"alert alert-success\">{{success}}</div><!--地震または雷--><div class=md-toolbar-tools><h3 class=\"ng-binding ng-isolate-scope\"><div ng-if=\"detailData.type == 'EQ'\">地震</div><div ng-if=\"detailData.type == 'FL'\">雷</div></h3></div><!--デバイスカード--><md-card><!--デバイスカード　タイトル（デバイス名）--><md-card-content><!--タイトル（デバイス名）--><md-card-title-text><span class=md-body-5>感知あり</span></md-card-title-text></md-card-content><!--デバイスカード　コンテンツ--><md-card-content><!--地震の場合--><div layout=row ng-if=\"detailData.type == 'EQ'\"><div flex=25><p flex class=md-body-1>傾き</p><p flex class=md-body-1>商用停電</p><p flex class=md-body-1>機器異常</p></div><div flex=40><p flex class=md-body-3>{{detailData.slope}}</p><p flex class=md-body-3>{{detailData.commercialBlackout}}</p><p flex class=md-body-3>{{detailData.equipmentAbnormality}}</p></div><div><div flex class=md-body-1>震度</div><div flex class=md-body-6>{{detailData.seismicIntensity}}</div></div></div><!--雷の場合--><div layout=row layout-wrap ng-if=\"detailData.type == 'FL'\"><div flex=25><p flex class=md-body-1>漏電</p><p flex class=md-body-1>商用停電</p><p flex class=md-body-1>機器異常</p></div><div flex=40><p flex class=md-body-3>{{detailData.leakage}}</p><p flex class=md-body-3>{{detailData.commercialBlackout}}</p><p flex class=md-body-3>{{detailData.equipmentAbnormality}}</p></div><div><div flex class=md-body-1>雷</div><div flex class=md-display-3>{{detailData.power}}</div></div></div></md-card-content><md-card-content ng-if=detailData.dataFlg><p class=md-body-1>地震記録の解析</p><md-list-item><p class=md-body-2>SI値</p><span class=md-body-1>{{::detailData.si}}</span></md-list-item><md-list-item><p class=md-body-2>最大加速度</p><span class=md-body-1>{{::detailData.ma}}</span></md-list-item><md-list-item><p class=md-body-2>卓越周期（X）</p><span class=md-body-1>{{::detailData.vpx}}</span></md-list-item><md-list-item><p class=md-body-2>卓越周期（Y）</p><span class=md-body-1>{{::detailData.vpy}}</span></md-list-item><md-list-item><p class=md-body-2>卓越周期（Z）</p><span class=md-body-1>{{::detailData.vpz}}</span></md-list-item><md-list-item><p class=md-body-2>長周期階級</p><span class=md-body-1>{{::detailData.pc}}</span></md-list-item></md-card-content><md-card-content><p class=md-body-1>コメント・連絡事項</p><div layout=row layout-wrap ng-hide=\"detailData.commentList == undefined\"><ul><li ng-repeat=\"item in detailData.commentList\"><p class=md-body-2 ng-if=!item.value.importantFlg>{{item.value.comment}}　{{item.value.timestamp}}</p><p class=\"md-body-2 importantFlg\" ng-if=item.value.importantFlg>{{item.value.comment}}　{{item.value.timestamp}}</p></li></ul></div><md-button class=\"md-accent md-button md-ink-ripple\" type=button ng-click=addComment() ng-transclude=\"\"><div class=md-ripple-container>コメント追加</div></md-button></md-card-content><md-card-content ng-hide=\"detailData.mediaNewsletter == undefined\"><div class=md-body-1>メディア速報</div><div class=md-body-2>気象庁公報：震度{{detailData.mediaNewsletter.japanMeteorologicalAgency}}</div><div class=md-body-2>長周期地震動階級：{{detailData.mediaNewsletter.longPeriodSeismicActivityClass}}</div></md-card-content></md-card><!--グラフ--><div class=md-toolbar-tools><h3 class=\"ng-binding ng-isolate-scope\">グラフ</h3></div><md-card><md-card-title><span class=md-body-3>合成加速度</span></md-card-title><img ng-src={{chart_acceleration}}></md-card><!--マップ--><div class=md-toolbar-tools><h3 class=\"ng-binding ng-isolate-scope\">マップ</h3></div><md-card><md-content class=md-padding><div id=map-detailData></div></md-content></md-card></div><footer class=footer></footer>"
   );
 
 
@@ -3222,7 +3259,7 @@ angular.module('nitoiotweb11App').run(['$templateCache', function($templateCache
 
 
   $templateCache.put('app/deviceUnit/envLog.html',
-    "<div ng-controller=EnvLogCtrl ng-cloak=\"\" class=navBardemoBasicUsage><!--ヘッダー読み込み--><navitop></navitop><md-card><md-card-content><div ng-if=gType><img src=/assets/images/dummy_figure.png style=width:100%></div><div ng-if=!gType><img src=/assets/images/dummy_figure2.png style=width:100%></div><div layout layout-align=center><md-button class=\"md-accent md-button md-ink-ripple\" type=button ng-click=backtoList() ng-transclude=\"\"><div class=md-ripple-container>戻る</div></md-button></div></md-card-content></md-card></div><footer class=footer></footer>"
+    "<div ng-controller=EnvLogCtrl ng-cloak=\"\" class=navBardemoBasicUsage><!--ヘッダー読み込み--><navitop></navitop><md-card><md-card-content><div><img ng-src={{chart_env}} style=width:100%></div><div layout layout-align=center><md-button class=\"md-accent md-button md-ink-ripple\" type=button ng-click=backtoList() ng-transclude=\"\"><div class=md-ripple-container>戻る</div></md-button></div></md-card-content></md-card></div><footer class=footer></footer>"
   );
 
 

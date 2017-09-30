@@ -39,45 +39,51 @@
 
           var obj = response.data[0];
           var obj2;
-          if(obj.data.datas){
-            obj2 = obj.data.datas[0];
+          if(obj.data.sdata){
+            obj2 = obj.data.sdata;
+            obj2["sdataFlg"] = true;
+            
+            if(obj2.TA){
+              obj2.TA = "あり（"+obj2.TA+"°）";
+            }else{
+              obj2.TA = "なし"
+            }
+            
+          }else{
+            obj2 = new Object();
+            obj2["sdataFlg"] = false;
           }
 
           //
-          if(obj2.commercialBlackout){
-            obj2.commercialBlackout = "あり"
+          if(obj.data.HC){
+            obj.data.HC = "あり"
           }else{
-            obj2.commercialBlackout = "なし"
+            obj.data.HC = "なし"
           }
 
-          if(obj2.equipmentAbnormality){
-            obj2.equipmentAbnormality = "あり"
+          if(obj.data.AP){
+            obj.data.AP = "あり"
           }else{
-            obj2.equipmentAbnormality = "なし"
+            obj.data.AP = "なし"
           }
 
-          if(obj2.leakage){
-            obj2.leakage = "あり"
+          if(obj.data.datas[0].leakage){
+            obj.data.datas[0].leakage = "あり"
           }else{
-            obj2.leakage = "なし"
+            obj.data.datas[0].leakage = "なし"
           }
 
-          if(obj2.slope){
-            obj2.slope = "あり（"+obj2.slope+"°）";
-          }else{
-            obj2.slope = "なし"
-          }
         
-          if(obj2.power){
-            switch(obj2.power){
+          if(obj.data.datas[0].power){
+            switch(obj.data.datas[0].power){
               case 1:
-                obj2.power = "小";
+                obj.data.datas[0].power = "小";
                 break;
               case 2:
-                obj2.power = "中";
+                obj.data.datas[0].power = "中";
                 break;
               case 3:
-                obj2.power = "大";
+                obj.data.datas[0].power = "大";
                 break;
             }
           }
@@ -85,13 +91,20 @@
           {
                deviceId   :obj._id,
                deviceName :obj.deviceName,
-               type       :obj2.type,          //地震or雷
-               seismicIntensity:obj2.seismicIntensity,     //震度（地震のみ）
-               power :obj2.power,
-               slope:obj2.slope,               //傾き（地震のみ）
-               leakage:obj2.leakage,             //漏電（雷のみ）
-               commercialBlackout:obj2.commercialBlackout,
-               equipmentAbnormality:obj2.equipmentAbnormality,
+               type       :obj.data.datas[0].type || obj2.ID,          //地震or雷
+               dataFlg       :obj2.sdataFlg,          //Sdataフラグ
+               seismicIntensity:obj2.S,     //震度（地震のみ）
+               ma:obj2.MA,               //最大加速度(gal)(ベクトル合成値)
+               si:obj2.SI,               //SI値
+               vpx:obj2.VPX,               //X成分卓越周期
+               vpy:obj2.VPY,               //Y成分卓越周期
+               vpz:obj2.VPZ,               //Z成分卓越周期
+               pc:obj2.PC,               //長周期階級
+               slope:obj2.TA,               //傾き（地震のみ）
+               power :obj.data.datas[0].power,    //かみなり（雷のみ）
+               leakage:obj.data.datas[0].leakage,             //漏電（雷のみ）
+               commercialBlackout:obj.data.AP,             //停電
+               equipmentAbnormality:obj.data.HC             //機器異常
          };
 
           //TODO コメントを取得する
@@ -113,8 +126,8 @@
         }
 
        ///MAP用データ/////////////////////////////////////////////
-
-          $http.get('/api/device_list/logdate/' + $routeParams.DEVICE_ID + '/' + $routeParams.YYYYMMDDHHMM + '/' + obj2.type)
+          var type  = obj.data.datas[0].type || obj2.ID;
+          $http.get('/api/device_list/logdate/' + $routeParams.DEVICE_ID + '/' + $routeParams.YYYYMMDDHHMM + '/' + type)
           .then(function successCallback(response) {
             $scope.deviceList = response.data;
                 var map = new google.maps.Map( document.getElementById( 'map-detailData' ), {
@@ -126,13 +139,13 @@
                 $scope.markers =[];
                 for(var i = 0; i < response.data.length; i++){
                   //アイコンを今のデータを以前のデータで分ける
-                  if(obj2.type == 'EQ' || obj2.type == 'AL'){
+                  if(type == 'EQ' || type == 'AL'){
                     if($routeParams.DEVICE_ID == response.data[i].value.did) {
                         icon = '/assets/images/markerNow' + response.data[i].value.s + '.png'
                     }else{
                         icon = '/assets/images/marker' + response.data[i].value.s + '.png'
                     }
-                  }else if(obj2.type == 'FL'){
+                  }else if(type == 'FL'){
                     if($routeParams.DEVICE_ID == response.data[i].value.did) {
                         icon = '/assets/images/markerNow' + response.data[i].value.s + '_thunder.png'
                     }else{

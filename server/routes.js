@@ -266,6 +266,21 @@ module.exports = function(app) {
       deviceUnit.getChartImage(req,res);
     });
 
+    /**
+   * 環境センサーのグラフイメージのapi
+   * id:デバイス番号（00014)だけ入れてあります）
+   * type:グラフの種類
+   *  TEMP    温度、湿度
+   *  DISC    不快指数
+   *  NOIS     騒音
+   *  PRES   気圧
+   *  UVI       紫外線
+   */
+  //show
+  app.get('/api/chart_env_:id/:type',function(req, res) {
+      deviceUnit.getEnvChartImage(req,res);
+    });
+
 
     /**
    * アラート設定のapi

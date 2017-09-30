@@ -45,15 +45,15 @@ var deviceUnit = {
 //        console.log("Eq_dEntitity.getLatest.dat");
 //        console.log(dat.docs);
         if(dat.docs.length){
-          if(!dat.docs[0].data.datas[0].seismicIntensity) dat.docs[0].data.datas[0]["seismicIntensity"] = dat.docs[0].data.datas[0].value;
+          if(!dat.docs[0].data.sdata.S) dat.docs[0].data.sdata["S"] = dat.docs[0].data.datas[0].value;
           deviceJson["earthquakeCurrentData"] = dat.docs[0];
         }
 //        console.log('earthquakeCurrentData@getDeviceDetail');
 //        console.log(deviceJson);
         cloudantUtil.Fl_dEntitity.getLatest(userDevice, function(err, dat){
-          if(err) {return response.status('200').json(deviceJson);}
-          if(dat.length){
-            deviceJson["thunderCurrentData"] = dat[0].value;
+          if(err) {return response.status('200').json(err);}
+          if(dat.docs.length){
+            deviceJson["thunderCurrentData"] = dat.docs[0];
           }
 //          console.log('thunderCurrentData@getDeviceDetail');
 //          console.log(deviceJson);
@@ -87,8 +87,9 @@ var deviceUnit = {
 //        console.log("Eq_dEntitity.getHistoryDate.dat");
 //        console.log(dat.docs);
         if(dat.docs.length){
-          if(!dat.docs[0].data.datas[0].seismicIntensity) {
-            dat.docs[0].data.datas[0]["seismicIntensity"] = dat.docs[0].data.datas[0].value;
+          if(!dat.docs[0].data.hasOwnProperty("sdata")) {
+            dat.docs[0].data["sdata"] = new Object();
+            dat.docs[0].data.sdata["S"] = dat.docs[0].data.datas[0].value;
             dat.docs[0].data.datas[0]["type"] = "EQ";
             delete dat.docs[0]._rev;
             cloudantUtil.Eq_dEntitity.postHistoryDate(dat.docs[0],function(err,doc){
@@ -365,6 +366,34 @@ var deviceUnit = {
       if(err) {return response.status('200').sendfile(err);}
       res.writeHead( 200, { 'Content-type': 'image/jpeg; charset=utf-8' } );
       res.end( dat );
+    });
+  },
+  
+  /**
+ * 環境センサーのイメージ
+ * prams:req express requestオブジェクト
+ * prams:res express responseオブジェクト
+ */
+  getEnvChartImage : function(req,res){
+    if(!req.user) {
+      return res.status('200').json({ error: "ログインされていません" });
+    }
+    var deviceId = req.params.id;
+    var envType = req.params.type;
+    var query = 'DEV_' + deviceId + '_' + envType
+    
+      console.log(query);
+    var self = this;
+    var reqest = req;
+    var response = res;
+    cloudantUtil.Om_ImageEntitity.getChartImage(query, function(err, dat){
+//      console.log("dat@getChartImage");
+//      console.log(dat);
+      if(err) {return response.status('200').sendfile(err);}
+      res.writeHead( 200, { 'Content-type': 'image/svg+xml; charset=utf-8' } );
+      res.end( dat );
+      
+      
     });
   }
   

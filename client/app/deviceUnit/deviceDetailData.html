@@ -9,9 +9,7 @@
 <div class="md-toolbar-tools">
   <h3 class="ng-binding ng-isolate-scope">
     <div ng-if="detailData.type == 'EQ'">地震</div>
-    <div ng-if="detailData.type == 'FL'">
-    <a class="docs-anchor ng-scope" ng-href="#basic-usage"name="basic-usage" href="#basic-usage">雷</a>
-    </div>
+    <div ng-if="detailData.type == 'FL'">雷</div>
   </h3>
 </div>
 
@@ -62,6 +60,33 @@
       </div>
       </div>
   　</md-card-content>
+    <md-card-content ng-if="detailData.dataFlg">
+      <p class="md-body-1">地震記録の解析</p>
+      <md-list-item>
+        <p class="md-body-2">SI値</p>
+        <span class="md-body-1">{{::detailData.si}}</span>
+      </md-list-item>
+      <md-list-item>
+        <p class="md-body-2">最大加速度</p>
+        <span class="md-body-1">{{::detailData.ma}}</span>
+      </md-list-item>
+      <md-list-item>
+        <p class="md-body-2">卓越周期（X）</p>
+        <span class="md-body-1">{{::detailData.vpx}}</span>
+      </md-list-item>
+      <md-list-item>
+        <p class="md-body-2">卓越周期（Y）</p>
+        <span class="md-body-1">{{::detailData.vpy}}</span>
+      </md-list-item>
+      <md-list-item>
+        <p class="md-body-2">卓越周期（Z）</p>
+        <span class="md-body-1">{{::detailData.vpz}}</span>
+      </md-list-item>
+      <md-list-item>
+        <p class="md-body-2">長周期階級</p>
+        <span class="md-body-1">{{::detailData.pc}}</span>
+      </md-list-item>
+    </md-card-content>
     <md-card-content>
         <p class="md-body-1">コメント・連絡事項</p>
         <div layout="row" layout-wrap ng-hide="detailData.commentList == undefined">
@@ -93,7 +118,7 @@
             <md-card-title>
               <span class="md-body-3">合成加速度</span>
             </md-card-title>
-            <img ng-src={{chart_acceleration}}></img>
+            <img ng-src={{chart_acceleration}}>
           </md-card>
 
 

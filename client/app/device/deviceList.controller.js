@@ -34,18 +34,18 @@ angular.module('nitoiotweb11App')
             ];
     //グラフの表示期間のデフォル値設定
     $scope.selectItem = 'month';
-    
+
     //デバイス一覧情報
     $http.get('/api/device_list/')
       .then(function successCallback(response) {
-                console.log("/api/device_list/ successfully");
-                console.log(response);
+        console.log("/api/device_list/ successfully");
+        console.log(response);
         //TODO dataに発生日時を追加していただく。（白倉さん）
         var obj = response.data;
         $scope.deviceList = obj.device_list;
         console.log($scope.deviceList);
-      
-      
+
+
         //MAP
 
         //初期値
@@ -69,34 +69,34 @@ angular.module('nitoiotweb11App')
         angular.forEach($scope.deviceList, function (value, index) {
           //            console.log(index+' latitude: ' + value.latitude + ' longitude: ' + value.longitude);
           //アイコンを今のデータを以前のデータで分ける
-          if(value.status == '感知あり'){
+          if (value.status == '感知あり') {
             var imgSi;
-            switch(true) {
-              case value.seismicIntensity > 6.5 :
-                  imgSi = '7';
-                  break;
-              case 6.0 < value.seismicIntensity && value.seismicIntensity < 6.5 :
-                  imgSi = '6_u';
-                  break;
-              case 5.5 < value.seismicIntensity && value.seismicIntensity < 6.0 :
-                  imgSi = '6';
-                  break;
-              case 5.0 < value.seismicIntensity && value.seismicIntensity < 5.5 :
-                  imgSi = '5_u';
-                  break;
-              case 4.5 < value.seismicIntensity && value.seismicIntensity < 5.0 :
-                  imgSi = '5';
-                  break;
-                default :
-                  imgSi = Math.round(value.seismicIntensity);
-                  break;
-                  
+            switch (true) {
+              case value.seismicIntensity > 6.5:
+                imgSi = '7';
+                break;
+              case 6.0 < value.seismicIntensity && value.seismicIntensity < 6.5:
+                imgSi = '6_u';
+                break;
+              case 5.5 < value.seismicIntensity && value.seismicIntensity < 6.0:
+                imgSi = '6';
+                break;
+              case 5.0 < value.seismicIntensity && value.seismicIntensity < 5.5:
+                imgSi = '5_u';
+                break;
+              case 4.5 < value.seismicIntensity && value.seismicIntensity < 5.0:
+                imgSi = '5';
+                break;
+              default:
+                imgSi = Math.round(value.seismicIntensity);
+                break;
+
             }
-            Math.round(value.seismicIntensity); 
+            Math.round(value.seismicIntensity);
             var icon = '/assets/images/marker' + imgSi + '.png';
             var image = {
-                url : icon,
-                scaledSize : new google.maps.Size(20, 34)
+              url: icon,
+              scaledSize: new google.maps.Size(20, 34)
             }
             //マーカー
             var marker = new google.maps.Marker({
@@ -114,8 +114,8 @@ angular.module('nitoiotweb11App')
             });
           }
 
-          
-          
+
+
 
           $scope.markers.push(marker);
 
@@ -200,13 +200,13 @@ angular.module('nitoiotweb11App')
     //         "heatstroke": 18.76,
     //         "battery": 3026
     //       }
-    
-    
+
+
     $scope.getEnvLatest = function () {
       $http.get('/api/device_env_latest/dd4c78468628/')
         .then(function successCallback(response) {
-//                console.log("/api/device_env_latest/dd4c78468628/");
-//                console.log(response);
+          //                console.log("/api/device_env_latest/dd4c78468628/");
+          //                console.log(response);
           var dat = response.data.docs[0].payload.d;
           var env = {};
           env["temperature"] = dat.temperature;
@@ -214,60 +214,60 @@ angular.module('nitoiotweb11App')
           env["pressure"] = dat.pressure;
           var uvi = function (d) {
             switch (true) {
-            case d < 3:
-              return '弱い';
-            case d > 3 && d < 6:
-              return '中程度';
-            case d > 6 && d < 8:
-              return '強い';
-            case d > 8 && d < 10:
-              return '非常に強い';
-            case d > 10:
-              return '極端に強い';
-            default:
-              return '計測エラー';
+              case d < 3:
+                return '弱い';
+              case d > 3 && d < 6:
+                return '中程度';
+              case d > 6 && d < 8:
+                return '強い';
+              case d > 8 && d < 10:
+                return '非常に強い';
+              case d > 10:
+                return '極端に強い';
+              default:
+                return '計測エラー';
             }
           }
           env["uvi"] = uvi(dat.uvi);
           var discomfortIndex = function (d) {
             switch (true) {
-            case d < 75:
-              return '暑くない';
-              break;
-            case d > 75 && d < 80:
-              return 'やや暑い';
-              break;
-            case d > 80 && d < 85:
-              return '暑くて汗が出る';
-              break;
-            case d > 85:
-              return '暑くてたまらない';
-              break;
-            default:
-              return '計測エラー';
+              case d < 75:
+                return '暑くない';
+                break;
+              case d > 75 && d < 80:
+                return 'やや暑い';
+                break;
+              case d > 80 && d < 85:
+                return '暑くて汗が出る';
+                break;
+              case d > 85:
+                return '暑くてたまらない';
+                break;
+              default:
+                return '計測エラー';
             }
           }
           env["discomfortIndex"] = discomfortIndex(dat.discomfortIndex);
           var heatstroke = function (d) {
             switch (true) {
-            case d < 21:
-              return 'ほぼ安全';
-              z
-              break;
-            case d > 21 && d < 25:
-              return '注意';
-              break;
-            case d > 25 && d < 28:
-              return '警戒';
-              break;
-            case d > 28 && d < 31:
-              return '厳重警戒';
-              break;
-            case d > 31:
-              return '運動は原則中止';
-              break;
-            default:
-              return '計測エラー';
+              case d < 21:
+                return 'ほぼ安全';
+                z
+                break;
+              case d > 21 && d < 25:
+                return '注意';
+                break;
+              case d > 25 && d < 28:
+                return '警戒';
+                break;
+              case d > 28 && d < 31:
+                return '厳重警戒';
+                break;
+              case d > 31:
+                return '運動は原則中止';
+                break;
+              default:
+                return '計測エラー';
             }
           }
           env["heatstroke"] = heatstroke(dat.heatstroke);
@@ -280,13 +280,13 @@ angular.module('nitoiotweb11App')
     $scope.getEnvLatest();
     $interval($scope.getEnvLatest, 1000 * 60 * 30);
 
-//    $http.get('/api/device_env_forcast/35.62982_139.7942416/')
-//      .then(function successCallback(response) {
-//        var dat = response.data;
-//        //          $scope.env = env;
-//      }, function errorCallback(response) {
-//        console.error("error in posting");
-//      });
+    //    $http.get('/api/device_env_forcast/35.62982_139.7942416/')
+    //      .then(function successCallback(response) {
+    //        var dat = response.data;
+    //        //          $scope.env = env;
+    //      }, function errorCallback(response) {
+    //        console.error("error in posting");
+    //      });
 
     //    function updateEnv(response) {
     //        var dat = JSON.parse(response.data);
@@ -387,10 +387,88 @@ angular.module('nitoiotweb11App')
               //              console.log(hisRes);
               $scope.graphDataElem.push(hisRes.data);
               $scope.$emit('graphDataElem', hisRes.data);
+              var prevElem = '';
+              //              hisRes.data.forEach(function(elem){
+              //                if(prevElem == '' || prevElem != elem.device_id){
+              //                  prevElem = elem.device_id;
+              //                  $scope.graphDatas.push(new Array());
+              //                }
+              //                $scope.graphDatas[$scope.graphDatas.length - 1].push(elem.data.datas[0].value);
+              //              });
+              $scope.graphDatas = hisRes.data
+              //            
+              //              if (hisRes.data.hasOwnProperty('data')) {
+              //                $scope.graphDatas.push(hisRes.data);
+              //              }
 
-              if (hisRes.data.hasOwnProperty('data')) {
-                $scope.graphDatas.push(hisRes.data);
-              }
+              $scope.$on('deviceListFinished', function (event) {
+                var rows = [];
+                $scope.graphDatas.forEach(function (dat) {
+
+
+                  //          for (var l = 0; dat.length > l; l++) {
+                  //            rows.push([new Date(d.date), Number(si)]);
+                  //          }
+                  rows.push([new Date(dat.data.date), Number(dat.data.datas[0].value)]);
+                });
+                //             google.charts.load('current', {packages: ['controls','corechart', 'bar']});
+                //             google.charts.setOnLoadCallback(drawChart(deviceName,response));
+                google.charts.load('current', {
+                  packages: ['controls', 'corechart', 'bar']
+                });
+                google.charts.setOnLoadCallback(function () {
+
+                  var dataTable = new google.visualization.DataTable();
+                  dataTable.addColumn('datetime', 'yyyy/mm/dd hh:mm');
+                  dataTable.addColumn('number', '震度');
+
+                  dataTable.addRows(rows);
+
+                  var dt = new Date();
+                  var min;
+                  switch ($scope.selectItem) {
+                    case 'day':
+                      min = new Date(dt.setDate(dt.getDate() - 1));
+                      break;
+                    case 'week':
+                      min = new Date(dt.setDate(dt.getDate() - 7));
+                      break;
+                    case 'month':
+                      min = new Date(dt.setMonth(dt.getMonth() - 1));
+                      break;
+                    case 'year':
+                      min = new Date(dt.setFullYear(dt.getFullYear() - 1));
+                      break;
+                    default:
+                      min = new Date(dt.setMonth(dt.getMonth() - 1));
+                      break;
+                  }
+
+                  var options = {
+                    hAxis: {
+                      title: '日時',
+                      format: ($scope.selectItem != 'day') ? 'yyyy/MM/dd' : 'dd hh:mm',
+                      viewWindow: {
+                        min: min,
+                        max: new Date()
+                      }
+                    },
+                    vAxis: {
+                      title: '震度',
+                      viewWindow: {
+                        min: 0,
+                        max: 8
+                      }
+                    },
+                    legend: 'none'
+                  };
+                  var id = "DEV_" + $scope.graphDataElem[0][0].device_id;
+                  document.getElementById(id).innerHTML = '';
+                  var chart = new google.visualization.ColumnChart(document.getElementById(id));
+                  chart.draw(dataTable, options);
+                });
+              });
+
 
             }, function errorCallback(hisRes) {
               console.error("error in posting");
@@ -411,77 +489,6 @@ angular.module('nitoiotweb11App')
     $scope.$on('deviceInfoFinished', function (event) {
       console.log("deviceInfoFinished");
       $scope.modalInstance.close();
-    });
-
-    $scope.$on('deviceListFinished', function (event) {
-      $scope.graphDatas.forEach(function (dat) {
-
-        //             google.charts.load('current', {packages: ['controls','corechart', 'bar']});
-        //             google.charts.setOnLoadCallback(drawChart(deviceName,response));
-        google.charts.load('current', {
-          packages: ['controls', 'corechart', 'bar']
-        });
-        google.charts.setOnLoadCallback(function () {
-
-          var dataTable = new google.visualization.DataTable();
-          dataTable.addColumn('datetime', 'yyyy/mm/dd hh:mm');
-          dataTable.addColumn('number', '震度');
-
-          var rows = [];
-
-          for (var l = 0; dat.data.length > l; l++) {
-            var d = dat.data[l];
-            //              console.log("d@setOnLoadCallback");
-            //              console.log(d);
-            var si = (typeof d.datas === 'array') ? d.datas[0].value : d.datas.seismicIntensity
-            rows.push([new Date(d.date), Number(si)]);
-          }
-          dataTable.addRows(rows);
-
-          var dt = new Date();
-          var min;
-          switch ($scope.selectItem) {
-          case 'day':
-            min = new Date(dt.setDate(dt.getDate() - 1));
-            break;
-          case 'week':
-            min = new Date(dt.setDate(dt.getDate() - 7));
-            break;
-          case 'month':
-            min = new Date(dt.setMonth(dt.getMonth() - 1));
-            break;
-          case 'year':
-            min = new Date(dt.setFullYear(dt.getFullYear() - 1));
-            break;
-          default:
-            min = new Date(dt.setMonth(dt.getMonth() - 1));
-            break;
-          }
-
-          var options = {
-            hAxis: {
-              title: '日時',
-              format: ($scope.selectItem != 'day') ? 'yyyy/MM/dd' : 'dd hh:mm',
-              viewWindow: {
-                min: min,
-                max: new Date()
-              }
-            },
-            vAxis: {
-              title: '震度',
-              viewWindow: {
-                min: 0,
-                max: 8
-              }
-            },
-            legend: 'none'
-          };
-          var id = "DEV_" + dat.device_id;
-          document.getElementById(id).innerHTML = '';
-          var chart = new google.visualization.ColumnChart(document.getElementById(id));
-          chart.draw(dataTable, options);
-        });
-      });
     });
 
     // $scope.$on('graphDataElem',(event,data){
@@ -841,9 +848,9 @@ angular.module('nitoiotweb11App')
 
     //画面遷移
     $scope.deviceDetail = function () {
-        $location.path("/user_" + $routeParams.USER_ID + "/device_" + this.item.deviceId.split('_')[1]);
-      }
-      //画面遷移
+      $location.path("/user_" + $routeParams.USER_ID + "/device_" + this.item.deviceId.split('_')[1]);
+    }
+    //画面遷移
     $scope.envLogData = function (type) {
       $location.path("/user_" + $routeParams.USER_ID + "/device_" + this.item.deviceId.split('_')[1] + "/env_" + type);
     }

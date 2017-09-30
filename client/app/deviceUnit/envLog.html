@@ -8,12 +8,7 @@
 
   <md-card>
     <md-card-content>
-     <div ng-if="gType">
-      <img src="/assets/images/dummy_figure.png" style="width:100%;">
-      </div>
-     <div ng-if="!gType">
-      <img src="/assets/images/dummy_figure2.png" style="width:100%;">
-      </div>
+     <div><img ng-src={{chart_env}} style="width:100%;"></div>
       <div layout layout-align="center">
         <md-button class="md-accent md-button md-ink-ripple" type="button" ng-click="backtoList()" ng-transclude="">
           <div class="md-ripple-container">戻る</div>
