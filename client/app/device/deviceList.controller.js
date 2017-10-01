@@ -387,7 +387,7 @@ angular.module('nitoiotweb11App')
               //              console.log(hisRes);
               $scope.graphDataElem.push(hisRes.data);
               $scope.$emit('graphDataElem', hisRes.data);
-              var prevElem = '';
+              //              var prevElem = '';
               //              hisRes.data.forEach(function(elem){
               //                if(prevElem == '' || prevElem != elem.device_id){
               //                  prevElem = elem.device_id;
@@ -395,79 +395,9 @@ angular.module('nitoiotweb11App')
               //                }
               //                $scope.graphDatas[$scope.graphDatas.length - 1].push(elem.data.datas[0].value);
               //              });
-              $scope.graphDatas = hisRes.data
-              //            
-              //              if (hisRes.data.hasOwnProperty('data')) {
-              //                $scope.graphDatas.push(hisRes.data);
-              //              }
-
-              $scope.$on('deviceListFinished', function (event) {
-                var rows = [];
-                $scope.graphDatas.forEach(function (dat) {
-
-
-                  //          for (var l = 0; dat.length > l; l++) {
-                  //            rows.push([new Date(d.date), Number(si)]);
-                  //          }
-                  rows.push([new Date(dat.data.date), Number(dat.data.datas[0].value)]);
-                });
-                //             google.charts.load('current', {packages: ['controls','corechart', 'bar']});
-                //             google.charts.setOnLoadCallback(drawChart(deviceName,response));
-                google.charts.load('current', {
-                  packages: ['controls', 'corechart', 'bar']
-                });
-                google.charts.setOnLoadCallback(function () {
-
-                  var dataTable = new google.visualization.DataTable();
-                  dataTable.addColumn('datetime', 'yyyy/mm/dd hh:mm');
-                  dataTable.addColumn('number', '震度');
-
-                  dataTable.addRows(rows);
-
-                  var dt = new Date();
-                  var min;
-                  switch ($scope.selectItem) {
-                    case 'day':
-                      min = new Date(dt.setDate(dt.getDate() - 1));
-                      break;
-                    case 'week':
-                      min = new Date(dt.setDate(dt.getDate() - 7));
-                      break;
-                    case 'month':
-                      min = new Date(dt.setMonth(dt.getMonth() - 1));
-                      break;
-                    case 'year':
-                      min = new Date(dt.setFullYear(dt.getFullYear() - 1));
-                      break;
-                    default:
-                      min = new Date(dt.setMonth(dt.getMonth() - 1));
-                      break;
-                  }
-
-                  var options = {
-                    hAxis: {
-                      title: '日時',
-                      format: ($scope.selectItem != 'day') ? 'yyyy/MM/dd' : 'dd hh:mm',
-                      viewWindow: {
-                        min: min,
-                        max: new Date()
-                      }
-                    },
-                    vAxis: {
-                      title: '震度',
-                      viewWindow: {
-                        min: 0,
-                        max: 8
-                      }
-                    },
-                    legend: 'none'
-                  };
-                  var id = "DEV_" + $scope.graphDataElem[0][0].device_id;
-                  document.getElementById(id).innerHTML = '';
-                  var chart = new google.visualization.ColumnChart(document.getElementById(id));
-                  chart.draw(dataTable, options);
-                });
-              });
+              if (response.data.device.length == $scope.graphDataElem.length) {
+                  drowChart();
+              }
 
 
             }, function errorCallback(hisRes) {
@@ -486,6 +416,82 @@ angular.module('nitoiotweb11App')
       });
     // });
 
+    //グラフの描画
+    function drowChart() {
+
+      //$scope.$on('deviceListFinished', function (event) {
+      var rows = [];
+      $scope.graphDataElem.forEach(function (dat) {
+
+
+        //          for (var l = 0; dat.length > l; l++) {
+        //            rows.push([new Date(d.date), Number(si)]);
+        //          }
+        dat.forEach(function(chartDat){
+          rows.push([new Date(chartDat.data.date), Number(chartDat.data.datas[0].value)]);
+        });
+        google.charts.load('current', {
+          packages: ['controls', 'corechart', 'bar']
+        });
+//        google.charts.setOnLoadCallback(function () {
+
+          var dataTable = new google.visualization.DataTable();
+          dataTable.addColumn('datetime', 'yyyy/mm/dd hh:mm');
+          dataTable.addColumn('number', '震度');
+
+          dataTable.addRows(rows);
+
+          var dt = new Date();
+          var min;
+          switch ($scope.selectItem) {
+            case 'day':
+              min = new Date(dt.setDate(dt.getDate() - 1));
+              break;
+            case 'week':
+              min = new Date(dt.setDate(dt.getDate() - 7));
+              break;
+            case 'month':
+              min = new Date(dt.setMonth(dt.getMonth() - 1));
+              break;
+            case 'year':
+              min = new Date(dt.setFullYear(dt.getFullYear() - 1));
+              break;
+            default:
+              min = new Date(dt.setMonth(dt.getMonth() - 1));
+              break;
+          }
+
+          var options = {
+            height: 200,
+            hAxis: {
+              title: '日時',
+              format: ($scope.selectItem != 'day') ? 'yyyy/MM/dd' : 'dd hh:mm',
+              viewWindow: {
+                min: min,
+                max: new Date()
+              }
+            },
+            vAxis: {
+              title: '震度',
+              viewWindow: {
+                min: 0,
+                max: 8
+              }
+            },
+            legend: 'none'
+          };
+          if(dat.length){
+            var id = "DEV_" + dat[0].device_id;
+  //          document.getElementById(id).innerHTML = '';
+            var chart = new google.visualization.ColumnChart(document.getElementById(id));
+            chart.draw(dataTable, options);
+          }
+//        });
+      });
+      //              });
+
+    }
+    
     $scope.$on('deviceInfoFinished', function (event) {
       console.log("deviceInfoFinished");
       $scope.modalInstance.close();
@@ -544,7 +550,8 @@ angular.module('nitoiotweb11App')
     $scope.$watch('selectItem', function (newValue, oldValue, scope) {
       console.log(newValue);
       $scope.selectItem = newValue;
-      $rootScope.$broadcast('deviceListFinished');
+      //$rootScope.$broadcast('deviceListFinished');
+      drowChart();
       // rePackJson();
       // google.charts.load('current', {packages: ['controls','corechart', 'bar']});
       // google.charts.setOnLoadCallback(drawChart);
