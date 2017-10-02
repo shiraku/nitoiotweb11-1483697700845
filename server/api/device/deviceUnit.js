@@ -361,9 +361,10 @@ var deviceUnit = {
     var reqest = req;
     var response = res;
     cloudantUtil.EqimageEntitity.getChartImage(userDevice, function(err, dat){
-//      console.log("dat@getChartImage");
-//      console.log(dat);
-      if(err) {return response.status('200').sendfile(err);}
+      console.log("dat@getChartImage");
+      console.log(err);
+      console.log(dat);
+      if(err) {return response.status(err.statusCode).json(err);}
       res.writeHead( 200, { 'Content-type': 'image/jpeg; charset=utf-8' } );
       res.end( dat );
     });

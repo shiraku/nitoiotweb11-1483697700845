@@ -13,21 +13,24 @@
 
 
       //グラフイメージ取得
-      var datePrm = $routeParams.YYYYMMDDHHMM.substr(0,4) + '-' +
-        $routeParams.YYYYMMDDHHMM.substr(4,2) + '-' +
-        $routeParams.YYYYMMDDHHMM.substr(6,2) + 'T' +
-        $routeParams.YYYYMMDDHHMM.substr(8,2) + ':' +
-        $routeParams.YYYYMMDDHHMM.substr(10,2) + ':' +
-        $routeParams.YYYYMMDDHHMM.substr(12,2);
-      var id = datePrm + '_' + $routeParams.DEVICE_ID;
+//      var datePrm = $routeParams.YYYYMMDDHHMM.substr(0,4) + '-' +
+//        $routeParams.YYYYMMDDHHMM.substr(4,2) + '-' +
+//        $routeParams.YYYYMMDDHHMM.substr(6,2) + 'T' +
+//        $routeParams.YYYYMMDDHHMM.substr(8,2) + ':' +
+//        $routeParams.YYYYMMDDHHMM.substr(10,2) + ':' +
+//        $routeParams.YYYYMMDDHHMM.substr(12,2);
+//      var id = datePrm + '_' + $routeParams.DEVICE_ID;
+      var id = 'DEV_' + $routeParams.DEVICE_ID + '_' + $routeParams.YYYYMMDDHHMM;
 //      console.log(id);
       $http.get('/api/chart_acceleration/' + id)
       .then(function successCallback(response) {
+        $scope.chartFlg = true;
 //        console.log("/api/chart_acceleration/ successfully");
 //        console.log(response);
         $scope.chart_acceleration = 'data:image/jpg;base64,' + response.data.toString('base64');
       }, function errorCallback(response) {
         console.error("error in /api/chart_acceleration/");
+        $scope.chartFlg = false;
       });
 
 

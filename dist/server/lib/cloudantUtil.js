@@ -725,6 +725,15 @@ exports.EqimageEntitity = {
       if(err){
         return callback(err);
       }
+      console.log('statusCode@EqimageEntitity');
+      console.log(dat.statusCode);
+      
+      if(Number(dat.statusCode) >= 400){
+      console.log('callback error');
+        return callback({'statusCode' : dat.statusCode});
+      }
+//      console.log('クエリレスポンス@EqimageEntitity');
+//      console.log(dat);
 
       var result = dat.body.toString('base64');
       callback( null, result );   
@@ -750,6 +759,10 @@ exports.Om_ImageEntitity = {
     db.getAttachment(query, query + '.svg', function(err, dat) {
       if(err){
         return callback(err);
+      }
+      
+      if(dat.statusCode <= 400){
+        return callback({'statusCode' : dat.statusCode});
       }
 
       var result = dat.body.toString('base64');

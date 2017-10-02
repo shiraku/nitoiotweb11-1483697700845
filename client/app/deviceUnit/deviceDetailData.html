@@ -110,11 +110,11 @@
 
 
 <!--グラフ-->
-        <div class="md-toolbar-tools">
+        <div class="md-toolbar-tools" ng-if="chartFlg">
           <h3 class="ng-binding ng-isolate-scope">グラフ</h3>
         </div>
 
-          <md-card>
+          <md-card ng-if="chartFlg">
             <md-card-title>
               <span class="md-body-3">合成加速度</span>
             </md-card-title>
