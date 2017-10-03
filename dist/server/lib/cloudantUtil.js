@@ -760,8 +760,7 @@ exports.Om_ImageEntitity = {
       if(err){
         return callback(err);
       }
-      
-      if(dat.statusCode <= 400){
+      if(dat.statusCode >= 400){
         return callback({'statusCode' : dat.statusCode});
       }
 
