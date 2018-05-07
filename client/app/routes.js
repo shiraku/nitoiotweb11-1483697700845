@@ -3,7 +3,7 @@
 angular.module('nitoiotweb11App')
   .config(function ($routeProvider) {
     $routeProvider
-      //UC000ログイン画面
+      //UC000ログイン画面/Users/kazuysh/nitoiotweb11-1483697700845/client/app/routes.js
       .when('/login', {
         templateUrl: 'app/login/login.html',
         //controller: 'LoginCtrl'

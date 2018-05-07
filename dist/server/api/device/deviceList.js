@@ -47,18 +47,18 @@ var deviceList = {
 //      cloudantUtil.I_dataEntitity.getLatest(userDevice, function(err, latest){
 //        if(err) {return response.status('200').json(err);}
 //        self.latestJson = latest;
-//          console.log("dat@latestJson");
-//          console.log(self.latestJson);
+            console.log("dat@latestIJson");
+            console.log(self.latestJson);
         cloudantUtil.Eq_dEntitity.getLatest(userDevice, function(err, latest){
           if(err) {return response.status('200').json(err);}
           self.latestEQJson = latest.docs;
-//            console.log("dat@latestEQJson");
-//            console.log(self.latestEQJson);
+            console.log("dat@latestEQJson");
+            console.log(self.latestEQJson);
           cloudantUtil.Comment_dataEntitity.getComment(userDevice, function(err, dat){
             if(err) {return response.status('200').json(err);}
             self.commentJson = dat;
-            console.log("dat@getComment");
-            console.log(dat);
+//            console.log("dat@getComment");
+//            console.log(dat);
             
             responseJson = self.createJson();
 //            console.log(response);

@@ -93,8 +93,8 @@ var deviceUnit = {
             dat.docs[0].data.datas[0]["type"] = "EQ";
             delete dat.docs[0]._rev;
             cloudantUtil.Eq_dEntitity.postHistoryDate(dat.docs[0],function(err,doc){
-              if(err) console.log(err);
-              if(doc) console.log(doc);
+              if(err) console.log("Unit",err);
+              if(doc) console.log("Unit",doc);
             })
           }
         }
@@ -172,10 +172,10 @@ var deviceUnit = {
 //          console.log("updateDeviceBasicInfo getUserHasDevice");
 //          console.log({"docs":dat});
           cloudantUtil.M_userEntitity.updateUserHasDevice({"docs":dat}, function(err,doc){
-              console.log("M_userEntitity.getUserHasDevice");
-              console.log(doc);
-              console.log("M_userEntitity.getUserHasDevice err");
-              console.log(err);
+              console.log("Unit","M_userEntitity.getUserHasDevice");
+              console.log("Unit",doc);
+              console.log("Unit","M_userEntitity.getUserHasDevice err");
+              console.log("Unit",err);
           });
         });
         
@@ -275,14 +275,15 @@ var deviceUnit = {
     var self = this;
     var reqest = req;
     var response = res;
-//        console.log("query@getHistory");
-//        console.log(query);
+        console.log("Unit","query@getHistory");
+        console.log("Unit",req.params.type);
+        console.log("Unit",query);
     
     if(req.params.type == 'eq'){
       cloudantUtil.Eq_dEntitity.getHistoryDate(query, function(err, dat){
         if(err) {return response.status('200').json(err);}
-        console.log("Eq_dEntitity.getHistory.dat@getHistory");
-        console.log(dat);
+        console.log("Unit","Eq_dEntitity.getHistory.dat@getHistory");
+        console.log("Unit",dat);
         return response.status('200').json(dat.docs);
       });
     } else {

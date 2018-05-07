@@ -6,8 +6,8 @@ angular.module('nitoiotweb11App')
     //デバイス情報
     $http.get('/api/device_detail/' + $routeParams.DEVICE_ID)
       .then(function successCallback(response) {
-        //        console.log("/api/device_detail/"+$routeParams.DEVICE_ID+" successfully");
-        //        console.log(response);
+        //       console.log("/api/device_detail/"+$routeParams.DEVICE_ID+" successfully");
+        //       console.log(JSON.stringify(response));
 
         var obj = response.data;
 
@@ -51,8 +51,8 @@ angular.module('nitoiotweb11App')
     //地震履歴情報
     $http.get('/api/device_history_eq/' + $routeParams.DEVICE_ID)
       .then(function successCallback(response) {
-        //        console.log("/api/device_history_eq/"+$routeParams.DEVICE_ID+" successfully");
-        //        console.log(response);
+                console.log("/api/device_history_eq/"+$routeParams.DEVICE_ID+" successfully");
+                console.log(JSON.stringify(response.data));
 
         $scope.earthquakeHistoryList = response.data;
         //        console.log($scope.earthquakeHistoryList);

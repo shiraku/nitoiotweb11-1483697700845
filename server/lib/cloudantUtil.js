@@ -272,7 +272,10 @@ exports.Eq_dEntitity = {
   getLatest : function(query, callback){
     
       connectDoc('eq_d');
-//      console.log(query);
+
+      console.log("***0507*** getLatest");
+      console.log(query);
+
       var di;
       if(typeof query == "object" || typeof query == "array"){
         device = new Array();
@@ -287,11 +290,15 @@ exports.Eq_dEntitity = {
       //現在の日づげ取得
       var d = new Date();
       //１０日前の日付取得
-      var targetDate = new Date(d.getFullYear(),d.getMonth(),d.getDate()-10);
+      var targetDate = new Date(d.getFullYear(),d.getMonth(),d.getDate()-30);
       //クエリーように文字列か
       var queryDate =  targetDate.toFormat('YYYYMMDDHH24MISS');
 //      console.log("di",di);
 //      console.log("queryDate",queryDate);
+      console.log("***0507*** 1");
+      console.log("di",di);
+      console.log("queryDate",queryDate);
+
       var selector = {"$and":[di,{"data.date_id":{"$gt":queryDate}}]};
       var q = {
         "selector":selector,
@@ -302,14 +309,16 @@ exports.Eq_dEntitity = {
         "sort": [{"device_id":"desc"}],
         "limit": 30
       }
-      console.log(q);
+      console.log("***0507*** 2");
+      console.log(JSON.stringify(q));
       cloudant.find(q, function(err, doc) {
         if(err){
           console.log("err@Eq_dEntitity.getLatest");
           console.log(err);
           return callback(err,doc);
         }
-  //      console.log(doc);
+          console.log("***0507*** 3");
+          console.log(doc);
 //        console.log("doc@Eq_dEntitity.getLatest");
 //        console.log(doc.docs);
         return callback(err,doc);
@@ -320,6 +329,9 @@ exports.Eq_dEntitity = {
   getHistory : function(query, callback){
     var option;
     var d = new Date();
+
+    console.log("***0507*** getHistory");
+
     
     //スタート時間を取得　アクセス時間から１年前の日付を作成
     var toDoubleDigits = function(num) {
@@ -344,10 +356,13 @@ exports.Eq_dEntitity = {
     connectDoc('eq_d');
     
       db.view('sc001/dlist', option , function (err, res) {
+
+        console.log("***0507*** 4");
 //        console.log('err object @getHistory');
 //        console.log(err);
 //        console.log('row object @getHistory');
-//        console.log(res);
+        console.log(res);
+
         if(!res) return callback({error:"データが取得できませんでした。"});
         var obj = new Object();
         var di = '';
@@ -396,24 +411,26 @@ exports.Eq_dEntitity = {
         var selector = {"$and":[{"device_id":query.di},{"data.date_id":query.date}]};
         var q = {
           "selector":selector,
-          "sort": [{"_id":"desc"}],
+          "fields": ["device_id","data"],
+          "sort": [{"device_id":"desc"}],
           "limit": query.limit
         }
       } else {
         var selector = {"$and":[{"device_id":query.di},{"data.date_id":{"$gt":query.date}}]};
         var q = {
           "selector":selector,
-          "sort": [{"_id":"desc"}],
-          "limit": 1000
+          "fields": ["device_id","data"],
+          "sort": [{"device_id":"desc"}],
+          "limit": 100
         }
       }
-//      console.log("selector");
-//      console.log(selector);
+  //    console.log("cloudant","selector");
+  //    console.log("cloudant",JSON.stringify(q));
       cloudant.find(q, function(err, doc) {
-//      console.log("err@Eq_dEntitity.getLatest");
-//      console.log(err);
-//      console.log("doc@Eq_dEntitity.getLatest");
-//      console.log(doc.docs);
+  //    console.log("cloudant","err@Eq_dEntitity.getLatest");
+  //    console.log("cloudant",err);
+  //    console.log("cloudant","doc@Eq_dEntitity.getLatest");
+  //    console.log("cloudant",doc.docs);
         if(err){
           return callback(err,doc);
         }
@@ -580,19 +597,21 @@ exports.Fl_dEntitity = {
         var selector = {"$and":[{"device_id":query.di},{"data.date_id":query.date}]};
         var q = {
           "selector":selector,
+          "fields": ["device_id","data"],
           "sort": [{"_id":"desc"}],
-          "limit": query.limit
+          "limit": 10
         }
       } else {
         var selector = {"$and":[{"device_id":query.di},{"data.date_id":{"$gt":query.date}}]};
         var q = {
           "selector":selector,
+          "fields": ["device_id","data"],
           "sort": [{"_id":"desc"}],
-          "limit": 1000
+          "limit": 10
         }
       }
-//      console.log("selector");
-//      console.log(selector);
+      console.log("Unit","selector");
+      console.log("Unit",JSON.stringify(q));
       cloudant.find(q, function(err, doc) {
 //      console.log("err@Eq_dEntitity.getLatest");
 //      console.log(err);
@@ -623,7 +642,6 @@ exports.Fl_dEntitity = {
   }
   
 };
-
 
 
 /**
